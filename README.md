@@ -1,6 +1,7 @@
 # Hack Showcase
 
 TODO
+Lorem ipsum
 
 ## Overview
 
@@ -8,7 +9,7 @@ TODO
 
 ## Prerequisites
 
-TODO
+Test
 
 ## Installation
 
