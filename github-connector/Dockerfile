@@ -1,6 +1,6 @@
 FROM golang:1.11.4-alpine3.8 as builder
 
-WORKDIR /go/src/github.com/KarolJaksik/hack-showcase/github-connector
+WORKDIR /go/src/github.com/rafalpotempa/hack-showcase/github-connector
 COPY . .
 
 
