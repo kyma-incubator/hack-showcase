@@ -9,7 +9,10 @@ import (
 func main() {
 
 	log.Println("server started")
-	http.HandleFunc("/webhook", handleWebhook)
+
+	wh := NewWebhookHandler(nil)
+
+	http.HandleFunc("/webhook", wh.handleWebhook)
 	http.HandleFunc("/", index)
 	log.Fatal(http.ListenAndServe(os.Getenv("PORT"), nil))
 }

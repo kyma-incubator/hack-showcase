@@ -8,10 +8,26 @@ import (
 	"github.com/google/go-github/github"
 )
 
-func handleWebhook(w http.ResponseWriter, r *http.Request) {
-	payload, err := github.ValidatePayload(r, []byte("my-secret-key"))
+type Validator interface {
+	ValidatePayload(*http.Request, []byte) ([]byte, error)
+	ParseWebHook()
+}
+
+type WebhookHandler struct {
+	validator Validator
+}
+
+func NewWebhookHandler(*Validator) *WebhookHandler {
+	return nil
+}
+
+func (wh *WebhookHandler) handleWebhook(w http.ResponseWriter, r *http.Request) {
+	payload, err := wh.validator.ValidatePayload(r, []byte("my-secret-key"))
+
+	//payload, err := github.ValidatePayload(r, []byte("my-secret-key"))
 	if err != nil {
 		log.Printf("error validating request body: err=%s\n", err)
+		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
 	defer r.Body.Close()
@@ -19,10 +35,9 @@ func handleWebhook(w http.ResponseWriter, r *http.Request) {
 	event, err := github.ParseWebHook(github.WebHookType(r), payload)
 	if err != nil {
 		log.Printf("could not parse webhook: err=%s\n", err)
+		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-
-	log.Println(event)
 
 	switch e := event.(type) {
 	case *github.PushEvent:
@@ -38,8 +53,10 @@ func handleWebhook(w http.ResponseWriter, r *http.Request) {
 		}
 	default:
 		log.Printf("unknown event type: \"%s\"\n", github.WebHookType(r))
+		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
+	w.WriteHeader(http.StatusOK)
 }
 
 func index(w http.ResponseWriter, req *http.Request) {
