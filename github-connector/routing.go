@@ -42,6 +42,25 @@ func handleWebhook(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+type configStruct struct {
+	url         string
+	contentType string
+	secret      string
+	insecureSsl string
+}
+
+type webhookPayload struct {
+	name   string
+	config configStruct
+	events []string
+	active bool
+}
+
+func createWebhook() {
+	// payload :=
+	// resp, err := http.Post("https://api.github.com/repos/rafalpotempa/heroku-go-test", "application/json", &payload)
+}
+
 func index(w http.ResponseWriter, req *http.Request) {
 	fmt.Fprintln(w, "testy")
 }
