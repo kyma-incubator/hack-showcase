@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-// EventParser adds 
+// EventParser adds proper structure to existing payload, so it can be consumed by Event-Service
 type EventParser interface {
 	GetEventRequestPayload(string) (EventRequestPayload, error)
 	GetEventRequestAsJSON(EventRequestPayload) []byte
@@ -21,7 +21,7 @@ type EventRequestPayload struct {
 	Data             string `json:"data"` //github webhook json payload
 }
 
-// GetEventRequestPayload generates structure which 
+// GetEventRequestPayload generates structure which is mapped to JSON required by Event-Service request body
 func GetEventRequestPayload(eventType, eventTypeVersion, eventID, data string) (EventRequestPayload, error) {
 
 	res := EventRequestPayload{
@@ -35,8 +35,7 @@ func GetEventRequestPayload(eventType, eventTypeVersion, eventID, data string) (
 
 }
 
-
-// GetEventRequestAsJSON here description
+// GetEventRequestAsJSON returns ready-to-sent JSON request body
 func GetEventRequestAsJSON(eventRequestPayload EventRequestPayload) ([]byte, error) {
 	r, err := json.MarshalIndent(eventRequestPayload, "", "  ")
 	if err != nil {
