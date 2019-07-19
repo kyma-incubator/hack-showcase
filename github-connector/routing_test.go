@@ -2,27 +2,27 @@ package main
 
 import (
 	"bytes"
-	"crypto/hmac"
-	"crypto/sha1"
-	"encoding/base64"
 	"encoding/json"
+	"errors"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
+	"github.com/KarolJaksik/hack-showcase/github-connector/mocks"
 	"github.com/stretchr/testify/require"
 
 	"github.com/stretchr/testify/assert"
 )
 
 type payload struct {
-	cokolwiek string `json:"hejka"`
+	Anything string `json:"anything"`
 }
 
 func TestWebhookHandler_TestNoSecret(t *testing.T) {
 	t.Run("should respond with 401 status code", func(t *testing.T) {
 		// given
-		pld := payload{cokolwiek: "filip"}
+
+		pld := payload{Anything: "test"}
 		toSend, err := json.Marshal(pld)
 		require.NoError(t, err)
 
@@ -33,10 +33,10 @@ func TestWebhookHandler_TestNoSecret(t *testing.T) {
 		rr := httptest.NewRecorder()
 
 		// when
-		handler := http.HandlerFunc(handleWebhook)
+		wh := NewWebhookHandler(WebhookStructHelper{})
 
+		handler := http.HandlerFunc(wh.handleWebhook)
 		handler.ServeHTTP(rr, req)
-
 		// then
 		assert.Equal(t, http.StatusUnauthorized, rr.Code)
 
@@ -44,28 +44,34 @@ func TestWebhookHandler_TestNoSecret(t *testing.T) {
 }
 
 func TestWebhookHandler_TestWrongPayload(t *testing.T) {
-	t.Run("should respond with 400 status code", func(t *testing.T) {
+	t.Run("should respond with 401 status code", func(t *testing.T) {
 		// given
-		pld := payload{cokolwiek: "filip"}
+		pld := payload{Anything: "test"}
 		toSend, err := json.Marshal(pld)
 		require.NoError(t, err)
 
 		req := httptest.NewRequest(http.MethodPost, "/webhook", bytes.NewBuffer(toSend))
 		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("X-Hub-Signature", "test")
 
-		h := hmac.New(sha1.New, []byte("my-secret-key"))
-
-		req.Header.Set("X-Hub-Signature", ("sha1=" + base64.StdEncoding.EncodeToString(h.Sum(nil))))
-		//	req.SetBasicAuth("X-Hub-Signature", "sha1="+hex.EncodeToString(bs))
 		rr := httptest.NewRecorder()
 
-		// when
-		handler := http.HandlerFunc(handleWebhook)
+		mockHandler := &mocks.Validator{}
+		mockPayload, err := json.Marshal(payload{Anything: "test"})
+		//require.NoError(t, err)
+		mockHandler.On("GetToken").Return("test")
+		mockHandler.On("ValidatePayload", req, []byte("test")).Return(mockPayload, nil)
+		mockHandler.On("ParseWebHook", "", mockPayload).Return(errors.New("failed"))
 
+		wh := NewWebhookHandler(mockHandler)
+
+		// when
+		handler := http.HandlerFunc(wh.handleWebhook)
 		handler.ServeHTTP(rr, req)
 
 		// then
-		assert.Equal(t, http.StatusUnauthorized, rr.Code)
+		assert.Equal(t, http.StatusBadRequest, rr.Code)
 
 	})
+
 }

@@ -10,19 +10,21 @@ import (
 
 type Validator interface {
 	ValidatePayload(*http.Request, []byte) ([]byte, error)
-	ParseWebHook()
+	ParseWebHook(string, []byte) (interface{}, error)
+	GetToken() string
 }
 
 type WebhookHandler struct {
 	validator Validator
 }
 
-func NewWebhookHandler(*Validator) *WebhookHandler {
-	return nil
+func NewWebhookHandler(v Validator) *WebhookHandler {
+	return &WebhookHandler{validator: v}
 }
 
 func (wh *WebhookHandler) handleWebhook(w http.ResponseWriter, r *http.Request) {
-	payload, err := wh.validator.ValidatePayload(r, []byte("my-secret-key"))
+
+	payload, err := wh.validator.ValidatePayload(r, []byte(wh.validator.GetToken()))
 
 	//payload, err := github.ValidatePayload(r, []byte("my-secret-key"))
 	if err != nil {
@@ -32,7 +34,7 @@ func (wh *WebhookHandler) handleWebhook(w http.ResponseWriter, r *http.Request) 
 	}
 	defer r.Body.Close()
 
-	event, err := github.ParseWebHook(github.WebHookType(r), payload)
+	event, err := wh.validator.ParseWebHook(github.WebHookType(r), payload)
 	if err != nil {
 		log.Printf("could not parse webhook: err=%s\n", err)
 		w.WriteHeader(http.StatusBadRequest)
