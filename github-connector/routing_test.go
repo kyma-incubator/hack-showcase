@@ -48,12 +48,15 @@ func TestWebhookHandler_TestBadSecret(t *testing.T) {
 
 		req := httptest.NewRequest(http.MethodPost, "/webhook", bytes.NewBuffer(toSend))
 		req.Header.Set("Content-Type", "application/json")
-		req.Header.Set("X-Hub-Signature", "sha1=dcdf499d859b235063659adceea6ef474cb23a51")
 
 		rr := httptest.NewRecorder()
+		mockHandler := &mocks.Validator{}
+
+		mockHandler.On("GetToken").Return("test")
+		mockHandler.On("ValidatePayload", req, []byte("test")).Return(nil, errors.New("failed"))
 
 		// when
-		wh := NewWebHookHandler(WebHookStruct{})
+		wh := NewWebHookHandler(mockHandler)
 
 		handler := http.HandlerFunc(wh.handleWebhook)
 		handler.ServeHTTP(rr, req)

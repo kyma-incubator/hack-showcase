@@ -24,7 +24,7 @@ func (wh WebHookStruct) ParseWebHook(s string, b []byte) (interface{}, error) {
 
 //GetToken is a function that looks for the secret in the environment
 func (wh WebHookStruct) GetToken() string {
-	return "test"
+	return os.Getenv("GITHUB-TOKEN")
 }
 
 func main() {
