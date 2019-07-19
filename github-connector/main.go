@@ -8,26 +8,30 @@ import (
 	"github.com/google/go-github/github"
 )
 
-type WebhookStructHelper struct {
+//WebHookStruct that bundles the github library functions into one struct with a Validator interface
+type WebHookStruct struct {
 }
 
-func (wh WebhookStructHelper) ValidatePayload(r *http.Request, b []byte) ([]byte, error) {
+//ValidatePayload is a function used for checking whether the secret provided in the request is correct
+func (wh WebHookStruct) ValidatePayload(r *http.Request, b []byte) ([]byte, error) {
 	return github.ValidatePayload(r, b)
 }
 
-func (wh WebhookStructHelper) ParseWebHook(s string, b []byte) (interface{}, error) {
+//ParseWebHook parses the raw json payload into an event struct
+func (wh WebHookStruct) ParseWebHook(s string, b []byte) (interface{}, error) {
 	return github.ParseWebHook(s, b)
 }
 
-func (wh WebhookStructHelper) GetToken() string {
+//GetToken is a function that looks for the secret in the environment
+func (wh WebHookStruct) GetToken() string {
 	return "test"
 }
 
 func main() {
 
 	log.Println("server started")
-	str := WebhookStructHelper{}
-	wh := NewWebhookHandler(str)
+	str := WebHookStruct{}
+	wh := NewWebHookHandler(str)
 
 	http.HandleFunc("/webhook", wh.handleWebhook)
 	http.HandleFunc("/", index)

@@ -8,21 +8,24 @@ import (
 	"github.com/google/go-github/github"
 )
 
+//Validator is an interface used to allow mocking the github library methods
 type Validator interface {
 	ValidatePayload(*http.Request, []byte) ([]byte, error)
 	ParseWebHook(string, []byte) (interface{}, error)
 	GetToken() string
 }
 
-type WebhookHandler struct {
+//WebHookHandler is a struct
+type WebHookHandler struct {
 	validator Validator
 }
 
-func NewWebhookHandler(v Validator) *WebhookHandler {
-	return &WebhookHandler{validator: v}
+//NewWebHookHandler creates a new webhook handler with the passed interface
+func NewWebHookHandler(v Validator) *WebHookHandler {
+	return &WebHookHandler{validator: v}
 }
 
-func (wh *WebhookHandler) handleWebhook(w http.ResponseWriter, r *http.Request) {
+func (wh *WebHookHandler) handleWebhook(w http.ResponseWriter, r *http.Request) {
 
 	payload, err := wh.validator.ValidatePayload(r, []byte(wh.validator.GetToken()))
 
