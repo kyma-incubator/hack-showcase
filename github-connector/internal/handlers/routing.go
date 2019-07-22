@@ -7,6 +7,7 @@ import (
 	"github.com/google/go-github/github"
 )
 
+
 //Validator is an interface used to allow mocking the github library methods
 type Validator interface {
 	ValidatePayload(*http.Request, []byte) ([]byte, error)
@@ -14,7 +15,7 @@ type Validator interface {
 	GetToken() string
 }
 
-//WebHookHandler is a struct
+//WebHookHandler is a struct used to allow mocking the github library methods
 type WebHookHandler struct {
 	validator Validator
 }
@@ -33,9 +34,11 @@ func (wh *WebHookHandler) HandleWebhook(w http.ResponseWriter, r *http.Request) 
 		log.Printf("error validating request body: err=%s\n", err)
 		log.Printf("request body: %s\n", r.Body)
 		w.WriteHeader(http.StatusUnauthorized)
+
 		return
 	}
 	defer r.Body.Close()
+
 
 	event, err := wh.validator.ParseWebHook(github.WebHookType(r), payload)
 	if err != nil {
@@ -43,6 +46,7 @@ func (wh *WebHookHandler) HandleWebhook(w http.ResponseWriter, r *http.Request) 
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
+
 
 	switch e := event.(type) {
 	case *github.PushEvent:
@@ -60,6 +64,7 @@ func (wh *WebHookHandler) HandleWebhook(w http.ResponseWriter, r *http.Request) 
 
 	default:
 		log.Printf("unknown event type: \"%s\"\n", github.WebHookType(r))
+
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}

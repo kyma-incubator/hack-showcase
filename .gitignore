@@ -11,6 +11,11 @@
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 *.DS_Store
+<<<<<<< HEAD
+=======
+*.toml
+*.lock
+>>>>>>> a10270935614c0c78c36cc7a3a667a29426e4f3a
 
 # Directories
 /.vscode

@@ -12,8 +12,14 @@ spec:
         app: github-connector
     spec:
       containers:
+<<<<<<< HEAD:github-connector/chart/Deployment.yaml
       - name: github-connector
         image: karoljaksik/webhook-test:1.0.3
+=======
+      - name: test1
+      
+        image: karoljaksik/webhook-test:1.0.1
+>>>>>>> a10270935614c0c78c36cc7a3a667a29426e4f3a:github-connector/Deployment.yaml
         resources:
           limits:
             memory: "128Mi"
