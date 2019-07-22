@@ -17,5 +17,5 @@ func main() {
 	)
 
 	http.HandleFunc("/webhook", webhook.HandleWebhook)
-	log.Fatal(http.ListenAndServe(os.Getenv("PORT"), nil))
+	log.Info(http.ListenAndServe(os.Getenv("PORT"), nil))
 }
