@@ -150,7 +150,7 @@ func TestGetEventRequestPayload(t *testing.T) {
 		assert.Equal(t, eventID, p.EventID)
 
 	})
-	t.Run("Should return proper type", func(t *testing.T) {
+	t.Run("Should return proper struct type on correct arguments", func(t *testing.T) {
 		//given
 		eventType := "star"
 		eventTypeVersion := "v1"
