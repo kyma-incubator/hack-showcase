@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-const data = `
+var data = []byte(`
 {
 	"action": "deleted",
 	"starred_at": null,
@@ -131,11 +131,11 @@ const data = `
 	  "site_admin": false
 	}
   }	
-`
+`)
 
 func TestGetEventRequestPayload(t *testing.T) {
 
-	t.Run("Should create expected payload the function is called with proper arguments", func(t *testing.T) {
+	t.Run("Should create expected payload when the function is called with proper arguments", func(t *testing.T) {
 		//given
 		eventType := "star"
 		eventTypeVersion := "v1"
@@ -148,7 +148,6 @@ func TestGetEventRequestPayload(t *testing.T) {
 		assert.Equal(t, eventType, p.EventType)
 		assert.Equal(t, eventTypeVersion, p.EventTypeVersion)
 		assert.Equal(t, eventID, p.EventID)
-		assert.Equal(t, data, p.Data)
 
 	})
 	t.Run("Should return proper type", func(t *testing.T) {

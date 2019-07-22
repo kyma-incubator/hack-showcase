@@ -14,15 +14,15 @@ type EventParser interface {
 
 // EventRequestPayload represents a POST request's body which is sent to Event-Service
 type EventRequestPayload struct {
-	EventType        string `json:"event-type"`
-	EventTypeVersion string `json:"event-type-version"`
-	EventID          string `json:"event-id"` //uuid should be generated automatically if send empty
-	EventTime        string `json:"event-time"`
-	Data             string `json:"data"` //github webhook json payload
+	EventType        string          `json:"event-type"`
+	EventTypeVersion string          `json:"event-type-version"`
+	EventID          string          `json:"event-id"` //uuid should be generated automatically if send empty
+	EventTime        string          `json:"event-time"`
+	Data             json.RawMessage `json:"data"` //github webhook json payload
 }
 
 // GetEventRequestPayload generates structure which is mapped to JSON required by Event-Service request body
-func GetEventRequestPayload(eventType, eventTypeVersion, eventID, data string) (EventRequestPayload, error) {
+func GetEventRequestPayload(eventType, eventTypeVersion, eventID string, data json.RawMessage) (EventRequestPayload, error) {
 
 	res := EventRequestPayload{
 		eventType,
