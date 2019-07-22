@@ -7,7 +7,6 @@ import (
 	"github.com/google/go-github/github"
 )
 
-
 //Validator is an interface used to allow mocking the github library methods
 type Validator interface {
 	ValidatePayload(*http.Request, []byte) ([]byte, error)
@@ -39,14 +38,12 @@ func (wh *WebHookHandler) HandleWebhook(w http.ResponseWriter, r *http.Request) 
 	}
 	defer r.Body.Close()
 
-
 	event, err := wh.validator.ParseWebHook(github.WebHookType(r), payload)
 	if err != nil {
 		log.Printf("could not parse webhook: err=%s\n", err)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-
 
 	switch e := event.(type) {
 	case *github.PushEvent:
