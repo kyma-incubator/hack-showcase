@@ -4,7 +4,7 @@ WORKDIR /go/src/github.com/KarolJaksik/hack-showcase/github-connector
 COPY . .
 
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o main .
+RUN CGO_ENABLED=0 GOOS=linux go build -o main ./cmd/github-connector
 RUN mkdir /app && mv ./main /app/main
 
 FROM alpine:3.8

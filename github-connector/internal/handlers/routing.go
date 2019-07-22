@@ -56,6 +56,8 @@ func (wh *WebHookHandler) HandleWebhook(w http.ResponseWriter, r *http.Request) 
 		} else if e.GetAction() == "deleted" {
 			log.Printf("repository unstarred\n")
 		}
+	case *github.PingEvent:
+
 	default:
 		log.Printf("unknown event type: \"%s\"\n", github.WebHookType(r))
 		w.WriteHeader(http.StatusBadRequest)
