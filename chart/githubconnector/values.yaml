@@ -1,0 +1,26 @@
+# Default values for web-hook-chart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# replicaCount defines how many repliacas od pod should be in deployment
+replicaCount: 1
+
+# name defines how deployment, service, application and applicationmapping will be named
+name: github-connector
+
+# namespace defines namespace which will be created and set for all .yaml files
+namespace: flying-seals
+
+# container contains definition of container parameters
+container:
+  # name is name of the container
+  name: github-connector
+  # image is image name (on DockerHub) which will be used
+  image: pprecel/github-connector:0.0.1
+  # containerPort defines which port container will be listening on for requests
+  containerPort: 8080
+
+# service contains definition of service parameters
+service:
+  # port defines which port service will be listening on for requests
+  port: 80
