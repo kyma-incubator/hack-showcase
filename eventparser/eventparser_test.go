@@ -135,7 +135,7 @@ var data = []byte(`
 
 func TestGetEventRequestPayload(t *testing.T) {
 
-	t.Run("Should create expected payload when the function is called with proper arguments", func(t *testing.T) {
+	t.Run("Should create expected payload when the function is called with correct arguments", func(t *testing.T) {
 		//given
 		eventType := "star"
 		eventTypeVersion := "v1"
