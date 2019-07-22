@@ -1,7 +1,6 @@
-package main
+package handlers
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 
@@ -25,13 +24,14 @@ func NewWebHookHandler(v Validator) *WebHookHandler {
 	return &WebHookHandler{validator: v}
 }
 
-func (wh *WebHookHandler) handleWebhook(w http.ResponseWriter, r *http.Request) {
+//HandleWebhook is a function that handles the /webhook endpoint.
+func (wh *WebHookHandler) HandleWebhook(w http.ResponseWriter, r *http.Request) {
 
 	payload, err := wh.validator.ValidatePayload(r, []byte(wh.validator.GetToken()))
 
-	//payload, err := github.ValidatePayload(r, []byte("my-secret-key"))
 	if err != nil {
 		log.Printf("error validating request body: err=%s\n", err)
+		log.Printf("request body: %s\n", r.Body)
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
@@ -62,8 +62,4 @@ func (wh *WebHookHandler) handleWebhook(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 	w.WriteHeader(http.StatusOK)
-}
-
-func index(w http.ResponseWriter, req *http.Request) {
-	fmt.Fprintln(w, "Index")
 }

@@ -1,4 +1,4 @@
-package main
+package handlers
 
 import (
 	"bytes"
@@ -8,42 +8,37 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/KarolJaksik/hack-showcase/github-connector/mocks"
+	"github.com/KarolJaksik/hack-showcase/github-connector/internal/handlers/mocks"
 	"github.com/google/go-github/github"
 	"github.com/stretchr/testify/require"
 
 	"github.com/stretchr/testify/assert"
 )
 
-type payload struct {
-	Anything string `json:"anything"`
+type toJSON struct {
+	TestJSON string `json:TestJSON"`
 }
 
 //createRequest creates an HTTP request for test purposes
-func createRequest(t *testing.T) (*httptest.ResponseRecorder, *http.Request, *mocks.Validator, []byte) {
+func createRequest(t *testing.T) *http.Request {
 
-	pld := payload{Anything: "test"}
-	toSend, err := json.Marshal(pld)
+	payload := toJSON{TestJSON: "test"}
+	toSend, err := json.Marshal(payload)
 	require.NoError(t, err)
 
 	req := httptest.NewRequest(http.MethodPost, "/webhook", bytes.NewBuffer(toSend))
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("X-Hub-Signature", "test")
 
-	rr := httptest.NewRecorder()
-
-	mockHandler := &mocks.Validator{}
-	mockPayload, err := json.Marshal(payload{Anything: "test"})
-	require.NoError(t, err)
-	return rr, req, mockHandler, mockPayload
+	return req
 }
 
 func TestWebhookHandler_TestBadSecret(t *testing.T) {
 	t.Run("should respond with 401 status code", func(t *testing.T) {
 		// given
 
-		pld := payload{Anything: "test"}
-		toSend, err := json.Marshal(pld)
+		payload := toJSON{TestJSON: "test"}
+		toSend, err := json.Marshal(payload)
 		require.NoError(t, err)
 
 		req := httptest.NewRequest(http.MethodPost, "/webhook", bytes.NewBuffer(toSend))
@@ -58,9 +53,10 @@ func TestWebhookHandler_TestBadSecret(t *testing.T) {
 		// when
 		wh := NewWebHookHandler(mockHandler)
 
-		handler := http.HandlerFunc(wh.handleWebhook)
+		handler := http.HandlerFunc(wh.HandleWebhook)
 		handler.ServeHTTP(rr, req)
 		// then
+		mockHandler.AssertExpectations(t)
 		assert.Equal(t, http.StatusUnauthorized, rr.Code)
 
 	})
@@ -69,7 +65,12 @@ func TestWebhookHandler_TestBadSecret(t *testing.T) {
 func TestWebhookHandler_TestWrongPayload(t *testing.T) {
 	t.Run("should respond with 400 status code", func(t *testing.T) {
 		// given
-		rr, req, mockHandler, mockPayload := createRequest(t)
+		req := createRequest(t)
+		rr := httptest.NewRecorder()
+
+		mockHandler := &mocks.Validator{}
+		mockPayload, err := json.Marshal(toJSON{TestJSON: "test"})
+		require.NoError(t, err)
 
 		mockHandler.On("GetToken").Return("test")
 		mockHandler.On("ValidatePayload", req, []byte("test")).Return(mockPayload, nil)
@@ -77,10 +78,11 @@ func TestWebhookHandler_TestWrongPayload(t *testing.T) {
 
 		wh := NewWebHookHandler(mockHandler)
 		// when
-		handler := http.HandlerFunc(wh.handleWebhook)
+		handler := http.HandlerFunc(wh.HandleWebhook)
 		handler.ServeHTTP(rr, req)
 
 		// then
+		mockHandler.AssertExpectations(t)
 		assert.Equal(t, http.StatusBadRequest, rr.Code)
 
 	})
@@ -91,7 +93,12 @@ func TestWebhookHandler_TestKnownEvent(t *testing.T) {
 	t.Run("should respond with 200 status code", func(t *testing.T) {
 		// given
 
-		rr, req, mockHandler, mockPayload := createRequest(t)
+		req := createRequest(t)
+		rr := httptest.NewRecorder()
+
+		mockHandler := &mocks.Validator{}
+		mockPayload, err := json.Marshal(toJSON{TestJSON: "test"})
+		require.NoError(t, err)
 
 		mockHandler.On("GetToken").Return("test")
 		mockHandler.On("ValidatePayload", req, []byte("test")).Return(mockPayload, nil)
@@ -100,10 +107,11 @@ func TestWebhookHandler_TestKnownEvent(t *testing.T) {
 
 		wh := NewWebHookHandler(mockHandler)
 		// when
-		handler := http.HandlerFunc(wh.handleWebhook)
+		handler := http.HandlerFunc(wh.HandleWebhook)
 		handler.ServeHTTP(rr, req)
 
 		// then
+		mockHandler.AssertExpectations(t)
 		assert.Equal(t, http.StatusOK, rr.Code)
 
 	})
@@ -113,18 +121,23 @@ func TestWebhookHandler_TestKnownEvent(t *testing.T) {
 func TestWebhookHandler_TestUnknownEvent(t *testing.T) {
 	t.Run("should respond with 400 status code", func(t *testing.T) {
 		// given
-		rr, req, mockHandler, mockPayload := createRequest(t)
+		req := createRequest(t)
+		rr := httptest.NewRecorder()
 
+		mockHandler := &mocks.Validator{}
+		mockPayload, err := json.Marshal(toJSON{TestJSON: "test"})
+		require.NoError(t, err)
 		mockHandler.On("GetToken").Return("test")
 		mockHandler.On("ValidatePayload", req, []byte("test")).Return(mockPayload, nil)
 		mockHandler.On("ParseWebHook", "", mockPayload).Return(1, nil)
 
 		wh := NewWebHookHandler(mockHandler)
 		// when
-		handler := http.HandlerFunc(wh.handleWebhook)
+		handler := http.HandlerFunc(wh.HandleWebhook)
 		handler.ServeHTTP(rr, req)
 
 		// then
+		mockHandler.AssertExpectations(t)
 		assert.Equal(t, http.StatusBadRequest, rr.Code)
 
 	})
