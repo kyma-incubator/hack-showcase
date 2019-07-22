@@ -1,4 +1,3 @@
-=======
 Deploying GitHub Connector in Kyma 
 =====
 ### 1. Overview
@@ -44,7 +43,6 @@ To verify if it's working correctly you need to know **`POD_NAME`** and **`CONTA
 	> ```
 
 4. Now star the repository on which you set the webhook up and you should see:
-
 	<img src="https://imgur.com/ay7T5Qc.png" width="150"/>
 
 	In the log You should see such an output:

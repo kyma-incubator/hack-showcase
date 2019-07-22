@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 
+
 	"github.com/google/go-github/github"
 )
 
@@ -24,7 +25,7 @@ func (wh WebHookStruct) ParseWebHook(s string, b []byte) (interface{}, error) {
 
 //GetToken is a function that looks for the secret in the environment
 func (wh WebHookStruct) GetToken() string {
-	return os.Getenv("GITHUB-TOKEN")
+	return os.Getenv("GITHUB-SECRET")
 }
 
 func main() {
@@ -34,6 +35,7 @@ func main() {
 	wh := NewWebHookHandler(str)
 
 	http.HandleFunc("/webhook", wh.handleWebhook)
+
 	http.HandleFunc("/", index)
 	log.Fatal(http.ListenAndServe(os.Getenv("PORT"), nil))
 }
