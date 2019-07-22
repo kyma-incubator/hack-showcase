@@ -1,10 +1,12 @@
 FROM golang:1.11.4-alpine3.8 as builder
 
-WORKDIR /go/src/github.com/rafalpotempa/hack-showcase/github-connector
+
+WORKDIR /go/src/github.com/KarolJaksik/hack-showcase/github-connector
+
 COPY . .
 
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o main .
+RUN CGO_ENABLED=0 GOOS=linux go build -o main ./cmd/github-connector
 RUN mkdir /app && mv ./main /app/main
 
 FROM alpine:3.8
