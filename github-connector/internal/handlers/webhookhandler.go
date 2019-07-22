@@ -51,7 +51,6 @@ func (wh *WebHookHandler) HandleWebhook(w http.ResponseWriter, r *http.Request) 
 	case *github.WatchEvent:
 		log.Printf("%s is watching repo \"%s\"\n", e.GetSender().GetLogin(), e.GetRepo().GetFullName())
 	case *github.StarEvent:
-		// someone starred our repository
 		if e.GetAction() == "created" {
 			log.Printf("repository starred\n")
 		} else if e.GetAction() == "deleted" {

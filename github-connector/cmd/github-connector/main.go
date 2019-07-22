@@ -1,12 +1,12 @@
 package main
 
 import (
-	"log"
 	"net/http"
 	"os"
 
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/githubwrappers"
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/handlers"
+	log "github.com/sirupsen/logrus"
 )
 
 func main() {
@@ -17,5 +17,5 @@ func main() {
 	)
 
 	http.HandleFunc("/webhook", webhook.HandleWebhook)
-	log.Info(http.ListenAndServe(os.Getenv("PORT"), nil))
+	log.Info(http.ListenAndServe(":"+os.Getenv("PORT"), nil))
 }

@@ -55,6 +55,7 @@ func TestWebhookHandler_TestBadSecret(t *testing.T) {
 
 		handler := http.HandlerFunc(wh.HandleWebhook)
 		handler.ServeHTTP(rr, req)
+
 		// then
 		mockHandler.AssertExpectations(t)
 		assert.Equal(t, http.StatusUnauthorized, rr.Code)
@@ -64,6 +65,7 @@ func TestWebhookHandler_TestBadSecret(t *testing.T) {
 
 func TestWebhookHandler_TestWrongPayload(t *testing.T) {
 	t.Run("should respond with 400 status code", func(t *testing.T) {
+
 		// given
 		req := createRequest(t)
 		rr := httptest.NewRecorder()
@@ -77,6 +79,7 @@ func TestWebhookHandler_TestWrongPayload(t *testing.T) {
 		mockHandler.On("ParseWebHook", "", mockPayload).Return(nil, errors.New("failed"))
 
 		wh := NewWebHookHandler(mockHandler)
+
 		// when
 		handler := http.HandlerFunc(wh.HandleWebhook)
 		handler.ServeHTTP(rr, req)
@@ -91,8 +94,8 @@ func TestWebhookHandler_TestWrongPayload(t *testing.T) {
 
 func TestWebhookHandler_TestKnownEvent(t *testing.T) {
 	t.Run("should respond with 200 status code", func(t *testing.T) {
-		// given
 
+		// given
 		req := createRequest(t)
 		rr := httptest.NewRecorder()
 
@@ -106,6 +109,7 @@ func TestWebhookHandler_TestKnownEvent(t *testing.T) {
 		mockHandler.On("ParseWebHook", "", mockPayload).Return(event, nil)
 
 		wh := NewWebHookHandler(mockHandler)
+
 		// when
 		handler := http.HandlerFunc(wh.HandleWebhook)
 		handler.ServeHTTP(rr, req)
@@ -120,6 +124,7 @@ func TestWebhookHandler_TestKnownEvent(t *testing.T) {
 
 func TestWebhookHandler_TestUnknownEvent(t *testing.T) {
 	t.Run("should respond with 400 status code", func(t *testing.T) {
+
 		// given
 		req := createRequest(t)
 		rr := httptest.NewRecorder()
@@ -132,6 +137,7 @@ func TestWebhookHandler_TestUnknownEvent(t *testing.T) {
 		mockHandler.On("ParseWebHook", "", mockPayload).Return(1, nil)
 
 		wh := NewWebHookHandler(mockHandler)
+
 		// when
 		handler := http.HandlerFunc(wh.HandleWebhook)
 		handler.ServeHTTP(rr, req)
@@ -139,7 +145,6 @@ func TestWebhookHandler_TestUnknownEvent(t *testing.T) {
 		// then
 		mockHandler.AssertExpectations(t)
 		assert.Equal(t, http.StatusBadRequest, rr.Code)
-
 	})
 
 }
