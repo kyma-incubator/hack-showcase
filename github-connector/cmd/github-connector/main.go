@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/KarolJaksik/hack-showcase/github-connector/internal/githubwrappers"
-	"github.com/KarolJaksik/hack-showcase/github-connector/internal/handlers"
+	"github.com/kyma-incubator/hack-showcase/github-connector/internal/githubwrappers"
+	"github.com/kyma-incubator/hack-showcase/github-connector/internal/handlers"
 )
 
 func main() {
