@@ -2,6 +2,7 @@ package eventparser
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"time"
 )
@@ -24,6 +25,16 @@ type EventRequestPayload struct {
 // GetEventRequestPayload generates structure which is mapped to JSON required by Event-Service request body
 func GetEventRequestPayload(eventType, eventTypeVersion, eventID string, data json.RawMessage) (EventRequestPayload, error) {
 
+	if eventType == "" {
+		return EventRequestPayload{}, errors.New("eventType should not be empty")
+	}
+	if eventTypeVersion == "" {
+		return EventRequestPayload{}, errors.New("eventTypeVersion should not be empty")
+	}
+	if len(data) == 0 {
+		return EventRequestPayload{}, errors.New("data should not be empty")
+	}
+
 	res := EventRequestPayload{
 		eventType,
 		eventTypeVersion,
@@ -39,7 +50,9 @@ func GetEventRequestPayload(eventType, eventTypeVersion, eventID string, data js
 func GetEventRequestAsJSON(eventRequestPayload EventRequestPayload) ([]byte, error) {
 	r, err := json.MarshalIndent(eventRequestPayload, "", "  ")
 	if err != nil {
-		fmt.Println("error: ")
+		fmt.Printf("error: %s", err)
+
+		return []byte{}, err
 	}
 	return r, nil
 }

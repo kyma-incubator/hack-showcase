@@ -142,9 +142,11 @@ func TestGetEventRequestPayload(t *testing.T) {
 		eventID := ""
 
 		//when
-		p, _ := GetEventRequestPayload(eventType, eventTypeVersion, eventID, data)
+		p, err := GetEventRequestPayload(eventType, eventTypeVersion, eventID, data)
 
 		//then
+		assert.NoError(t, err)
+
 		assert.Equal(t, eventType, p.EventType)
 		assert.Equal(t, eventTypeVersion, p.EventTypeVersion)
 		assert.Equal(t, eventID, p.EventID)
@@ -157,10 +159,62 @@ func TestGetEventRequestPayload(t *testing.T) {
 		eventID := ""
 
 		//when
-		p, _ := GetEventRequestPayload(eventType, eventTypeVersion, eventID, data)
+		p, err := GetEventRequestPayload(eventType, eventTypeVersion, eventID, data)
 
 		//then
+		assert.NoError(t, err)
 		assert.IsType(t, EventRequestPayload{}, p)
 	})
 
+	t.Run("Should return an error and empty struct on empty eventType", func(t *testing.T) {
+		//given
+		eventType := ""
+		eventTypeVersion := "v1"
+		eventID := ""
+		expected := EventRequestPayload{}
+
+		//when
+		p, err := GetEventRequestPayload(eventType, eventTypeVersion, eventID, data)
+
+		//then
+		assert.Exactly(t, expected, p)
+		assert.Error(t, err)
+		assert.Equal(t, "eventType should not be empty", err.Error())
+
+	})
+
+	t.Run("Should return an error and empty struct on empty eventTypeVersion", func(t *testing.T) {
+		//given
+		eventType := "star"
+		eventTypeVersion := ""
+		eventID := ""
+		expected := EventRequestPayload{}
+
+		//when
+		p, err := GetEventRequestPayload(eventType, eventTypeVersion, eventID, data)
+
+		//then
+		assert.Exactly(t, expected, p)
+		assert.Error(t, err)
+		assert.Equal(t, "eventTypeVersion should not be empty", err.Error())
+
+	})
+
+	t.Run("Should return an error and empty struct on empty data", func(t *testing.T) {
+		//given
+		eventType := "star"
+		eventTypeVersion := "v1"
+		eventID := ""
+		data := []byte{}
+		expected := EventRequestPayload{}
+
+		//when
+		p, err := GetEventRequestPayload(eventType, eventTypeVersion, eventID, data)
+
+		//then
+		assert.Exactly(t, expected, p)
+		assert.Error(t, err)
+		assert.Equal(t, "data should not be empty", err.Error())
+
+	})
 }
