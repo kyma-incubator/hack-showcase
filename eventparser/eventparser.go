@@ -16,7 +16,7 @@ type EventParser interface {
 type EventRequestPayload struct {
 	EventType        string          `json:"event-type"`
 	EventTypeVersion string          `json:"event-type-version"`
-	EventID          string          `json:"event-id"` //uuid should be generated automatically if send empty
+	EventID          string          `json:"event-id,omitempty"` //uuid should be generated automatically if send empty
 	EventTime        string          `json:"event-time"`
 	Data             json.RawMessage `json:"data"` //github webhook json payload
 }
