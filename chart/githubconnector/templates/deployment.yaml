@@ -26,4 +26,4 @@ spec:
         - containerPort: {{ .Values.container.containerPort }}
         env:
         - name: PORT
-          value: {{ toString .Values.container.containerPort }}
+          value: {{ quote .Values.container.containerPort }}
