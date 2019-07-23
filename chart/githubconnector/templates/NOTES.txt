@@ -1,5 +1,5 @@
 ---
 Thanks for installing {{ .Chart.Description }}.
 
-For further steps, please read file Kyma-service-registration.md in docs
+For further steps, please use provided README.md file.
 ---
