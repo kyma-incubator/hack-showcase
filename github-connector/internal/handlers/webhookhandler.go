@@ -49,12 +49,12 @@ func (wh *WebHookHandler) HandleWebhook(w http.ResponseWriter, r *http.Request) 
 	case *github.IssuesEvent:
 
 		log.Printf("%s has opened an issue: \"%s\"",
-			e.GetSender().GetName(), e.GetIssue().GetTitle())
+			e.GetSender().GetLogin(), e.GetIssue().GetTitle())
 
 	case *github.PullRequestReviewEvent:
 		if e.GetAction() == "submitted" {
 			log.Printf("%s has submitted a review on pull request: \"%s\"",
-				e.GetSender().GetName(), e.GetPullRequest().GetTitle())
+				e.GetSender().GetLogin(), e.GetPullRequest().GetTitle())
 		}
 	case *github.PushEvent:
 		log.Printf("push")

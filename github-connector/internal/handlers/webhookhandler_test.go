@@ -8,8 +8,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/KarolJaksik/hack-showcase/github-connector/internal/handlers/mocks"
 	"github.com/google/go-github/github"
+	"github.com/kyma-incubator/hack-showcase/github-connector/internal/handlers/mocks"
 	"github.com/stretchr/testify/require"
 
 	"github.com/stretchr/testify/assert"
