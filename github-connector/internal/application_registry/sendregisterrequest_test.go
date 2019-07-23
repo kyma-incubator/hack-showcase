@@ -1,4 +1,4 @@
-package registerapp
+package registerservice
 
 import (
 	"bytes"
@@ -96,7 +96,7 @@ func TestRegisterApp(t *testing.T) {
 		defer server.Close()
 
 		//when
-		res, err := RegisterApp(JSONBody, server.URL)
+		res, err := SendRegisterRequest(JSONBody, server.URL)
 		fmt.Println(res)
 		//then
 

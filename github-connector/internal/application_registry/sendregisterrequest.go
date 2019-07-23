@@ -1,4 +1,4 @@
-package registerapp
+package registerservice
 
 import (
 	"bytes"
@@ -53,8 +53,8 @@ func SendJSONRequest(config RegisterConfig) (*http.Response, error) {
 	return resp, nil
 }
 
-//RegisterApp - register service in Kyma and get a response
-func RegisterApp(JSONBody model.ServiceDetails, url string) (string, error) {
+//SendRegisterRequest - create request and send it to kyma application registry
+func SendRegisterRequest(JSONBody model.ServiceDetails, url string) (string, error) {
 
 	// parse json to io.Reader
 	requestByte, err := json.Marshal(JSONBody)

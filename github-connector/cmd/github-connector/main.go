@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"os"
 
-	tmpfunc "github.com/kyma-incubator/hack-showcase/github-connector/internal"
+	registerservice "github.com/kyma-incubator/hack-showcase/github-connector/internal/application_registry"
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/githubwrappers"
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/handlers"
 	log "github.com/sirupsen/logrus"
@@ -12,7 +12,7 @@ import (
 
 func main() {
 
-	tmpfunc.TmpFunc()
+	registerservice.RegisterService()
 
 	log.Println("server started")
 	webhook := handlers.NewWebHookHandler(
