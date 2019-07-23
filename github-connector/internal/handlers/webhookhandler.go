@@ -46,10 +46,21 @@ func (wh *WebHookHandler) HandleWebhook(w http.ResponseWriter, r *http.Request) 
 	}
 
 	switch e := event.(type) {
+	case *github.IssuesEvent:
+
+		log.Printf("%s has opened an issue: \"%s\"",
+			e.GetSender().GetName(), e.GetIssue().GetTitle())
+
+	case *github.PullRequestReviewEvent:
+		if e.GetAction() == "submitted" {
+			log.Printf("%s has submitted a review on pull request: \"%s\"",
+				e.GetSender().GetName(), e.GetPullRequest().GetTitle())
+		}
 	case *github.PushEvent:
 		log.Printf("push")
 	case *github.WatchEvent:
-		log.Printf("%s is watching repo \"%s\"\n", e.GetSender().GetLogin(), e.GetRepo().GetFullName())
+		log.Printf("%s is watching repo \"%s\"\n",
+			e.GetSender().GetLogin(), e.GetRepo().GetFullName())
 	case *github.StarEvent:
 		if e.GetAction() == "created" {
 			log.Printf("repository starred\n")
