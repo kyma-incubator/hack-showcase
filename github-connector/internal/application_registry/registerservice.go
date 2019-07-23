@@ -13,7 +13,50 @@ var jsonBody = model.ServiceDetails{
 	Description: "Boilerplate for GitHub connector",
 	API: &model.API{
 		TargetURL:        "https://api.github.com",
-		SpecificationURL: "https://raw.githubusercontent.com/colunira/github-openapi/master/githubopenAPI.yaml",
+		SpecificationURL: "https://raw.githubusercontent.com/colunira/github-openapi/master/githubopenAPI.json",
+	},
+	Events: &model.Events{
+		Spec: []byte(`{
+			"asyncapi": "1.0.0",
+			"info": {
+				"title": "github-events",
+				"version": "v1",
+				"description": "Github Events v1"
+			},
+			"topics": {
+				"issuesevent.opened.v1": {
+					"subscribe": {
+						"summary": "Github issue commented event v1",
+						"payload": {
+							"type": "object",
+							"required": [
+								"action"
+							],
+							"properties": {
+								"action": {
+									"type": "string",
+									"example": "edited",
+									"description": "The action that was performed.",
+									"title": "Action"
+								},
+								"issue": {
+									"type": "object"
+								},
+								"changes": {
+									"type": "object"
+								},
+								"repository": {
+									"type": "object"
+								},
+								"sender": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		}`),
 	},
 }
 
