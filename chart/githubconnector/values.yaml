@@ -8,6 +8,9 @@ container:
   name: github-connector
   image: pprecel/github-connector:0.0.1
   containerPort: 8080
+  limits:
+    memory: "128Mi"
+    cpu: "500m"
 
 service:
   port: 80

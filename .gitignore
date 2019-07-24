@@ -13,9 +13,6 @@
 *.DS_Store
 
 # Directories
-/.vscode
+.*
+!.gitignore
 /github-connector/vendor
-<<<<<<< HEAD
-=======
-
->>>>>>> f1df5be0434b60b4ed571eadb4fa8e7388c7443d
