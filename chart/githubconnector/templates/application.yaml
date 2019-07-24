@@ -1,6 +1,6 @@
 apiVersion: applicationconnector.kyma-project.io/v1alpha1
 kind: Application
 metadata:
-  name: {{ .Release.Name }}-app
+  name: {{ .Release.Name }}
 spec:
   description: {{ .Chart.Description }}
