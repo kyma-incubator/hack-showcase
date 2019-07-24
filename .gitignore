@@ -15,3 +15,6 @@
 # Directories
 /.vscode
 /github-connector/vendor
+
+# Gopkg
+Gopkg.*
