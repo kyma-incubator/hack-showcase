@@ -11,10 +11,9 @@ import (
 )
 
 func main() {
-
+	log.Println("server started")
 	registerservice.RegisterService()
 
-	log.Println("server started")
 	webhook := handlers.NewWebHookHandler(
 		githubwrappers.ReceivingEventsWrapper{},
 	)
