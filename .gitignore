@@ -16,5 +16,4 @@
 .*
 !.gitignore
 /github-connector/vendor
-/.vscode
 
