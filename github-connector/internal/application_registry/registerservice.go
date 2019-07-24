@@ -995,7 +995,7 @@ var jsonBody = model.ServiceDetails{
 	},
 }
 
-var url = "http://application-registry-external-api.kyma-integration.svc.cluster.local:8081/github-connector/v1/metadata/services"
+var url = "http://application-registry-external-api.kyma-integration.svc.cluster.local:8081/github-connector-app/v1/metadata/services"
 
 //RegisterService - register service in Kyma and get a response
 func RegisterService() {
