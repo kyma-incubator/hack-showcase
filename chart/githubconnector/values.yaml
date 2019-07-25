@@ -1,7 +1,7 @@
 replicaCount: 1
 
 container:
-  image: pprecel/github-connector:0.0.1
+  image: karoljaksik/github-connector:1.0.2
   containerPort: 8080
   limits:
     memory: "128Mi"
@@ -9,3 +9,5 @@ container:
 
 service:
   port: 80
+
+kymaAddress: 35.195.198.66.xip.io
