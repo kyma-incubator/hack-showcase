@@ -22,7 +22,7 @@ helm install {HELM_CHART_DIRECTORY} --tls
 
 **ATTENTION:** Our application is in Beta version. For now you HAVE TO specify those flags:
 * --name - it has to be "github-connector"
-* --set conatiner.image={VALUE} - specify it if you have newer version of docker image than karoljaksik/github-connector:1.0.1
+* --set container.image={VALUE} - specify it if you have newer version of docker image than karoljaksik/github-connector:1.0.2
 * --set kymaAddress={VALUE} - specify your kyma adddress (for example 35.195.198.66.xip.io)
 ```
 helm install --set container.image=karoljaksik/github-connector:1.0.1 --set kymaAddress=35.195.198.66.xip.io -n github-connector --namespace flying-seals . --tls
