@@ -7,7 +7,7 @@ Installation in Kyma using Helm
 ===
 
 
-## Requirements
+## Prerequisites
 To install Helm chart inside Kyma you have to:
 - be connected to your Kyma
 - have properly configured chart
@@ -33,7 +33,7 @@ Uninstalling a chart from Kyma
 ===
 
 
-## Requirements
+## Prerequisites
 To register a service inside Kyma you have to:
 - be connected to your Kyma
 - have helm certificate from Kyma (check *Installation with Kyma using Helm*)
@@ -56,7 +56,7 @@ Registering service in Kyma
 ===
 
 
-## Requirements
+## Prerequisites
 To register a service inside Kyma you have to:
 - be connected to your Kyma
 - have registered an application in Kyma
