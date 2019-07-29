@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
+	"github.com/kyma-incubator/hack-showcase/github-connector/internal/apperrors"
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/model"
 )
 
@@ -29,11 +30,12 @@ type RequestConfig struct {
 }
 
 //CreateJSONRequest - create http request, add headers and return client
-func CreateJSONRequest(config RequestConfig) (*http.Request, error) {
+func CreateJSONRequest(config RequestConfig) (*http.Request, apperrors.AppError) {
 	req, err := http.NewRequest(config.Type, config.URL, config.Body)
 
+	//TEST: wrong body json
 	if err != nil {
-		return nil, err
+		return nil, apperrors.Internal("Failed to create JSON request: %s", err.Error())
 	}
 
 	req.Header.Set("Content-Type", "application/json")
@@ -42,14 +44,18 @@ func CreateJSONRequest(config RequestConfig) (*http.Request, error) {
 }
 
 //SendJSONRequest - create json struct and try post it into application-register's url
-func SendJSONRequest(config RegisterConfig) (*http.Response, error) {
+func SendJSONRequest(config RegisterConfig) (*http.Response, apperrors.AppError) {
 
 	resp, err := config.HTTPClient.Do(config.HTTPRequest)
 
+	//TEST: no server
 	if err != nil {
-		return nil, err
+		return nil, apperrors.UpstreamServerCallFailed("Failed to make request to '%s': %s", config.HTTPRequest.URL, err.Error())
 	}
-
+	//TEST: wrong response code
+	if resp.StatusCode != http.StatusOK {
+		return nil, apperrors.UpstreamServerCallFailed("Incorrect response code '%d' while sending JSON request from %s", resp.StatusCode, config.HTTPRequest.URL)
+	}
 	return resp, nil
 }
 
@@ -59,7 +65,7 @@ func SendRegisterRequest(JSONBody model.ServiceDetails, url string) (string, err
 	// parse json to io.Reader
 	requestByte, err := json.Marshal(JSONBody)
 	if err != nil {
-		return "", err
+		return "", apperrors.Internal("Failed to parse application registry request JSON body: %s", err.Error())
 	}
 
 	requestReader := bytes.NewReader(requestByte)
@@ -71,9 +77,9 @@ func SendRegisterRequest(JSONBody model.ServiceDetails, url string) (string, err
 		Body: requestReader,
 	}
 
-	httpRequest, err := CreateJSONRequest(requestConfig)
-	if err != nil {
-		return "", err
+	httpRequest, apperr := CreateJSONRequest(requestConfig)
+	if apperr != nil {
+		return "", apperr.Append("While preparing application registry JSON request: %s", apperr)
 	}
 
 	// create register config
@@ -83,15 +89,22 @@ func SendRegisterRequest(JSONBody model.ServiceDetails, url string) (string, err
 	}
 
 	// happy JSONRequestSend-ing!
-	httpResponse, err := SendJSONRequest(config)
+	httpResponse, apperr := SendJSONRequest(config)
 
-	if err != nil {
-		return "", err
+	if apperr != nil {
+		return "", apperr.Append("While sending application registry JSON request: %s", apperr)
 	}
 
 	bodyBytes, err := ioutil.ReadAll(httpResponse.Body)
 
+	if err != nil {
+		return "", apperrors.UpstreamServerCallFailed("Failed to read service ID from application registry JSON response: %s", err)
+	}
+
 	var jsonResponse RegisterResponse
-	json.Unmarshal(bodyBytes, &jsonResponse)
+	err = json.Unmarshal(bodyBytes, &jsonResponse)
+	if err != nil {
+		return "", apperrors.Internal("Failed while unmarshaling JSON response from application registry: %s", err)
+	}
 	return jsonResponse.ID, nil
 }
