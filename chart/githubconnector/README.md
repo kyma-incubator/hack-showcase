@@ -1,8 +1,3 @@
----
-title: 'Using GitHub Connector chart'
-disqus: flying-seals
----
-
 Installation in Kyma using Helm
 ===
 
