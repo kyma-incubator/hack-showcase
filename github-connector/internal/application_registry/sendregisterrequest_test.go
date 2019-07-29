@@ -49,6 +49,17 @@ func TestCreateJSONRequest(t *testing.T) {
 		assert.Equal(t, req.URL.String(), config.URL)
 		assert.Equal(t, req.Method, config.Type)
 	})
+	t.Run("should return an error when creating a header fails", func(t *testing.T) {
+		//given
+		config := RequestConfig{URL: ":foo"}
+
+		//when
+		resp, err := CreateJSONRequest(config)
+
+		//then
+		assert.Error(t, err)
+		assert.Nil(t, resp)
+	})
 }
 
 func StatusOKResponse(w http.ResponseWriter, r *http.Request) {
