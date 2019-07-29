@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/google/go-github/github"
+	"github.com/kyma-incubator/hack-showcase/github-connector/internal/apperrors"
 )
 
 //ReceivingEventsWrapper that bundles the github library functions into one struct with a Validator interface
@@ -17,8 +18,9 @@ func (wh ReceivingEventsWrapper) ValidatePayload(r *http.Request, b []byte) ([]b
 }
 
 //ParseWebHook parses the raw json payload into an event struct
-func (wh ReceivingEventsWrapper) ParseWebHook(s string, b []byte) (interface{}, error) {
-	return github.ParseWebHook(s, b)
+func (wh ReceivingEventsWrapper) ParseWebHook(s string, b []byte) (interface{}, apperrors.AppError) {
+	webhook, err := github.ParseWebHook(s, b)
+	return webhook, apperrors.Internal("Failed to parse incomming github payload into struct: %s", err)
 }
 
 //GetToken is a function that looks for the secret in the environment

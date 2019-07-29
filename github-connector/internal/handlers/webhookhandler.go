@@ -5,12 +5,13 @@ import (
 	"net/http"
 
 	"github.com/google/go-github/github"
+	"github.com/kyma-incubator/hack-showcase/github-connector/internal/apperrors"
 )
 
 //Validator is an interface used to allow mocking the github library methods
 type Validator interface {
-	ValidatePayload(*http.Request, []byte) ([]byte, error)
-	ParseWebHook(string, []byte) (interface{}, error)
+	ValidatePayload(*http.Request, []byte) ([]byte, apperrors.AppError)
+	ParseWebHook(string, []byte) (interface{}, apperrors.AppError)
 	GetToken() string
 }
 
