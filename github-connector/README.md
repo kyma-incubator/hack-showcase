@@ -21,6 +21,8 @@ For the purpose of this README we assume that you've already done all of the ste
 
 6. With configuration as on (Fig. 1.), click **`Update webhook`**.
 
+## Usage
+
 To verify if it's working correctly you need to know **`POD_NAME`** and **`CONTAINER_NAME`** to get logs from destination container, because the reaction of app to an event is placed in logs.
 
 1. To get **`POD_NAME`** and **`CONTAINER_NAME`** check
