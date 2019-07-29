@@ -4,7 +4,7 @@ Deploying GitHub Connector in Kyma
 This document describes how to correctly setup the GitHub connector on Kyma, having provided that the user is logged into GCP cluster with Kyma installed.
 
 ## Prerequisites
-Installation guide can be found [here](chart/githubconnector/README.md)
+Installation guide can be found [here](../chart/githubconnector/README.md)\
 For the purpose of this README we assume that you've already done all of the steps mentioned in that doc.
 
 ## Installation
