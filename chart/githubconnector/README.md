@@ -31,8 +31,7 @@ Uninstalling a chart from Kyma
 ## Prerequisites
 To uninstall a helm chart from Kyma you have to:
 - be connected to your Kyma
-- have helm certificate from Kyma (check *Installation with Kyma using Helm*)
-
+- have helm certificate from Kyma (check [Installation in Kyma using Helm](https://github.com/KarolJaksik/hack-showcase/tree/connector-docs/chart/githubconnector#steps))
 ## Steps
 1. List your Helm charts using
 ```
