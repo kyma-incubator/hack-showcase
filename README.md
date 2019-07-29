@@ -15,7 +15,7 @@ The main goal of the showcase project is to create connectors for Github and Sla
 
 Connectors are configured to work inside Kyma ecosystem, so you need to install it locally or on a cluster. See the [Installation guides](https://kyma-project.io/docs/root/kyma#installation-installation) for details.
 
-If you want to run connectors separately from Kyma, check certain connector's docs for more information.
+If you want to run connectors separately from Kyma, check certain connector's documentation for more information.
 
 ## Installation
 
