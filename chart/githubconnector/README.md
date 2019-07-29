@@ -5,10 +5,10 @@ Installation in Kyma using Helm
 ## Prerequisites
 To install Helm chart inside Kyma you have to:
 - be connected to your Kyma
-- have properly configured chart
+- have a properly configured chart
 
 ## Steps
-1. Go to Kyma repository and run script /installation/scripts/tiller-tls.sh to get certificates needed for using helm commands. By default they are stored in ~/.helm. After that add flag --tls to every helm command to authorize and authenticate yourself
+1. Go to Kyma repository and run script /installation/scripts/tiller-tls.sh to get certificates needed for using helm commands. By default they are stored in ~/.helm. After that add --tls flag to every helm command to authorize and authenticate yourself
 2. Install your chart with command:
 ``` 
 helm install {HELM_CHART_DIRECTORY} --tls 
@@ -29,7 +29,7 @@ Uninstalling a chart from Kyma
 
 
 ## Prerequisites
-To register a service inside Kyma you have to:
+To uninstall a helm chart from Kyma you have to:
 - be connected to your Kyma
 - have helm certificate from Kyma (check *Installation with Kyma using Helm*)
 
