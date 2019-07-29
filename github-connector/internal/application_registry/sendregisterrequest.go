@@ -79,7 +79,7 @@ func SendRegisterRequest(JSONBody model.ServiceDetails, url string) (string, err
 
 	httpRequest, apperr := CreateJSONRequest(requestConfig)
 	if apperr != nil {
-		return "", apperr.Append("While preparing application registry JSON request: %s", apperr)
+		return "", apperr.Append("While preparing application registry JSON request")
 	}
 
 	// create register config
@@ -92,7 +92,7 @@ func SendRegisterRequest(JSONBody model.ServiceDetails, url string) (string, err
 	httpResponse, apperr := SendJSONRequest(config)
 
 	if apperr != nil {
-		return "", apperr.Append("While sending application registry JSON request: %s", apperr)
+		return "", apperr.Append("While sending application registry JSON request")
 	}
 
 	bodyBytes, err := ioutil.ReadAll(httpResponse.Body)

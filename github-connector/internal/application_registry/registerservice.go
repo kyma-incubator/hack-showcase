@@ -1004,6 +1004,7 @@ func RegisterService() {
 	var err error
 	for i := 0; i < 10; i++ {
 		id, err = SendRegisterRequest(jsonBody, url)
+		log.Printf(err.Error())
 		if err == nil {
 			break
 		}

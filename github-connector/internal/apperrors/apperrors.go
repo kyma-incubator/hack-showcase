@@ -46,7 +46,7 @@ func UpstreamServerCallFailed(format string, a ...interface{}) AppError {
 }
 
 func (ae appError) Append(additionalFormat string, a ...interface{}) AppError {
-	format := additionalFormat + ", " + ae.message
+	format := additionalFormat + ": " + ae.message
 	return errorf(ae.code, format, a...)
 }
 
