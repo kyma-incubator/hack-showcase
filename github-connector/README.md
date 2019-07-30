@@ -57,7 +57,6 @@ To verify if it's working correctly you need to know **`POD_NAME`** and **`CONTA
 
 What means that **the webhook is properly setup now! ᶘ ᵒᴥᵒᶅ**
 
-## Troubleshooting
 The connector currently fully supports those events 
 * Issues Event
 * PullRequestReview Event
