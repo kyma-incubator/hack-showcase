@@ -15,13 +15,19 @@ type ReceivingEventsWrapper struct {
 //ValidatePayload is a function used for checking whether the secret provided in the request is correct
 func (wh ReceivingEventsWrapper) ValidatePayload(r *http.Request, b []byte) ([]byte, apperrors.AppError) {
 	payload, err := github.ValidatePayload(r, b)
-	return payload, apperrors.AuthenticationFailed("Authentication during GitHub payload validation failed: %s", err)
+	if err != nil {
+		return nil, apperrors.AuthenticationFailed("Authentication during GitHub payload validation failed: %s", err)
+	}
+	return payload, nil
 }
 
 //ParseWebHook parses the raw json payload into an event struct
 func (wh ReceivingEventsWrapper) ParseWebHook(s string, b []byte) (interface{}, apperrors.AppError) {
 	webhook, err := github.ParseWebHook(s, b)
-	return webhook, apperrors.Internal("Failed to parse incomming github payload into object: %s", err)
+	if err != nil {
+		return nil, apperrors.Internal("Failed to parse incomming github payload into object: %s", err)
+	}
+	return webhook, nil
 }
 
 //GetToken is a function that looks for the secret in the environment
