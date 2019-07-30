@@ -25,7 +25,7 @@ func (wh ReceivingEventsWrapper) ValidatePayload(r *http.Request, b []byte) ([]b
 func (wh ReceivingEventsWrapper) ParseWebHook(s string, b []byte) (interface{}, apperrors.AppError) {
 	webhook, err := github.ParseWebHook(s, b)
 	if err != nil {
-		return nil, apperrors.Internal("Failed to parse incomming github payload into object: %s", err)
+		return nil, apperrors.WrongInput("Failed to parse incomming github payload into struct: %s", err)
 	}
 	return webhook, nil
 }

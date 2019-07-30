@@ -29,6 +29,8 @@ func errorCodeToHttpStatus(code int) int {
 		return http.StatusBadRequest
 	case apperrors.CodeUpstreamServerCallFailed:
 		return http.StatusBadGateway
+	case apperrors.CodeAuthenticationFailed:
+		return http.StatusForbidden
 	default:
 		return http.StatusInternalServerError
 	}
