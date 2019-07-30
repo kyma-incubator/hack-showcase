@@ -15,7 +15,7 @@ func main() {
 
 	id, err := registerservice.RegisterService()
 	if err != nil {
-		log.Fatal("Fatal error: %s", err.Error())
+		log.Fatal("Fatal error: ", err.Error())
 	}
 	log.WithFields(log.Fields{
 		"id": id,
