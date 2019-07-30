@@ -3,16 +3,17 @@ package handlers
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
 	"github.com/google/go-github/github"
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/handlers/mocks"
-	"github.com/stretchr/testify/require"
+
+	"github.com/kyma-incubator/hack-showcase/github-connector/internal/apperrors"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 type toJSON struct {
@@ -48,7 +49,7 @@ func TestWebhookHandler_TestBadSecret(t *testing.T) {
 		mockHandler := &mocks.Validator{}
 
 		mockHandler.On("GetToken").Return("test")
-		mockHandler.On("ValidatePayload", req, []byte("test")).Return(nil, errors.New("failed"))
+		mockHandler.On("ValidatePayload", req, []byte("test")).Return(nil, apperrors.AuthenticationFailed("fail"))
 
 		// when
 		wh := NewWebHookHandler(mockHandler)
@@ -76,7 +77,7 @@ func TestWebhookHandler_TestWrongPayload(t *testing.T) {
 
 		mockHandler.On("GetToken").Return("test")
 		mockHandler.On("ValidatePayload", req, []byte("test")).Return(mockPayload, nil)
-		mockHandler.On("ParseWebHook", "", mockPayload).Return(nil, errors.New("failed"))
+		mockHandler.On("ParseWebHook", "", mockPayload).Return(nil, apperrors.Internal("fail"))
 
 		wh := NewWebHookHandler(mockHandler)
 
@@ -87,7 +88,6 @@ func TestWebhookHandler_TestWrongPayload(t *testing.T) {
 		// then
 		mockHandler.AssertExpectations(t)
 		assert.Equal(t, http.StatusBadRequest, rr.Code)
-
 	})
 
 }

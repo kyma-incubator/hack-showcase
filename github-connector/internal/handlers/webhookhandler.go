@@ -5,7 +5,6 @@ import (
 
 	"github.com/google/go-github/github"
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/apperrors"
-	"github.com/kyma-incubator/hack-showcase/github-connector/internal/httperrors"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -41,14 +40,13 @@ func (wh *WebHookHandler) HandleWebhook(w http.ResponseWriter, r *http.Request) 
 
 	event, err := wh.validator.ParseWebHook(github.WebHookType(r), payload)
 	if err != nil {
-		log.Warn(httperrors.AppErrorToResponse(appError, false)) //TODO
+		// log.Warn("%s", httperrors.AppErrorToResponse(appError, false)) //TODO
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
 	switch e := event.(type) {
 	case *github.IssuesEvent:
-
 		log.Printf("%s has opened an issue: \"%s\"",
 			e.GetSender().GetLogin(), e.GetIssue().GetTitle())
 

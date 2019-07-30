@@ -26,6 +26,7 @@ func errorf(code int, format string, a ...interface{}) AppError {
 	return appError{code: code, message: fmt.Sprintf(format, a...)}
 }
 
+//Internal - used for generating
 func Internal(format string, a ...interface{}) AppError {
 	return errorf(CodeInternal, format, a...)
 }
