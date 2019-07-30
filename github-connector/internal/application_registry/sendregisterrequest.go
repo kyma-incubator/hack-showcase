@@ -31,9 +31,12 @@ type RequestConfig struct {
 
 //CreateJSONRequest - create http request, add headers and return client
 func CreateJSONRequest(config RequestConfig) (*http.Request, apperrors.AppError) {
+	if config.Type != "POST" {
+		return nil, apperrors.Internal("Wrong http request method")
+	}
+
 	req, err := http.NewRequest(config.Type, config.URL, config.Body)
 
-	//TEST: wrong body json
 	if err != nil {
 		return nil, apperrors.Internal("Failed to create JSON request: %s", err.Error())
 	}
@@ -48,11 +51,10 @@ func SendJSONRequest(config RegisterConfig) (*http.Response, apperrors.AppError)
 
 	resp, err := config.HTTPClient.Do(config.HTTPRequest)
 
-	//TEST: no server
 	if err != nil {
 		return nil, apperrors.UpstreamServerCallFailed("Failed to make request to '%s': %s", config.HTTPRequest.URL, err.Error())
 	}
-	//TEST: wrong response code
+
 	if resp.StatusCode != http.StatusOK {
 		return nil, apperrors.UpstreamServerCallFailed("Incorrect response code '%d' while sending JSON request from %s", resp.StatusCode, config.HTTPRequest.URL)
 	}
