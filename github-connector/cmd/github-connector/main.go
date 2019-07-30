@@ -11,8 +11,15 @@ import (
 )
 
 func main() {
-	log.Println("server started")
-	registerservice.RegisterService()
+	log.Info("server started")
+
+	id, err := registerservice.RegisterService()
+	if err != nil {
+		log.Fatal("Fatal error: %s", err.Error())
+	}
+	log.WithFields(log.Fields{
+		"id": id,
+	}).Info("Service registered")
 
 	webhook := handlers.NewWebHookHandler(
 		githubwrappers.ReceivingEventsWrapper{},

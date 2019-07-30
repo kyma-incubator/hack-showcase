@@ -1,10 +1,11 @@
 package registerservice
 
 import (
-	"log"
 	"time"
 
+	"github.com/kyma-incubator/hack-showcase/github-connector/internal/apperrors"
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/model"
+	log "github.com/sirupsen/logrus"
 )
 
 var jsonBody = model.ServiceDetails{
@@ -998,13 +999,13 @@ var jsonBody = model.ServiceDetails{
 var url = "http://application-registry-external-api.kyma-integration.svc.cluster.local:8081/github-connector-app/v1/metadata/services"
 
 //RegisterService - register service in Kyma and get a response
-func RegisterService() {
+func RegisterService() (string, apperrors.AppError) {
 
 	var id string
 	var err error
 	for i := 0; i < 10; i++ {
 		id, err = SendRegisterRequest(jsonBody, url)
-		log.Printf(err.Error())
+		log.Warn(err.Error())
 		if err == nil {
 			break
 		}
@@ -1013,8 +1014,7 @@ func RegisterService() {
 	}
 
 	if err != nil {
-		panic(err)
+		return "", apperrors.Internal("While trying to register service: %s", err.Error())
 	}
-
-	log.Printf("Application ID: " + id)
+	return id, nil
 }
