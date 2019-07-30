@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"encoding/json"
 	"net/http"
 
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/httperrors"
@@ -28,40 +27,43 @@ func NewWebHookHandler(v Validator) *WebHookHandler {
 	return &WebHookHandler{validator: v}
 }
 
+func IsGithubEvent(r *http.Request) bool {
+	_, headerEvent := r.Header["X-GitHub-Event"]
+	_, headerSignature := r.Header["X-Hub-Signature"]
+	_, headerDelivery := r.Header["X-GitHub-Delivery"]
+
+	if headerEvent && headerSignature && headerDelivery {
+		return true
+	}
+	return false
+}
+
+//SendErrorResposne
+
 //HandleWebhook is a function that handles the /webhook endpoint.
 func (wh *WebHookHandler) HandleWebhook(w http.ResponseWriter, r *http.Request) {
+	defer r.Body.Close()
+
+	if IsGithubEvent(r) == false {
+		log.Warn(apperrors.WrongInput("Incomming event is not recognized as GitHub event."))
+	}
 
 	payload, apperr := wh.validator.ValidatePayload(r, []byte(wh.validator.GetToken()))
 
 	if apperr != nil {
 		apperr.Append("While handling '/webhook' endpoint")
+
 		log.Warn(apperr.Error())
-		httpcode, resp := httperrors.AppErrorToResponse(apperr, false)
-		w.WriteHeader(httpcode)
-		body, err := json.Marshal(resp)
-		if err != nil {
-			errjson := apperrors.Internal("Failed to marshal json response: %s", err)
-			log.Warn(errjson)
-			return
-		}
-		w.Write(body)
+		httperrors.SendErrorResponse(&apperr, &w)
 		return
 	}
-	defer r.Body.Close()
 
 	event, apperr := wh.validator.ParseWebHook(github.WebHookType(r), payload)
 	if apperr != nil {
 		apperr.Append("While handling '/webhook' endpoint")
+
 		log.Warn(apperr.Error())
-		httpcode, resp := httperrors.AppErrorToResponse(apperr, false)
-		w.WriteHeader(httpcode)
-		body, err := json.Marshal(resp)
-		if err != nil {
-			errjson := apperrors.Internal("Failed to marshal json response: %s", err)
-			log.Warn(errjson)
-			return
-		}
-		w.Write(body)
+		httperrors.SendErrorResponse(&apperr, &w)
 		return
 	}
 
@@ -90,16 +92,9 @@ func (wh *WebHookHandler) HandleWebhook(w http.ResponseWriter, r *http.Request) 
 
 	default:
 		apperr := apperrors.NotFound("Unknown event type: '%s'", github.WebHookType(r))
+
 		log.Warnf(apperr.Error())
-		httpcode, resp := httperrors.AppErrorToResponse(apperr, false)
-		w.WriteHeader(httpcode)
-		body, err := json.Marshal(resp)
-		if err != nil {
-			errjson := apperrors.Internal("Failed to marshal json response: %s", err)
-			log.Warn(errjson)
-			return
-		}
-		w.Write(body)
+		httperrors.SendErrorResponse(&apperr, &w)
 		return
 	}
 	w.WriteHeader(http.StatusOK)

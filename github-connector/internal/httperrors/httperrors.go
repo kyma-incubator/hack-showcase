@@ -1,9 +1,11 @@
 package httperrors
 
 import (
+	"encoding/json"
 	"net/http"
 
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/apperrors"
+	log "github.com/sirupsen/logrus"
 )
 
 type ErrorResponse struct {
@@ -45,4 +47,22 @@ func formatErrorResponse(httpCode int, errorMessage string, detailedErrorRespons
 
 func isInternalError(httpCode int) bool {
 	return httpCode == http.StatusInternalServerError
+}
+
+//SendErrorResponse prepares the http error response and sends it to the client
+func SendErrorResponse(apperrptr *apperrors.AppError, wptr *http.ResponseWriter) {
+	apperr := *apperrptr
+	w := *wptr
+
+	httpcode, resp := AppErrorToResponse(apperr, false)
+
+	w.WriteHeader(httpcode)
+	respJSON, err := json.Marshal(resp)
+
+	if err != nil {
+		log.Warn(apperrors.Internal("Failed to marshal error response: %s \n\tError body: %s", err, apperr.Error()))
+		return
+	}
+	w.Write(respJSON)
+	return
 }

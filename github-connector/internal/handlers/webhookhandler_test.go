@@ -60,7 +60,6 @@ func TestWebhookHandler_TestBadSecret(t *testing.T) {
 		// then
 		mockHandler.AssertExpectations(t)
 		assert.Equal(t, http.StatusForbidden, rr.Code)
-
 	})
 }
 
@@ -117,9 +116,7 @@ func TestWebhookHandler_TestKnownEvent(t *testing.T) {
 		// then
 		mockHandler.AssertExpectations(t)
 		assert.Equal(t, http.StatusOK, rr.Code)
-
 	})
-
 }
 
 func TestWebhookHandler_TestUnknownEvent(t *testing.T) {
@@ -146,5 +143,4 @@ func TestWebhookHandler_TestUnknownEvent(t *testing.T) {
 		mockHandler.AssertExpectations(t)
 		assert.Equal(t, http.StatusNotFound, rr.Code)
 	})
-
 }
