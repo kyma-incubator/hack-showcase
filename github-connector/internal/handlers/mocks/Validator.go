@@ -2,6 +2,8 @@
 
 package mocks
 
+import apperrors "github.com/kyma-incubator/hack-showcase/github-connector/internal/apperrors"
+
 import http "net/http"
 import mock "github.com/stretchr/testify/mock"
 
@@ -25,7 +27,7 @@ func (_m *Validator) GetToken() string {
 }
 
 // ParseWebHook provides a mock function with given fields: _a0, _a1
-func (_m *Validator) ParseWebHook(_a0 string, _a1 []byte) (interface{}, error) {
+func (_m *Validator) ParseWebHook(_a0 string, _a1 []byte) (interface{}, apperrors.AppError) {
 	ret := _m.Called(_a0, _a1)
 
 	var r0 interface{}
@@ -37,18 +39,20 @@ func (_m *Validator) ParseWebHook(_a0 string, _a1 []byte) (interface{}, error) {
 		}
 	}
 
-	var r1 error
-	if rf, ok := ret.Get(1).(func(string, []byte) error); ok {
+	var r1 apperrors.AppError
+	if rf, ok := ret.Get(1).(func(string, []byte) apperrors.AppError); ok {
 		r1 = rf(_a0, _a1)
 	} else {
-		r1 = ret.Error(1)
+		if ret.Get(1) != nil {
+			r1 = ret.Get(1).(apperrors.AppError)
+		}
 	}
 
 	return r0, r1
 }
 
 // ValidatePayload provides a mock function with given fields: _a0, _a1
-func (_m *Validator) ValidatePayload(_a0 *http.Request, _a1 []byte) ([]byte, error) {
+func (_m *Validator) ValidatePayload(_a0 *http.Request, _a1 []byte) ([]byte, apperrors.AppError) {
 	ret := _m.Called(_a0, _a1)
 
 	var r0 []byte
@@ -60,11 +64,13 @@ func (_m *Validator) ValidatePayload(_a0 *http.Request, _a1 []byte) ([]byte, err
 		}
 	}
 
-	var r1 error
-	if rf, ok := ret.Get(1).(func(*http.Request, []byte) error); ok {
+	var r1 apperrors.AppError
+	if rf, ok := ret.Get(1).(func(*http.Request, []byte) apperrors.AppError); ok {
 		r1 = rf(_a0, _a1)
 	} else {
-		r1 = ret.Error(1)
+		if ret.Get(1) != nil {
+			r1 = ret.Get(1).(apperrors.AppError)
+		}
 	}
 
 	return r0, r1

@@ -1,11 +1,12 @@
 package handlers
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/google/go-github/github"
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/apperrors"
+	"github.com/kyma-incubator/hack-showcase/github-connector/internal/httperrors"
+	log "github.com/sirupsen/logrus"
 )
 
 //Validator is an interface used to allow mocking the github library methods
@@ -28,11 +29,10 @@ func NewWebHookHandler(v Validator) *WebHookHandler {
 //HandleWebhook is a function that handles the /webhook endpoint.
 func (wh *WebHookHandler) HandleWebhook(w http.ResponseWriter, r *http.Request) {
 
-	payload, err := wh.validator.ValidatePayload(r, []byte(wh.validator.GetToken()))
+	payload, appError := wh.validator.ValidatePayload(r, []byte(wh.validator.GetToken()))
 
-	if err != nil {
-		log.Printf("error validating request body: err=%s\n", err)
-		log.Printf("request body: %s\n", r.Body)
+	if appError != nil {
+		log.Printf("%v", appError) //TODO
 		w.WriteHeader(http.StatusUnauthorized)
 
 		return
@@ -41,7 +41,7 @@ func (wh *WebHookHandler) HandleWebhook(w http.ResponseWriter, r *http.Request) 
 
 	event, err := wh.validator.ParseWebHook(github.WebHookType(r), payload)
 	if err != nil {
-		log.Printf("could not parse webhook: err=%s\n", err)
+		log.Warn(httperrors.AppErrorToResponse(appError, false)) //TODO
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}

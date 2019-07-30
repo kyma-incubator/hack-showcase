@@ -34,21 +34,6 @@
   version = "v1.0.2"
 
 [[projects]]
-  branch = "error-handling"
-  digest = "1:2f366f3eb56c1c518b55324e611e6e018d371dbd77b6714a3d6ee51be90071fd"
-  name = "github.com/kyma-incubator/hack-showcase"
-  packages = [
-    "github-connector/internal/apperrors",
-    "github-connector/internal/application_registry",
-    "github-connector/internal/githubwrappers",
-    "github-connector/internal/handlers",
-    "github-connector/internal/handlers/mocks",
-    "github-connector/internal/model",
-  ]
-  pruneopts = "UT"
-  revision = "896822e69cc7896255f549f15305d9f353b70efe"
-
-[[projects]]
   digest = "1:0028cb19b2e4c3112225cd871870f2d9cf49b9b4276531f03438a88e94be86fe"
   name = "github.com/pmezard/go-difflib"
   packages = ["difflib"]
@@ -113,12 +98,6 @@
   analyzer-version = 1
   input-imports = [
     "github.com/google/go-github/github",
-    "github.com/kyma-incubator/hack-showcase/github-connector/internal/apperrors",
-    "github.com/kyma-incubator/hack-showcase/github-connector/internal/application_registry",
-    "github.com/kyma-incubator/hack-showcase/github-connector/internal/githubwrappers",
-    "github.com/kyma-incubator/hack-showcase/github-connector/internal/handlers",
-    "github.com/kyma-incubator/hack-showcase/github-connector/internal/handlers/mocks",
-    "github.com/kyma-incubator/hack-showcase/github-connector/internal/model",
     "github.com/sirupsen/logrus",
     "github.com/stretchr/testify/assert",
     "github.com/stretchr/testify/mock",
