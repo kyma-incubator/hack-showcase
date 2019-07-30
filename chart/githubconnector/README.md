@@ -12,4 +12,4 @@ In order to install the chart inside of kyma you need to:
 
 ## Details
 
-For now, the chart cannot be configured at all, and has to be installed with a preset that can be found in the [installation tutorial](../docs/githubconnector/helm-installation-tutorial.md)
+For now, the chart cannot be configured at all, and has to be installed with a preset that can be found in the [installation tutorial](../../docs/githubconnector/helm-installation-tutorial.md)
