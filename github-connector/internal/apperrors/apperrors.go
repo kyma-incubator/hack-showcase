@@ -48,11 +48,11 @@ func UpstreamServerCallFailed(format string, a ...interface{}) AppError {
 }
 
 func AuthenticationFailed(format string, a ...interface{}) AppError {
-	return errorf(CodeUpstreamServerCallFailed, format, a...)
+	return errorf(CodeAuthenticationFailed, format, a...)
 }
 
 func (ae appError) Append(additionalFormat string, a ...interface{}) AppError {
-	format := additionalFormat + ": " + ae.message
+	format := additionalFormat + ", " + ae.message
 	return errorf(ae.code, format, a...)
 }
 
