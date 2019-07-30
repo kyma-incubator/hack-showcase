@@ -4,6 +4,8 @@
 *.dll
 *.so
 *.dylib
+*.mod
+*.sum
 
 # Test binary, build with `go test -c`
 *.test
@@ -16,4 +18,3 @@
 .*
 !.gitignore
 /github-connector/vendor
-

@@ -2,9 +2,9 @@ package eventparser
 
 import (
 	"encoding/json"
-	"errors"
-	"fmt"
 	"time"
+
+	"github.com/kyma-incubator/hack-showcase/github-connector/internal/apperrors"
 )
 
 // EventParser adds proper structure to existing payload, so it can be consumed by Event-Service
@@ -23,16 +23,16 @@ type EventRequestPayload struct {
 }
 
 // GetEventRequestPayload generates structure which is mapped to JSON required by Event-Service request body
-func GetEventRequestPayload(eventType, eventTypeVersion, eventID string, data json.RawMessage) (EventRequestPayload, error) {
+func GetEventRequestPayload(eventType, eventTypeVersion, eventID string, data json.RawMessage) (EventRequestPayload, apperrors.AppError) {
 
 	if eventType == "" {
-		return EventRequestPayload{}, errors.New("eventType should not be empty")
+		return EventRequestPayload{}, apperrors.WrongInput("eventType should not be empty")
 	}
 	if eventTypeVersion == "" {
-		return EventRequestPayload{}, errors.New("eventTypeVersion should not be empty")
+		return EventRequestPayload{}, apperrors.WrongInput("eventTypeVersion should not be empty")
 	}
 	if len(data) == 0 {
-		return EventRequestPayload{}, errors.New("data should not be empty")
+		return EventRequestPayload{}, apperrors.WrongInput("data should not be empty")
 	}
 
 	res := EventRequestPayload{
@@ -47,12 +47,12 @@ func GetEventRequestPayload(eventType, eventTypeVersion, eventID string, data js
 }
 
 // GetEventRequestAsJSON returns ready-to-sent JSON request body
-func GetEventRequestAsJSON(eventRequestPayload EventRequestPayload) ([]byte, error) {
+func GetEventRequestAsJSON(eventRequestPayload EventRequestPayload) ([]byte, apperrors.AppError) {
 	r, err := json.MarshalIndent(eventRequestPayload, "", "  ")
-	if err != nil {
-		fmt.Printf("error: %s", err)
 
-		return []byte{}, err
+	if err != nil {
+
+		return []byte{}, apperrors.Internal("Can not marshall given struct: %s", err.Error())
 	}
 	return r, nil
 }
