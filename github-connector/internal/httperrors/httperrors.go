@@ -60,7 +60,8 @@ func SendErrorResponse(apperrptr *apperrors.AppError, wptr *http.ResponseWriter)
 	respJSON, err := json.Marshal(resp)
 
 	if err != nil {
-		log.Warn(apperrors.Internal("Failed to marshal error response: %s \n\tError body: %s", err, apperr.Error()))
+		marshalerr := apperrors.Internal("Failed to marshal error response: %s \nError body: %s", err, apperr.Error())
+		log.Warn(marshalerr)
 		return
 	}
 	w.Write(respJSON)

@@ -63,3 +63,7 @@ func (ae appError) Code() int {
 func (ae appError) Error() string {
 	return ae.message
 }
+
+func (ae appError) String() string {
+	return ae.message
+}
