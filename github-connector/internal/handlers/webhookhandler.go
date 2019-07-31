@@ -1,8 +1,11 @@
 package handlers
 
 import (
+	"bytes"
 	"log"
 	"net/http"
+
+	"github.com/kyma-incubator/hack-showcase/github-connector/internal/eventparser"
 
 	"github.com/google/go-github/github"
 )
@@ -45,12 +48,23 @@ func (wh *WebHookHandler) HandleWebhook(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
+	client := http.Client{}
 	switch e := event.(type) {
 	case *github.IssuesEvent:
 
-		log.Printf("%s has opened an issue: \"%s\"",
-			e.GetSender().GetLogin(), e.GetIssue().GetTitle())
-
+		toSend, err := eventparser.GetEventRequestPayload("issuesevent.opened", "v1", "22478f09-6b58-4f98-a983-a23637da1d40",
+			payload)
+		if err != nil {
+			log.Printf("not converted")
+		}
+		jsonToSend, err := eventparser.GetEventRequestAsJSON(toSend)
+		kymaRequest, _ := http.NewRequest(http.MethodPost, "http://event-bus-publish.kyma-system:8080/v1/events", bytes.NewReader(jsonToSend))
+		response, err := client.Do(kymaRequest)
+		log.Println(response)
+		log.Println(err)
+		/*log.Printf("%s has opened an issue: \"%s\"",
+		e.GetSender().GetLogin(), e.GetIssue().GetTitle())
+		*/
 	case *github.PullRequestReviewEvent:
 		if e.GetAction() == "submitted" {
 			log.Printf("%s has submitted a review on pull request: \"%s\"",
