@@ -46,6 +46,7 @@ func (wh *WebHookHandler) HandleWebhook(w http.ResponseWriter, r *http.Request) 
 
 	if IsGithubEvent(r) == false {
 		log.Warn(apperrors.WrongInput("Incomming event is not recognized as GitHub event."))
+		return
 	}
 
 	payload, apperr := wh.validator.ValidatePayload(r, []byte(wh.validator.GetToken()))
