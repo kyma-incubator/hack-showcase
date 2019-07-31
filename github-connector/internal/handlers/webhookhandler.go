@@ -27,27 +27,9 @@ func NewWebHookHandler(v Validator) *WebHookHandler {
 	return &WebHookHandler{validator: v}
 }
 
-func IsGithubEvent(r *http.Request) bool {
-	_, headerEvent := r.Header["X-GitHub-Event"]
-	_, headerSignature := r.Header["X-Hub-Signature"]
-	_, headerDelivery := r.Header["X-GitHub-Delivery"]
-
-	if headerEvent && headerSignature && headerDelivery {
-		return true
-	}
-	return false
-}
-
-//SendErrorResposne
-
 //HandleWebhook is a function that handles the /webhook endpoint.
 func (wh *WebHookHandler) HandleWebhook(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
-
-	if IsGithubEvent(r) == false {
-		log.Warn(apperrors.WrongInput("Incomming event is not recognized as GitHub event."))
-		return
-	}
 
 	payload, apperr := wh.validator.ValidatePayload(r, []byte(wh.validator.GetToken()))
 

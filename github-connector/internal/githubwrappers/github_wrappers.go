@@ -32,5 +32,5 @@ func (wh ReceivingEventsWrapper) ParseWebHook(s string, b []byte) (interface{}, 
 
 //GetToken is a function that looks for the secret in the environment
 func (wh ReceivingEventsWrapper) GetToken() string {
-	return os.Getenv("GITHUB-SECRET")
+	return os.Getenv("GITHUB_SECRET")
 }
