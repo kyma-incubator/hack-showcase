@@ -37,7 +37,7 @@ func (wh *WebHookHandler) HandleWebhook(w http.ResponseWriter, r *http.Request) 
 		apperr.Append("While handling '/webhook' endpoint")
 
 		log.Warn(apperr.Error())
-		httperrors.SendErrorResponse(&apperr, &w)
+		httperrors.SendErrorResponse(apperr, w)
 		return
 	}
 
@@ -46,7 +46,7 @@ func (wh *WebHookHandler) HandleWebhook(w http.ResponseWriter, r *http.Request) 
 		apperr.Append("While handling '/webhook' endpoint")
 
 		log.Warn(apperr.Error())
-		httperrors.SendErrorResponse(&apperr, &w)
+		httperrors.SendErrorResponse(apperr, w)
 		return
 	}
 
@@ -77,7 +77,7 @@ func (wh *WebHookHandler) HandleWebhook(w http.ResponseWriter, r *http.Request) 
 		apperr := apperrors.NotFound("Unknown event type: '%s'", github.WebHookType(r))
 
 		log.Warnf(apperr.Error())
-		httperrors.SendErrorResponse(&apperr, &w)
+		httperrors.SendErrorResponse(apperr, w)
 		return
 	}
 	w.WriteHeader(http.StatusOK)

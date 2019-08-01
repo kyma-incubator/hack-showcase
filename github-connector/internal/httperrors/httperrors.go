@@ -50,9 +50,7 @@ func isInternalError(httpCode int) bool {
 }
 
 //SendErrorResponse prepares the http error response and sends it to the client
-func SendErrorResponse(apperrptr *apperrors.AppError, wptr *http.ResponseWriter) {
-	apperr := *apperrptr
-	w := *wptr
+func SendErrorResponse(apperr apperrors.AppError, w http.ResponseWriter) {
 
 	httpcode, resp := AppErrorToResponse(apperr, false)
 

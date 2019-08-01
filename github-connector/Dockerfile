@@ -13,6 +13,7 @@ WORKDIR /app
 RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
 
 COPY --from=builder /app/main /app
+
 ARG github_secret
 ENV GITHUB_SECRET=${github_secret}
 CMD ["./main"]
