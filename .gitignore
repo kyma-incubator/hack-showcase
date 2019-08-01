@@ -16,4 +16,5 @@
 .*
 !.gitignore
 /github-connector/vendor
-
+/github-connector/internal/apperrors
+/github-connector/internal/httperrors
