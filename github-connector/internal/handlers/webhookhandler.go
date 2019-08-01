@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"bytes"
+	"encoding/json"
 	"log"
 	"net/http"
 
@@ -27,6 +28,22 @@ func NewWebHookHandler(v Validator) *WebHookHandler {
 	return &WebHookHandler{validator: v}
 }
 
+func sendToKyma(eventType, eventTypeVersion, eventID, sourceID string, data json.RawMessage) {
+	client := http.Client{}
+	toSend, err := eventparser.GetEventRequestPayload(eventType, eventTypeVersion, eventID, sourceID,
+		data)
+	if err != nil {
+		log.Printf("not converted")
+	}
+
+	jsonToSend, err := eventparser.GetEventRequestAsJSON(toSend)
+	kymaRequest, _ := http.NewRequest(http.MethodPost, "http://event-bus-publish.kyma-system:8080/v1/events",
+		bytes.NewReader(jsonToSend))
+	response, err := client.Do(kymaRequest)
+	log.Println(response)
+	log.Println(err)
+}
+
 //HandleWebhook is a function that handles the /webhook endpoint.
 func (wh *WebHookHandler) HandleWebhook(w http.ResponseWriter, r *http.Request) {
 
@@ -48,27 +65,14 @@ func (wh *WebHookHandler) HandleWebhook(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	client := http.Client{}
 	switch e := event.(type) {
 	case *github.IssuesEvent:
 
-		toSend, err := eventparser.GetEventRequestPayload("issuesevent.opened", "v1", "22478f09-6b58-4f98-a983-a23637da1d40",
-			payload)
-		if err != nil {
-			log.Printf("not converted")
-		}
-		jsonToSend, err := eventparser.GetEventRequestAsJSON(toSend)
-		kymaRequest, _ := http.NewRequest(http.MethodPost, "http://event-bus-publish.kyma-system:8080/v1/events", bytes.NewReader(jsonToSend))
-		response, err := client.Do(kymaRequest)
-		log.Println(response)
-		log.Println(err)
-		/*log.Printf("%s has opened an issue: \"%s\"",
-		e.GetSender().GetLogin(), e.GetIssue().GetTitle())
-		*/
+		sendToKyma("issuesevent.opened", "v1", "", "github-connector-app", payload)
+
 	case *github.PullRequestReviewEvent:
 		if e.GetAction() == "submitted" {
-			log.Printf("%s has submitted a review on pull request: \"%s\"",
-				e.GetSender().GetLogin(), e.GetPullRequest().GetTitle())
+			sendToKyma("pullrequestreviewevent.submitted", "v1", "", "github-connector-app", payload)
 		}
 	case *github.PushEvent:
 		log.Printf("push")

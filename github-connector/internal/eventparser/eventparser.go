@@ -19,11 +19,12 @@ type EventRequestPayload struct {
 	EventTypeVersion string          `json:"event-type-version"`
 	EventID          string          `json:"event-id,omitempty"` //uuid should be generated automatically if send empty
 	EventTime        string          `json:"event-time"`
-	Data             json.RawMessage `json:"data"` //github webhook json payload
+	SourceID         string          `json:"source-id"` //put your application name here
+	Data             json.RawMessage `json:"data"`      //github webhook json payload
 }
 
 // GetEventRequestPayload generates structure which is mapped to JSON required by Event-Service request body
-func GetEventRequestPayload(eventType, eventTypeVersion, eventID string, data json.RawMessage) (EventRequestPayload, error) {
+func GetEventRequestPayload(eventType, eventTypeVersion, eventID, sourceID string, data json.RawMessage) (EventRequestPayload, error) {
 
 	if eventType == "" {
 		return EventRequestPayload{}, errors.New("eventType should not be empty")
@@ -34,12 +35,16 @@ func GetEventRequestPayload(eventType, eventTypeVersion, eventID string, data js
 	if len(data) == 0 {
 		return EventRequestPayload{}, errors.New("data should not be empty")
 	}
+	if sourceID == "" {
+		return EventRequestPayload{}, errors.New("sourceID should not be empty")
+	}
 
 	res := EventRequestPayload{
 		eventType,
 		eventTypeVersion,
 		eventID,
 		time.Now().Format(time.RFC3339),
+		sourceID,
 		data}
 
 	return res, nil
