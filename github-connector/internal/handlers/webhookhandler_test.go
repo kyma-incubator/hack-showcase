@@ -148,3 +148,19 @@ func TestWebhookHandler_TestUnknownEvent(t *testing.T) {
 	})
 
 }
+
+type ClientMock struct {
+}
+
+func (c *ClientMock) Do(req *http.Request) (*http.Response, error) {
+	return &http.Response{}, nil
+}
+
+func TestWebhookHandler_sendToKyma(t *testing.T) {
+	t.Run("should return no error", func(t *testing.T) {
+		payload := toJSON{TestJSON: "test"}
+		toSend, err := json.Marshal(payload)
+		require.NoError(t, err)
+		assert.Equal(t, nil, sendToKyma("issuesevent.opened", "v1", "", "github-connector-app", toSend, &ClientMock{}))
+	})
+}
