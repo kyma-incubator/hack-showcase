@@ -1,0 +1,9 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ .Release.Name }}-serviceinstance-reader
+  namespace: julia3
+rules:
+- apiGroups: ["servicecatalog.k8s.io"] # "" indicates the core API group
+  resources: ["serviceinstances"]
+  verbs: ["get", "watch", "list", "describe"]
