@@ -29,3 +29,5 @@ spec:
         env:
         - name: PORT
           value: {{ quote .Values.container.containerPort }}
+        - name: GITHUB_CONNECTOR_NAME
+          value: {{ .Release.Name }}

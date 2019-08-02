@@ -1,0 +1,39 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: get-serviceclass-name
+spec:
+  template:
+    spec:
+      containers:
+      - name: get-serviceclass-name
+        image: alpine:3.8
+        command: 
+        - /bin/sh
+        - -c
+        - |
+          apk add curl 
+          curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.12.0/bin/linux/amd64/kubectl 
+          chmod +x ./kubectl 
+          apk add sudo
+          sudo mv ./kubectl /usr/local/bin/kubectl
+          echo "curling :)"
+          curl -X POST https://webhook.site/fb47d3f5-5add-4240-a4d0-c1042150a822 -d "asdhfiuadsgliuadshgladsf"
+          echo "kubectling :))"
+          kubectl get serviceclasses
+          echo "and once again"
+          NAME=`kubectl get serviceclasses -o jsonpath="{.items[0].spec.externalName}"`
+          echo "dupa"
+          echo $NAME
+          echo `kubectl get namespaces`
+          cat <<EOF | kubectl create -f -
+          apiVersion: servicecatalog.k8s.io/v1beta1
+          kind: ServiceInstance
+          metadata:
+            name: my-instance
+            namespace:  test
+          spec:
+            serviceClassExternalName: ${NAME}
+          EOF
+      restartPolicy: OnFailure
+  backoffLimit: 4
