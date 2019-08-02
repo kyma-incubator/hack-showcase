@@ -34,7 +34,7 @@ func (wh *WebHookHandler) HandleWebhook(w http.ResponseWriter, r *http.Request) 
 	payload, apperr := wh.validator.ValidatePayload(r, []byte(wh.validator.GetToken()))
 
 	if apperr != nil {
-		apperr.Append("While handling '/webhook' endpoint")
+		apperr = apperr.Append("While handling '/webhook' endpoint")
 
 		log.Warn(apperr.Error())
 		httperrors.SendErrorResponse(apperr, w)
@@ -43,7 +43,7 @@ func (wh *WebHookHandler) HandleWebhook(w http.ResponseWriter, r *http.Request) 
 
 	event, apperr := wh.validator.ParseWebHook(github.WebHookType(r), payload)
 	if apperr != nil {
-		apperr.Append("While handling '/webhook' endpoint")
+		apperr = apperr.Append("While handling '/webhook' endpoint")
 
 		log.Warn(apperr.Error())
 		httperrors.SendErrorResponse(apperr, w)
