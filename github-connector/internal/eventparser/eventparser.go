@@ -13,6 +13,9 @@ type EventParser interface {
 	GetEventRequestAsJSON(EventRequestPayload) []byte
 }
 
+type eventparser struct {
+}
+
 // EventRequestPayload represents a POST request's body which is sent to Event-Service
 type EventRequestPayload struct {
 	EventType        string          `json:"event-type"`
@@ -24,7 +27,7 @@ type EventRequestPayload struct {
 }
 
 // GetEventRequestPayload generates structure which is mapped to JSON required by Event-Service request body
-func GetEventRequestPayload(eventType, eventTypeVersion, eventID, sourceID string, data json.RawMessage) (EventRequestPayload, error) {
+func (e eventparser) GetEventRequestPayload(eventType, eventTypeVersion, eventID, sourceID string, data json.RawMessage) (EventRequestPayload, error) {
 
 	if eventType == "" {
 		return EventRequestPayload{}, errors.New("eventType should not be empty")
@@ -32,11 +35,11 @@ func GetEventRequestPayload(eventType, eventTypeVersion, eventID, sourceID strin
 	if eventTypeVersion == "" {
 		return EventRequestPayload{}, errors.New("eventTypeVersion should not be empty")
 	}
-	if len(data) == 0 {
-		return EventRequestPayload{}, errors.New("data should not be empty")
-	}
 	if sourceID == "" {
 		return EventRequestPayload{}, errors.New("sourceID should not be empty")
+	}
+	if len(data) == 0 {
+		return EventRequestPayload{}, errors.New("data should not be empty")
 	}
 
 	res := EventRequestPayload{
@@ -52,7 +55,7 @@ func GetEventRequestPayload(eventType, eventTypeVersion, eventID, sourceID strin
 }
 
 // GetEventRequestAsJSON returns ready-to-sent JSON request body
-func GetEventRequestAsJSON(eventRequestPayload EventRequestPayload) ([]byte, error) {
+func (e eventparser) GetEventRequestAsJSON(eventRequestPayload EventRequestPayload) ([]byte, error) {
 	r, err := json.MarshalIndent(eventRequestPayload, "", "  ")
 	if err != nil {
 		fmt.Printf("error: %s", err)
