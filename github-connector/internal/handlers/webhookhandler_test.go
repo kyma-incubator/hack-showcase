@@ -46,20 +46,22 @@ func TestWebhookHandler_TestBadSecret(t *testing.T) {
 		req.Header.Set("Content-Type", "application/json")
 
 		rr := httptest.NewRecorder()
-		mockHandler := &mocks.Validator{}
+		mockValidator := &mocks.Validator{}
+		mockSender := &mocks.Sender{}
 
-		mockHandler.On("GetToken").Return("test")
-		mockHandler.On("ValidatePayload", req, []byte("test")).Return(nil, apperrors.AuthenticationFailed("fail"))
+		mockValidator.On("GetToken").Return("test")
+		mockValidator.On("ValidatePayload", req, []byte("test")).Return(nil, apperrors.AuthenticationFailed("fail"))
 
 		// when
-		wh := NewWebHookHandler(mockHandler)
+		wh := NewWebHookHandler(mockValidator, mockSender)
 
 		handler := http.HandlerFunc(wh.HandleWebhook)
 		handler.ServeHTTP(rr, req)
 
 		// then
-		mockHandler.AssertExpectations(t)
-		assert.Equal(t, http.StatusForbidden, rr.Code)
+		mockValidator.AssertExpectations(t)
+		assert.Equal(t, http.StatusUnauthorized, rr.Code)
+
 	})
 }
 
@@ -70,22 +72,23 @@ func TestWebhookHandler_TestWrongPayload(t *testing.T) {
 		req := createRequest(t)
 		rr := httptest.NewRecorder()
 
-		mockHandler := &mocks.Validator{}
+		mockValidator := &mocks.Validator{}
+		mockSender := &mocks.Sender{}
 		mockPayload, err := json.Marshal(toJSON{TestJSON: "test"})
 		require.NoError(t, err)
 
-		mockHandler.On("GetToken").Return("test")
-		mockHandler.On("ValidatePayload", req, []byte("test")).Return(mockPayload, nil)
-		mockHandler.On("ParseWebHook", "", mockPayload).Return(nil, apperrors.WrongInput("fail"))
+		mockValidator.On("GetToken").Return("test")
+		mockValidator.On("ValidatePayload", req, []byte("test")).Return(mockPayload, nil)
+		mockValidator.On("ParseWebHook", "", mockPayload).Return(nil, apperrors.WrongInput("fail"))
 
-		wh := NewWebHookHandler(mockHandler)
+		wh := NewWebHookHandler(mockValidator, mockSender)
 
 		// when
 		handler := http.HandlerFunc(wh.HandleWebhook)
 		handler.ServeHTTP(rr, req)
 
 		// then
-		mockHandler.AssertExpectations(t)
+		mockValidator.AssertExpectations(t)
 		assert.Equal(t, http.StatusBadRequest, rr.Code)
 	})
 
@@ -98,23 +101,26 @@ func TestWebhookHandler_TestKnownEvent(t *testing.T) {
 		req := createRequest(t)
 		rr := httptest.NewRecorder()
 
-		mockHandler := &mocks.Validator{}
+		mockValidator := &mocks.Validator{}
+		mockSender := &mocks.Sender{}
 		mockPayload, err := json.Marshal(toJSON{TestJSON: "test"})
 		require.NoError(t, err)
+		rawPayload := json.RawMessage(mockPayload)
+		mockSender.On("SendToKyma", "issuesevent.opened", "v1", "", "github-connector-app", rawPayload).Return(nil)
 
-		mockHandler.On("GetToken").Return("test")
-		mockHandler.On("ValidatePayload", req, []byte("test")).Return(mockPayload, nil)
-		event := &github.StarEvent{}
-		mockHandler.On("ParseWebHook", "", mockPayload).Return(event, nil)
+		mockValidator.On("GetToken").Return("test")
+		mockValidator.On("ValidatePayload", req, []byte("test")).Return(mockPayload, nil)
+		event := &github.IssuesEvent{}
+		mockValidator.On("ParseWebHook", "", mockPayload).Return(event, nil)
 
-		wh := NewWebHookHandler(mockHandler)
+		wh := NewWebHookHandler(mockValidator, mockSender)
 
 		// when
 		handler := http.HandlerFunc(wh.HandleWebhook)
 		handler.ServeHTTP(rr, req)
 
 		// then
-		mockHandler.AssertExpectations(t)
+		mockValidator.AssertExpectations(t)
 		assert.Equal(t, http.StatusOK, rr.Code)
 	})
 }
@@ -126,21 +132,23 @@ func TestWebhookHandler_TestUnknownEvent(t *testing.T) {
 		req := createRequest(t)
 		rr := httptest.NewRecorder()
 
-		mockHandler := &mocks.Validator{}
+		mockValidator := &mocks.Validator{}
+		mockSender := &mocks.Sender{}
+
 		mockPayload, err := json.Marshal(toJSON{TestJSON: "test"})
 		require.NoError(t, err)
-		mockHandler.On("GetToken").Return("test")
-		mockHandler.On("ValidatePayload", req, []byte("test")).Return(mockPayload, nil)
-		mockHandler.On("ParseWebHook", "", mockPayload).Return(1, nil)
+		mockValidator.On("GetToken").Return("test")
+		mockValidator.On("ValidatePayload", req, []byte("test")).Return(mockPayload, nil)
+		mockValidator.On("ParseWebHook", "", mockPayload).Return(1, nil)
 
-		wh := NewWebHookHandler(mockHandler)
+		wh := NewWebHookHandler(mockValidator, mockSender)
 
 		// when
 		handler := http.HandlerFunc(wh.HandleWebhook)
 		handler.ServeHTTP(rr, req)
 
 		// then
-		mockHandler.AssertExpectations(t)
-		assert.Equal(t, http.StatusNotFound, rr.Code)
+		mockValidator.AssertExpectations(t)
+		assert.Equal(t, http.StatusBadRequest, rr.Code)
 	})
 }

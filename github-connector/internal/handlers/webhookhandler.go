@@ -1,12 +1,14 @@
 package handlers
 
 import (
+	"encoding/json"
 	"net/http"
 
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/httperrors"
 
-	"github.com/google/go-github/github"
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/apperrors"
+
+	"github.com/google/go-github/github"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -17,14 +19,20 @@ type Validator interface {
 	GetToken() string
 }
 
+//Sender is an interface used to allow mocking sending events to Kyma's event bus
+type Sender interface {
+	SendToKyma(eventType, eventTypeVersion, eventID, sourceID string, data json.RawMessage) apperrors.AppError
+}
+
 //WebHookHandler is a struct used to allow mocking the github library methods
 type WebHookHandler struct {
-	validator Validator
+	validator  Validator
+	kymasender Sender
 }
 
 //NewWebHookHandler creates a new webhook handler with the passed interface
-func NewWebHookHandler(v Validator) *WebHookHandler {
-	return &WebHookHandler{validator: v}
+func NewWebHookHandler(v Validator, s Sender) *WebHookHandler {
+	return &WebHookHandler{validator: v, kymasender: s}
 }
 
 //HandleWebhook is a function that handles the /webhook endpoint.
@@ -52,13 +60,12 @@ func (wh *WebHookHandler) HandleWebhook(w http.ResponseWriter, r *http.Request) 
 
 	switch e := event.(type) {
 	case *github.IssuesEvent:
-		log.Infof("%s has opened an issue: '%s'.",
-			e.GetSender().GetLogin(), e.GetIssue().GetTitle())
+
+		apperr = wh.kymasender.SendToKyma("issuesevent.opened", "v1", "", "github-connector-app", payload)
 
 	case *github.PullRequestReviewEvent:
 		if e.GetAction() == "submitted" {
-			log.Infof("%s has submitted a review on pull request: '%s'.",
-				e.GetSender().GetLogin(), e.GetPullRequest().GetTitle())
+			apperr = wh.kymasender.SendToKyma("pullrequestreviewevent.submitted", "v1", "", "github-connector-app", payload)
 		}
 	case *github.PushEvent:
 		log.Infof("Push")
@@ -78,6 +85,10 @@ func (wh *WebHookHandler) HandleWebhook(w http.ResponseWriter, r *http.Request) 
 
 		log.Warnf(apperr.Error())
 		httperrors.SendErrorResponse(apperr, w)
+		return
+	}
+	if apperr != nil {
+		log.Info(apperrors.Internal("While handling the event: %s", apperr.Error()))
 		return
 	}
 	w.WriteHeader(http.StatusOK)

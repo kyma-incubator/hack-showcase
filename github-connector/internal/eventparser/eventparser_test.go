@@ -137,12 +137,13 @@ func TestGetEventRequestPayload(t *testing.T) {
 
 	t.Run("Should create expected payload when the function is called with correct arguments", func(t *testing.T) {
 		//given
+		e := eventparser{}
 		eventType := "star"
 		eventTypeVersion := "v1"
 		eventID := ""
-
+		sourceID := "github-connector-app"
 		//when
-		p, err := GetEventRequestPayload(eventType, eventTypeVersion, eventID, data)
+		p, err := e.GetEventRequestPayload(eventType, eventTypeVersion, eventID, sourceID, data)
 
 		//then
 		assert.NoError(t, err)
@@ -150,16 +151,20 @@ func TestGetEventRequestPayload(t *testing.T) {
 		assert.Equal(t, eventType, p.EventType)
 		assert.Equal(t, eventTypeVersion, p.EventTypeVersion)
 		assert.Equal(t, eventID, p.EventID)
+		assert.Equal(t, sourceID, p.SourceID)
 
 	})
 	t.Run("Should return proper struct type on correct arguments", func(t *testing.T) {
 		//given
+		e := eventparser{}
+
 		eventType := "star"
 		eventTypeVersion := "v1"
 		eventID := ""
+		sourceID := "github-connector-app"
 
 		//when
-		p, err := GetEventRequestPayload(eventType, eventTypeVersion, eventID, data)
+		p, err := e.GetEventRequestPayload(eventType, eventTypeVersion, eventID, sourceID, data)
 
 		//then
 		assert.NoError(t, err)
@@ -168,13 +173,16 @@ func TestGetEventRequestPayload(t *testing.T) {
 
 	t.Run("Should return an error and empty struct on empty eventType", func(t *testing.T) {
 		//given
+		e := eventparser{}
+
 		eventType := ""
 		eventTypeVersion := "v1"
 		eventID := ""
+		sourceID := "github-connector-app"
 		expected := EventRequestPayload{}
 
 		//when
-		p, err := GetEventRequestPayload(eventType, eventTypeVersion, eventID, data)
+		p, err := e.GetEventRequestPayload(eventType, eventTypeVersion, eventID, sourceID, data)
 
 		//then
 		assert.Exactly(t, expected, p)
@@ -185,13 +193,16 @@ func TestGetEventRequestPayload(t *testing.T) {
 
 	t.Run("Should return an error and empty struct on empty eventTypeVersion", func(t *testing.T) {
 		//given
+		e := eventparser{}
+
 		eventType := "star"
 		eventTypeVersion := ""
 		eventID := ""
 		expected := EventRequestPayload{}
+		sourceID := "github-connector-app"
 
 		//when
-		p, err := GetEventRequestPayload(eventType, eventTypeVersion, eventID, data)
+		p, err := e.GetEventRequestPayload(eventType, eventTypeVersion, eventID, sourceID, data)
 
 		//then
 		assert.Exactly(t, expected, p)
@@ -202,19 +213,44 @@ func TestGetEventRequestPayload(t *testing.T) {
 
 	t.Run("Should return an error and empty struct on empty data", func(t *testing.T) {
 		//given
+		e := eventparser{}
+
 		eventType := "star"
 		eventTypeVersion := "v1"
 		eventID := ""
 		data := []byte{}
+		sourceID := "github-connector-app"
+
 		expected := EventRequestPayload{}
 
 		//when
-		p, err := GetEventRequestPayload(eventType, eventTypeVersion, eventID, data)
+		p, err := e.GetEventRequestPayload(eventType, eventTypeVersion, eventID, sourceID, data)
 
 		//then
 		assert.Exactly(t, expected, p)
 		assert.Error(t, err)
 		assert.Equal(t, "data should not be empty", err.Error())
+
+	})
+
+	t.Run("Should return an error and empty struct on empty SourceID", func(t *testing.T) {
+		//given
+		e := eventparser{}
+
+		eventType := "star"
+		eventTypeVersion := "v1"
+		eventID := ""
+		sourceID := ""
+
+		expected := EventRequestPayload{}
+
+		//when
+		p, err := e.GetEventRequestPayload(eventType, eventTypeVersion, eventID, sourceID, data)
+
+		//then
+		assert.Exactly(t, expected, p)
+		assert.Error(t, err)
+		assert.Equal(t, "sourceID should not be empty", err.Error())
 
 	})
 }
