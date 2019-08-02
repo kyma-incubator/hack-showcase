@@ -14,8 +14,8 @@ type eventparser struct {
 }
 
 type EventParser interface {
-	GetEventRequestPayload(eventType, eventTypeVersion, eventID, sourceID string, data json.RawMessage) (EventRequestPayload, error)
-	GetEventRequestAsJSON(EeventRequestPayload EventRequestPayload) ([]byte, error)
+	GetEventRequestPayload(eventType, eventTypeVersion, eventID, sourceID string, data json.RawMessage) (EventRequestPayload, apperrors.AppError)
+	GetEventRequestAsJSON(EeventRequestPayload EventRequestPayload) ([]byte, apperrors.AppError)
 }
 
 func NewEventParser() eventparser {

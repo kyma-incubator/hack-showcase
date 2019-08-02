@@ -26,13 +26,13 @@ type HTTPClient interface {
 }
 
 func (k KymaSenderWrapper) SendToKyma(eventType, eventTypeVersion, eventID, sourceID string, data json.RawMessage) apperrors.AppError {
-	toSend, err := k.parser.GetEventRequestPayload(eventType, eventTypeVersion, eventID, sourceID, data)
-	if err != nil {
-		return apperrors.Internal("While parsing the event payload: %s", err.Error())
+	toSend, apperr := k.parser.GetEventRequestPayload(eventType, eventTypeVersion, eventID, sourceID, data)
+	if apperr != nil {
+		return apperrors.Internal("While parsing the event payload: %s", apperr.Error())
 	}
-	jsonToSend, err := k.parser.GetEventRequestAsJSON(toSend)
-	if err != nil {
-		return apperrors.Internal("While getting the request as json %s", err.Error())
+	jsonToSend, apperr := k.parser.GetEventRequestAsJSON(toSend)
+	if apperr != nil {
+		return apperrors.Internal("While getting the request as json %s", apperr.Error())
 	}
 	kymaRequest, err := http.NewRequest(http.MethodPost, "http://event-bus-publish.kyma-system:8080/v1/events",
 		bytes.NewReader(jsonToSend))

@@ -149,6 +149,6 @@ func TestWebhookHandler_TestUnknownEvent(t *testing.T) {
 
 		// then
 		mockValidator.AssertExpectations(t)
-		assert.Equal(t, http.StatusBadRequest, rr.Code)
+		assert.Equal(t, http.StatusNotFound, rr.Code)
 	})
 }

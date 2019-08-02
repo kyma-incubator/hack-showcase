@@ -2,6 +2,7 @@
 
 package mocks
 
+import apperrors "github.com/kyma-incubator/hack-showcase/github-connector/internal/apperrors"
 import eventparser "github.com/kyma-incubator/hack-showcase/github-connector/internal/eventparser"
 import json "encoding/json"
 import mock "github.com/stretchr/testify/mock"
@@ -12,7 +13,7 @@ type EventParser struct {
 }
 
 // GetEventRequestAsJSON provides a mock function with given fields: EeventRequestPayload
-func (_m *EventParser) GetEventRequestAsJSON(EeventRequestPayload eventparser.EventRequestPayload) ([]byte, error) {
+func (_m *EventParser) GetEventRequestAsJSON(EeventRequestPayload eventparser.EventRequestPayload) ([]byte, apperrors.AppError) {
 	ret := _m.Called(EeventRequestPayload)
 
 	var r0 []byte
@@ -24,18 +25,20 @@ func (_m *EventParser) GetEventRequestAsJSON(EeventRequestPayload eventparser.Ev
 		}
 	}
 
-	var r1 error
-	if rf, ok := ret.Get(1).(func(eventparser.EventRequestPayload) error); ok {
+	var r1 apperrors.AppError
+	if rf, ok := ret.Get(1).(func(eventparser.EventRequestPayload) apperrors.AppError); ok {
 		r1 = rf(EeventRequestPayload)
 	} else {
-		r1 = ret.Error(1)
+		if ret.Get(1) != nil {
+			r1 = ret.Get(1).(apperrors.AppError)
+		}
 	}
 
 	return r0, r1
 }
 
 // GetEventRequestPayload provides a mock function with given fields: eventType, eventTypeVersion, eventID, sourceID, data
-func (_m *EventParser) GetEventRequestPayload(eventType string, eventTypeVersion string, eventID string, sourceID string, data json.RawMessage) (eventparser.EventRequestPayload, error) {
+func (_m *EventParser) GetEventRequestPayload(eventType string, eventTypeVersion string, eventID string, sourceID string, data json.RawMessage) (eventparser.EventRequestPayload, apperrors.AppError) {
 	ret := _m.Called(eventType, eventTypeVersion, eventID, sourceID, data)
 
 	var r0 eventparser.EventRequestPayload
@@ -45,11 +48,13 @@ func (_m *EventParser) GetEventRequestPayload(eventType string, eventTypeVersion
 		r0 = ret.Get(0).(eventparser.EventRequestPayload)
 	}
 
-	var r1 error
-	if rf, ok := ret.Get(1).(func(string, string, string, string, json.RawMessage) error); ok {
+	var r1 apperrors.AppError
+	if rf, ok := ret.Get(1).(func(string, string, string, string, json.RawMessage) apperrors.AppError); ok {
 		r1 = rf(eventType, eventTypeVersion, eventID, sourceID, data)
 	} else {
-		r1 = ret.Error(1)
+		if ret.Get(1) != nil {
+			r1 = ret.Get(1).(apperrors.AppError)
+		}
 	}
 
 	return r0, r1
