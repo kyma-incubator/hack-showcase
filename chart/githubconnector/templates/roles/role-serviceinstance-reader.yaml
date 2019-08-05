@@ -2,8 +2,6 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: {{ printf "%s-%s" .Release.Name "serviceinstance-reader" | trunc 63 | trimSuffix "-" }}
-  namespace: test #
-
 rules:
 - apiGroups: ["servicecatalog.k8s.io"]
   resources: ["serviceinstances"]
