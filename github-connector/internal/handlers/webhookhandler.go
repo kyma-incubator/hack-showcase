@@ -3,6 +3,7 @@ package handlers
 import (
 	"encoding/json"
 	"net/http"
+	"os"
 
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/httperrors"
 
@@ -61,11 +62,11 @@ func (wh *WebHookHandler) HandleWebhook(w http.ResponseWriter, r *http.Request) 
 	switch e := event.(type) {
 	case *github.IssuesEvent:
 
-		apperr = wh.kymasender.SendToKyma("issuesevent.opened", "v1", "", "github-connector-app", payload)
+		apperr = wh.kymasender.SendToKyma("issuesevent.opened", "v1", "", os.Getenv("GITHUB_CONNECTOR_NAME")+"-app", payload)
 
 	case *github.PullRequestReviewEvent:
 		if e.GetAction() == "submitted" {
-			apperr = wh.kymasender.SendToKyma("pullrequestreviewevent.submitted", "v1", "", "github-connector-app", payload)
+			apperr = wh.kymasender.SendToKyma("pullrequestreviewevent.submitted", "v1", "", os.Getenv("GITHUB_CONNECTOR_NAME")+"-app", payload)
 		}
 	case *github.PushEvent:
 		log.Infof("Push")
