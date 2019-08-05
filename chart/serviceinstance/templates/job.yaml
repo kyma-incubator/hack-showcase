@@ -23,7 +23,6 @@ spec:
           kubectl get serviceclasses
           echo "and once again"
           NAME=`kubectl get serviceclasses -o jsonpath="{.items[0].spec.externalName}"`
-          echo "dupa"
           echo $NAME
           echo `kubectl get namespaces`
           cat <<EOF | kubectl create -f -

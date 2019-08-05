@@ -1,6 +1,82 @@
-apk add curl
-curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.12.0/bin/linux/amd64/kubectl
-chmod +x ./kubectl
-apk add sudo
-sudo mv ./kubectl /usr/local/bin/kubectl
-kubectl get pods --all-namespaces
+EXTERNALNAME=`kubectl get serviceclasses -n $2 -o jsonpath="{.items[0].spec.externalName}"`
+NAME=$1
+NAMESPACE=$2
+echo $EXTERNALNAME
+cat <<EOF_ | kubectl create -f -
+          apiVersion: servicecatalog.k8s.io/v1beta1
+          kind: ServiceInstance
+          metadata:
+            name: ${NAME}
+            namespace:  ${NAMESPACE}
+          spec:
+            serviceClassExternalName: ${EXTERNALNAME}
+EOF_
+
+echo "Service Instance created. It's time for lambda function..."
+
+cat <<EOF | kubectl apply -f -
+apiVersion: kubeless.io/v1beta1
+kind: Function
+metadata:
+  name: ${NAME}-lambda
+  namespace: ${NAMESPACE}
+  labels:
+    app: ${NAME}
+spec:
+  deployment:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: ""
+            resources: {}
+  deps: |-
+    {
+        "name": "example-1",
+        "version": "0.0.1",
+        "dependencies": {
+          "request": "^2.85.0"
+        }
+    }
+  function: |-
+    module.exports = { main: function (event, context) {
+        console.log("BLABLAB")
+    } }
+  function-content-type: text
+  handler: handler.main
+  horizontalPodAutoscaler:
+    spec:
+      maxReplicas: 0
+  runtime: nodejs8
+  service:
+    ports:
+    - name: http-function-port
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      created-by: kubeless
+      function: ${NAME}
+  timeout: ""
+  topic: exampleEvent
+EOF
+
+echo "Lambda created. Subscribing..."
+
+cat <<EOF | kubectl apply -f -
+apiVersion: eventing.kyma-project.io/v1alpha1
+kind: Subscription
+metadata:
+  labels:
+    Function: ${NAME}-lambda
+  name: lambda-my-events-lambda-exampleevent-v1
+  namespace: ${NAMESPACE}
+spec:
+  endpoint: http://${NAME}-lambda.${NAMESPACE}:8080/
+  event_type: issuesevent.opened
+  event_type_version: v1
+  include_subscription_name_header: true
+  source_id: ${NAME}-app
+EOF
+
+echo "Subscribed! Happy GitHub Connecting!"
