@@ -24,7 +24,7 @@ func main() {
 		"id": id,
 	}).Info("Service registered")
 
-	kyma := kymasender.NewKymaSenderWrapper(&http.Client{}, eventparser.NewEventParser())
+	kyma := kymasender.NewWrapper(&http.Client{}, eventparser.NewEventParser())
 	webhook := handlers.NewWebHookHandler(
 		githubwrappers.ReceivingEventsWrapper{},
 		kyma,

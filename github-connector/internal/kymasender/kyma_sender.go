@@ -11,13 +11,15 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-type KymaSenderWrapper struct {
+//Wrapper is a struct used to allow mocking the SendToKyma function
+type Wrapper struct {
 	parser eventparser.EventParser
 	client HTTPClient
 }
 
-func NewKymaSenderWrapper(c HTTPClient, ep eventparser.EventParser) KymaSenderWrapper {
-	return KymaSenderWrapper{client: c, parser: ep}
+//NewWrapper is a function that creates new Wrapper with the passed in interfaces
+func NewWrapper(c HTTPClient, ep eventparser.EventParser) Wrapper {
+	return Wrapper{client: c, parser: ep}
 }
 
 //HTTPClient is an interface use to allow mocking the http.Client methods
@@ -25,7 +27,8 @@ type HTTPClient interface {
 	Do(req *http.Request) (*http.Response, error)
 }
 
-func (k KymaSenderWrapper) SendToKyma(eventType, eventTypeVersion, eventID, sourceID string, data json.RawMessage) apperrors.AppError {
+//SendToKyma is a function that sends the event given by the Github API to kyma's event bus
+func (k Wrapper) SendToKyma(eventType, eventTypeVersion, eventID, sourceID string, data json.RawMessage) apperrors.AppError {
 	toSend, apperr := k.parser.GetEventRequestPayload(eventType, eventTypeVersion, eventID, sourceID, data)
 	if apperr != nil {
 		return apperrors.Internal("While parsing the event payload: %s", apperr.Error())

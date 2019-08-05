@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"testing"
 
 	"github.com/google/go-github/github"
@@ -106,7 +107,7 @@ func TestWebhookHandler_TestKnownEvent(t *testing.T) {
 		mockPayload, err := json.Marshal(toJSON{TestJSON: "test"})
 		require.NoError(t, err)
 		rawPayload := json.RawMessage(mockPayload)
-		mockSender.On("SendToKyma", "issuesevent.opened", "v1", "", "github-connector-app", rawPayload).Return(nil)
+		mockSender.On("SendToKyma", "issuesevent.opened", "v1", "", os.Getenv("GITHUB_CONNECTOR_NAME")+"-app", rawPayload).Return(nil)
 
 		mockValidator.On("GetToken").Return("test")
 		mockValidator.On("ValidatePayload", req, []byte("test")).Return(mockPayload, nil)
