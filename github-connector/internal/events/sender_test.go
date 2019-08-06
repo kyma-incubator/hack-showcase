@@ -1,11 +1,15 @@
-package events
+package events_test
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
+	"net/http/httptest"
 	"testing"
+	"time"
 
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/apperrors"
+	"github.com/kyma-incubator/hack-showcase/github-connector/internal/events"
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/events/mocks"
 
 	"github.com/stretchr/testify/assert"
@@ -23,54 +27,142 @@ func (c *ClientMock) Do(req *http.Request) (*http.Response, error) {
 	return &http.Response{}, nil
 }
 
-func TestSendToKyma_ProperArguments(t *testing.T) {
-	t.Run("should return no error", func(t *testing.T) {
-		k := NewWrapper(&ClientMock{}, eventparser.NewEventParser())
+func TestSendToKyma(t *testing.T) {
+	t.Run("should return no error when given proper arguments", func(t *testing.T) {
+		k := events.NewSender(&ClientMock{}, events.NewValidator(), "http://event-bus-publish.kyma-system:8080/v1/events")
 		payload := toJSON{TestJSON: "test"}
 		toSend, err := json.Marshal(payload)
 		require.NoError(t, err)
 		assert.Equal(t, nil, k.SendToKyma("issuesevent.opened", "v1", "", "github-connector-app", json.RawMessage(toSend)))
 	})
-}
 
-func TestSendToKyma_NoEventType(t *testing.T) {
-	t.Run("should return an internal error", func(t *testing.T) {
+	t.Run("should return an internal error when given no event type", func(t *testing.T) {
+		//given
 		payload := toJSON{TestJSON: "test"}
 		toSend, err := json.Marshal(payload)
 		require.NoError(t, err)
-		mockParser := &mocks.EventParser{}
-		mockParser.On("GetEventRequestPayload", "", "v1", "", "github-connector-app", json.RawMessage(toSend)).Return(eventparser.EventRequestPayload{}, apperrors.Internal("test"))
-		k := NewWrapper(&ClientMock{}, mockParser)
+		mockValidator := &mocks.Validator{}
+		mockValidator.On("Validate", events.EventRequestPayload{"",
+			"v1",
+			"",
+			time.Now().Format(time.RFC3339),
+			"github-connector-app",
+			json.RawMessage(toSend)}).Return(apperrors.Internal("test"))
+
+		k := events.NewSender(&ClientMock{}, mockValidator, "http://event-bus-publish.kyma-system:8080/v1/events")
 		expected := apperrors.Internal("test")
+
+		//when
 		actual := k.SendToKyma("", "v1", "", "github-connector-app", json.RawMessage(toSend))
+
+		//then
 		assert.Equal(t, expected.Code(), actual.Code())
 	})
-}
 
-func TestSendToKyma_NoEventVersion(t *testing.T) {
-	t.Run("should return an internal error", func(t *testing.T) {
+	t.Run("should return an internal error when given no event version", func(t *testing.T) {
+		//given
 		payload := toJSON{TestJSON: "test"}
 		toSend, err := json.Marshal(payload)
 		require.NoError(t, err)
-		mockParser := &mocks.EventParser{}
-		mockParser.On("GetEventRequestPayload", "issuesevent.opened", "", "", "github-connector-app", json.RawMessage(toSend)).Return(eventparser.EventRequestPayload{}, apperrors.Internal("test"))
-		k := NewWrapper(&ClientMock{}, mockParser)
+
+		mockValidator := &mocks.Validator{}
+		mockValidator.On("Validate", events.EventRequestPayload{"issuesevent.opened",
+			"",
+			"",
+			time.Now().Format(time.RFC3339),
+			"github-connector-app",
+			json.RawMessage(toSend)}).Return(apperrors.Internal("test"))
+		k := events.NewSender(&ClientMock{}, mockValidator, "http://event-bus-publish.kyma-system:8080/v1/events")
 		expected := apperrors.Internal("test")
+
+		//when
 		actual := k.SendToKyma("issuesevent.opened", "", "", "github-connector-app", json.RawMessage(toSend))
+
+		//then
 		assert.Equal(t, expected.Code(), actual.Code())
 	})
-}
 
-func TestSendToKyma_NoSourceID(t *testing.T) {
-	t.Run("should return an internal error", func(t *testing.T) {
+	t.Run("should return an internal error when given no source id", func(t *testing.T) {
+		//given
 		payload := toJSON{TestJSON: "test"}
 		toSend, err := json.Marshal(payload)
 		require.NoError(t, err)
-		mockParser := &mocks.EventParser{}
-		mockParser.On("GetEventRequestPayload", "issuesevent.opened", "v1", "", "", json.RawMessage(toSend)).Return(eventparser.EventRequestPayload{}, apperrors.Internal("test"))
-		k := NewWrapper(&ClientMock{}, mockParser)
+
+		mockValidator := &mocks.Validator{}
+		mockValidator.On("Validate", events.EventRequestPayload{"issuesevent.opened",
+			"v1",
+			"",
+			time.Now().Format(time.RFC3339),
+			"",
+			json.RawMessage(toSend)}).Return(apperrors.Internal("test"))
+		k := events.NewSender(&ClientMock{}, mockValidator, "http://event-bus-publish.kyma-system:8080/v1/events")
 		expected := apperrors.Internal("test")
+
+		//when
 		actual := k.SendToKyma("issuesevent.opened", "v1", "", "", json.RawMessage(toSend))
+
+		//then
 		assert.Equal(t, expected.Code(), actual.Code())
 	})
+
+	t.Run("should return no error when given proper arguments", func(t *testing.T) {
+		ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			checkEventRequest(t, r)
+			w.WriteHeader(http.StatusOK)
+		}))
+		defer ts.Close()
+
+		validatorMock := &mocks.Validator{}
+		payload := toJSON{TestJSON: "test"}
+		toSend, err := json.Marshal(payload)
+		require.NoError(t, err)
+
+		validatorMock.On("Validate", events.EventRequestPayload{"issuesevent.opened", "v1", "", time.Now().Format(time.RFC3339), "github-connector-app", json.RawMessage(toSend)}).Return(nil)
+		sender := events.NewSender(&http.Client{}, events.NewValidator(), ts.URL)
+
+		// when
+		apperr := sender.SendToKyma("issuesevent.opened", "v1", "", "github-connector-app", json.RawMessage(toSend))
+
+		// then
+		require.NoError(t, apperr)
+
+	})
+
+	t.Run("should return no error when given proper arguments", func(t *testing.T) {
+		// given
+		ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			checkEventRequest(t, r)
+			w.WriteHeader(http.StatusInternalServerError)
+		}))
+
+		defer ts.Close()
+
+		validatorMock := &mocks.Validator{}
+		payload := toJSON{TestJSON: "test"}
+		toSend, err := json.Marshal(payload)
+		require.NoError(t, err)
+
+		validatorMock.On("Validate", events.EventRequestPayload{"issuesevent.opened", "v1", "", time.Now().Format(time.RFC3339), "github-connector-app", json.RawMessage(toSend)}).Return(nil)
+		sender := events.NewSender(&http.Client{}, events.NewValidator(), ts.URL)
+
+		// when
+		apperr := sender.SendToKyma("issuesevent.opened", "v1", "", "github-connector-app", json.RawMessage(toSend))
+
+		// then
+		require.Error(t, apperr)
+		log.Println(apperr.Code())
+		assert.Equal(t, true, apperr.Code() == apperrors.CodeInternal)
+	})
+
+}
+
+func checkEventRequest(t *testing.T, r *http.Request) {
+	decoder := json.NewDecoder(r.Body)
+	testStruct := events.EventRequestPayload{}
+	err := decoder.Decode(&testStruct)
+	require.NoError(t, err)
+
+	assert.Equal(t, "issuesevent.opened", testStruct.EventType)
+	assert.Equal(t, "v1", testStruct.EventTypeVersion)
+	assert.Equal(t, "github-connector-app", testStruct.SourceID)
 }

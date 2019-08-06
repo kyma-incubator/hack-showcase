@@ -4,21 +4,25 @@ import (
 	"bytes"
 	"encoding/json"
 	"net/http"
+	"time"
 
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/apperrors"
 
 	log "github.com/sirupsen/logrus"
 )
 
-//Wrapper is a struct used to allow mocking the SendToKyma function
-type Wrapper struct {
-	parser EventParser
-	client HTTPClient
+const eventBusURL = "http://event-bus-publish.kyma-system:8080/v1/events"
+
+//Sender is a struct used to allow mocking the SendToKyma function
+type Sender struct {
+	validator  Validator
+	client     HTTPClient
+	serviceURL string
 }
 
-//NewWrapper is a function that creates new Wrapper with the passed in interfaces
-func NewWrapper(c HTTPClient, ep EventParser) Wrapper {
-	return Wrapper{client: c, parser: ep}
+//NewSender is a function that creates new Sender with the passed in interfaces
+func NewSender(c HTTPClient, v Validator, serviceURL string) Sender {
+	return Sender{client: c, validator: v, serviceURL: serviceURL}
 }
 
 //HTTPClient is an interface use to allow mocking the http.Client methods
@@ -26,25 +30,52 @@ type HTTPClient interface {
 	Do(req *http.Request) (*http.Response, error)
 }
 
+// EventRequestPayload represents a POST request's body which is sent to Event-Service
+type EventRequestPayload struct {
+	EventType        string          `json:"event-type"`
+	EventTypeVersion string          `json:"event-type-version"`
+	EventID          string          `json:"event-id,omitempty"` //uuid should be generated automatically if send empty
+	EventTime        string          `json:"event-time"`
+	SourceID         string          `json:"source-id"`      //put your application name here
+	Data             json.RawMessage `json:"data,omitempty"` //github webhook json payload
+}
+
 //SendToKyma is a function that sends the event given by the Github API to kyma's event bus
-func (k Wrapper) SendToKyma(eventType, eventTypeVersion, eventID, sourceID string, data json.RawMessage) apperrors.AppError {
-	toSend, apperr := k.parser.GetEventRequestPayload(eventType, eventTypeVersion, eventID, sourceID, data)
+func (k Sender) SendToKyma(eventType, eventTypeVersion, eventID, sourceID string, data json.RawMessage) apperrors.AppError {
+
+	payload := EventRequestPayload{
+		eventType,
+		eventTypeVersion,
+		eventID,
+		time.Now().Format(time.RFC3339),
+		sourceID,
+		data}
+
+	apperr := k.validator.Validate(payload)
 	if apperr != nil {
-		return apperrors.Internal("While parsing the event payload: %s", apperr.Error())
+		return apperrors.Internal("While validating the payload: %s", apperr.Error())
 	}
-	jsonToSend, apperr := k.parser.GetEventRequestAsJSON(toSend)
-	if apperr != nil {
-		return apperrors.Internal("While getting the request as json %s", apperr.Error())
+
+	jsonToSend, err := json.MarshalIndent(payload, "", "  ")
+	if err != nil {
+		return apperrors.Internal("Can not marshall given struct: %s", err.Error())
 	}
-	kymaRequest, err := http.NewRequest(http.MethodPost, "http://event-bus-publish.kyma-system:8080/v1/events",
+
+	kymaRequest, err := http.NewRequest(http.MethodPost, k.serviceURL+"/v1/events",
 		bytes.NewReader(jsonToSend))
 	if err != nil {
 		return apperrors.Internal("While creating an http request: %s", err.Error())
 	}
+
 	response, err := k.client.Do(kymaRequest)
 	if err != nil {
-		return apperrors.UpstreamServerCallFailed("While sending the event to the EventBus: %s", err.Error())
+		return apperrors.Internal("While sending the event to the EventBus: %s", err.Error())
 	}
+
+	if response.StatusCode == http.StatusInternalServerError {
+		return apperrors.Internal("Error sending event: %s", err)
+	}
+
 	log.Info(response)
 	return nil
 }

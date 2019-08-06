@@ -35,8 +35,8 @@ func createRequest(t *testing.T) *http.Request {
 	return req
 }
 
-func TestWebhookHandler_TestBadSecret(t *testing.T) {
-	t.Run("should respond with 403 status code", func(t *testing.T) {
+func TestWebhookHandler(t *testing.T) {
+	t.Run("Should respond with 403 status code when given a bad secret", func(t *testing.T) {
 		// given
 
 		payload := toJSON{TestJSON: "test"}
@@ -64,10 +64,8 @@ func TestWebhookHandler_TestBadSecret(t *testing.T) {
 		assert.Equal(t, http.StatusUnauthorized, rr.Code)
 
 	})
-}
 
-func TestWebhookHandler_TestWrongPayload(t *testing.T) {
-	t.Run("should respond with 400 status code", func(t *testing.T) {
+	t.Run("Should respond with 400 status code when given wrong payload ", func(t *testing.T) {
 
 		// given
 		req := createRequest(t)
@@ -93,10 +91,7 @@ func TestWebhookHandler_TestWrongPayload(t *testing.T) {
 		assert.Equal(t, http.StatusBadRequest, rr.Code)
 	})
 
-}
-
-func TestWebhookHandler_TestKnownEvent(t *testing.T) {
-	t.Run("should respond with 200 status code", func(t *testing.T) {
+	t.Run("Should respond with 200 status code, when given a payload with a known event", func(t *testing.T) {
 
 		// given
 		req := createRequest(t)
@@ -124,10 +119,8 @@ func TestWebhookHandler_TestKnownEvent(t *testing.T) {
 		mockValidator.AssertExpectations(t)
 		assert.Equal(t, http.StatusOK, rr.Code)
 	})
-}
 
-func TestWebhookHandler_TestUnknownEvent(t *testing.T) {
-	t.Run("should respond with 400 status code", func(t *testing.T) {
+	t.Run("Should respond with 400 status code, when given a payload with an unknown event", func(t *testing.T) {
 
 		// given
 		req := createRequest(t)
@@ -152,4 +145,5 @@ func TestWebhookHandler_TestUnknownEvent(t *testing.T) {
 		mockValidator.AssertExpectations(t)
 		assert.Equal(t, http.StatusNotFound, rr.Code)
 	})
+
 }
