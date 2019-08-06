@@ -4,7 +4,6 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/kyma-incubator/hack-showcase/github-connector/internal/eventparser"
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/github"
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/registration"
 
@@ -25,7 +24,7 @@ func main() {
 		"id": id,
 	}).Info("Service registered")
 
-	kyma := events.NewWrapper(&http.Client{}, eventparser.NewEventParser())
+	kyma := events.NewWrapper(&http.Client{}, events.NewEventParser())
 	webhook := handlers.NewWebHookHandler(
 		github.ReceivingEventsWrapper{},
 		kyma,
