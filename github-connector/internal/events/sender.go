@@ -61,7 +61,7 @@ func (k Sender) SendToKyma(eventType, eventTypeVersion, eventID, sourceID string
 		return apperrors.Internal("Can not marshall given struct: %s", err.Error())
 	}
 
-	kymaRequest, err := http.NewRequest(http.MethodPost, k.serviceURL+"/v1/events",
+	kymaRequest, err := http.NewRequest(http.MethodPost, k.serviceURL,
 		bytes.NewReader(jsonToSend))
 	if err != nil {
 		return apperrors.Internal("While creating an http request: %s", err.Error())

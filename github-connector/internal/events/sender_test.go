@@ -128,7 +128,7 @@ func TestSendToKyma(t *testing.T) {
 
 	})
 
-	t.Run("should return no error when given proper arguments", func(t *testing.T) {
+	t.Run("should return an error when given wrong arguments", func(t *testing.T) {
 		// given
 		ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			checkEventRequest(t, r)
@@ -142,11 +142,11 @@ func TestSendToKyma(t *testing.T) {
 		toSend, err := json.Marshal(payload)
 		require.NoError(t, err)
 
-		validatorMock.On("Validate", events.EventRequestPayload{"issuesevent.opened", "v1", "", time.Now().Format(time.RFC3339), "github-connector-app", json.RawMessage(toSend)}).Return(nil)
+		validatorMock.On("Validate", events.EventRequestPayload{"", "", "", time.Now().Format(time.RFC3339), "github-connector-app", json.RawMessage(toSend)}).Return(nil)
 		sender := events.NewSender(&http.Client{}, events.NewValidator(), ts.URL)
 
 		// when
-		apperr := sender.SendToKyma("issuesevent.opened", "v1", "", "github-connector-app", json.RawMessage(toSend))
+		apperr := sender.SendToKyma("", "", "", "github-connector-app", json.RawMessage(toSend))
 
 		// then
 		require.Error(t, apperr)
