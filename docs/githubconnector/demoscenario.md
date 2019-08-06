@@ -66,8 +66,11 @@ After clicking **```+ Add Lambda```** you will be able to select triggering opti
 	![Choose function trigger](./pictures/demoscenario-13-choose-function-trigger.png)
 3. Select events for which this specific lambda you desire to be able to react.
 	![Select events](./pictures/demoscenario-14-choose-events.png)
-4. Write body of your function and click **```Create```**.
-	![Write lambda](./pictures/demoscenario-15-write-lambda.png)
+4. Create service binding and choose your service. Click **```Create Service Binding```** to apply binding.
+   	![Write lambda](./pictures/demoscenario-15-create-service-binding.png)
+
+5. Write body of your function and click **```Create```**.
+	![Write lambda](./pictures/demoscenario-16-write-lambda.png)
 
 Everything should be working now.
 
