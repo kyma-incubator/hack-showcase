@@ -7,7 +7,6 @@
 		- [Setting up ServiceInstance and Lambda](#setting-up-serviceinstance-and-lambda)
 		- [Creation of Lambda function](#creation-of-lambda-function)
 	- [Option 2. Shell script](#option-2-shell-script)
-	- [~~Option 3. Helm chart~~](#option-3-helm-chart)
 
 ## Prerequisites
 
@@ -91,4 +90,4 @@ Lambda created. Subscribing...
 subscription.eventing.kyma-project.io/gh-connector-example-lambda-issuesevent-opened-v1 created
 Subscribed! Happy GitHub Connecting!
 ```
-Lambda reacts to new issues opened in GitHub repository you are bind to. It logs `Issue opened` when someone creates a new issue.
+Lambda reacts to new issues opened in GitHub repository you are bound to. It logs `Issue opened` when someone creates a new issue.
