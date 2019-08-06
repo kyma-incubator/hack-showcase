@@ -75,8 +75,20 @@ After clicking **```+ Add Lambda```** you will be able to select triggering opti
 Everything should be working now.
 
 ### Option 2. Shell script
+1. Go to the `/chart/demoscenario` directory, where you can find `demoscenario.sh` script.
 
-1. Find the ```demoscenario.sh``` script in ```/hack-showcase/chart/``` directory.
-2. Run the script.
+2. Run the script and supply the name, which has to be the same as the one you used as release name while installing GitHub Connector with helm, and the namespace in which GitHub Connector application is running (github-connector)
+```
+sh demoscenario.sh gh-connector-example github-connector
+```
 
-### ~~Option 3. Helm chart~~
+You can see output similar to the following:
+```
+serviceinstance.servicecatalog.k8s.io/gh-connector-example created
+Service Instance created. It's time for lambda function...
+function.kubeless.io/gh-connector-example-lambda created
+Lambda created. Subscribing...
+subscription.eventing.kyma-project.io/gh-connector-example-lambda-issuesevent-opened-v1 created
+Subscribed! Happy GitHub Connecting!
+```
+Lambda reacts to new issues opened in GitHub repository you are bind to. It logs `Issue opened` when someone creates a new issue.
