@@ -15,6 +15,7 @@ type EventParser interface {
 
 // EventRequestPayload represents a POST request's body which is sent to Event-Service
 type EventRequestPayload struct {
+	
 	EventType        string          `json:"event-type"`
 	EventTypeVersion string          `json:"event-type-version"`
 	EventID          string          `json:"event-id,omitempty"` //uuid should be generated automatically if send empty

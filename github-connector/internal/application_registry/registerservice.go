@@ -9,6 +9,7 @@ import (
 )
 
 var jsonBody = model.ServiceDetails{
+	
 	Provider:    "kyma",
 	Name:        "github-connector",
 	Description: "Boilerplate for GitHub connector",
