@@ -40,7 +40,7 @@ spec:
     }
   function: |-
     module.exports = { main: function (event, context) {
-        console.log("BLABLAB")
+        console.log("Issue opened")
     } }
   function-content-type: text
   handler: handler.main
@@ -56,9 +56,9 @@ spec:
       targetPort: 8080
     selector:
       created-by: kubeless
-      function: ${NAME}
+      function: ${NAME}-lambda
   timeout: ""
-  topic: exampleEvent
+  topic: issuesevent.opened
 EOF
 
 echo "Lambda created. Subscribing..."
@@ -69,7 +69,7 @@ kind: Subscription
 metadata:
   labels:
     Function: ${NAME}-lambda
-  name: lambda-my-events-lambda-exampleevent-v1
+  name: ${NAME}-lambda-issuesevent-opened-v1sub
   namespace: ${NAMESPACE}
 spec:
   endpoint: http://${NAME}-lambda.${NAMESPACE}:8080/
