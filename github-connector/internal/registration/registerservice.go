@@ -1,23 +1,22 @@
-package registerservice
+package registration
 
 import (
 	"os"
 	"time"
 
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/apperrors"
-	"github.com/kyma-incubator/hack-showcase/github-connector/internal/model"
 	log "github.com/sirupsen/logrus"
 )
 
-var jsonBody = model.ServiceDetails{
+var jsonBody = ServiceDetails{
 	Provider:    "kyma",
 	Name:        os.Getenv("GITHUB_CONNECTOR_NAME"),
 	Description: "Boilerplate for GitHub connector",
-	API: &model.API{
+	API: &API{
 		TargetURL:        "https://api.github.com",
 		SpecificationURL: "https://raw.githubusercontent.com/colunira/github-openapi/master/githubopenAPI.json",
 	},
-	Events: &model.Events{
+	Events: &Events{
 		Spec: []byte(`{
 			"asyncapi": "1.0.0",
 			"info": {

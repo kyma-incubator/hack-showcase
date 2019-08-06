@@ -1,4 +1,4 @@
-package kymasender
+package events
 
 import (
 	"bytes"
@@ -6,19 +6,18 @@ import (
 	"net/http"
 
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/apperrors"
-	"github.com/kyma-incubator/hack-showcase/github-connector/internal/eventparser"
 
 	log "github.com/sirupsen/logrus"
 )
 
 //Wrapper is a struct used to allow mocking the SendToKyma function
 type Wrapper struct {
-	parser eventparser.EventParser
+	parser EventParser
 	client HTTPClient
 }
 
 //NewWrapper is a function that creates new Wrapper with the passed in interfaces
-func NewWrapper(c HTTPClient, ep eventparser.EventParser) Wrapper {
+func NewWrapper(c HTTPClient, ep EventParser) Wrapper {
 	return Wrapper{client: c, parser: ep}
 }
 

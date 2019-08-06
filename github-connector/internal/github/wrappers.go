@@ -1,4 +1,4 @@
-package githubwrappers
+package github
 
 import (
 	"net/http"

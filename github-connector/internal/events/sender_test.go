@@ -1,4 +1,4 @@
-package kymasender
+package events
 
 import (
 	"encoding/json"

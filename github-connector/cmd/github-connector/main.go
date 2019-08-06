@@ -5,18 +5,19 @@ import (
 	"os"
 
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/eventparser"
+	"github.com/kyma-incubator/hack-showcase/github-connector/internal/github"
+	"github.com/kyma-incubator/hack-showcase/github-connector/internal/registration"
 
-	registerservice "github.com/kyma-incubator/hack-showcase/github-connector/internal/application_registry"
-	"github.com/kyma-incubator/hack-showcase/github-connector/internal/githubwrappers"
+	"github.com/kyma-incubator/hack-showcase/github-connector/internal/events"
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/handlers"
-	"github.com/kyma-incubator/hack-showcase/github-connector/internal/kymasender"
+
 	log "github.com/sirupsen/logrus"
 )
 
 func main() {
 	log.Info("server started")
 
-	id, err := registerservice.RegisterService()
+	id, err := registration.RegisterService()
 	if err != nil {
 		log.Fatal("Fatal error: ", err.Error())
 	}
@@ -24,9 +25,9 @@ func main() {
 		"id": id,
 	}).Info("Service registered")
 
-	kyma := kymasender.NewWrapper(&http.Client{}, eventparser.NewEventParser())
+	kyma := events.NewWrapper(&http.Client{}, eventparser.NewEventParser())
 	webhook := handlers.NewWebHookHandler(
-		githubwrappers.ReceivingEventsWrapper{},
+		github.ReceivingEventsWrapper{},
 		kyma,
 	)
 
