@@ -1,18 +1,41 @@
-EXTERNALNAME=`kubectl get serviceclasses -n $2 -o jsonpath="{.items[0].spec.externalName}"`
+set -o errexit
+
 NAME=$1
 NAMESPACE=$2
 echo $EXTERNALNAME
+
 cat <<EOF_ | kubectl create -f -
-          apiVersion: servicecatalog.k8s.io/v1beta1
-          kind: ServiceInstance
-          metadata:
-            name: ${NAME}
-            namespace:  ${NAMESPACE}
-          spec:
-            serviceClassExternalName: ${EXTERNALNAME}
+apiVersion: applicationconnector.kyma-project.io/v1alpha1
+kind: ApplicationMapping
+metadata:
+  name: ${NAME}-app
+  namespace: ${NAMESPACE}
+  labels:
+    app: ${NAME}-app
+    chart: github-connector
+    release: ${NAME}
 EOF_
 
-echo "Service Instance created. It's time for lambda function..."
+echo `kubectl get serviceclasses -n rafal8 -o jsonpath="{.items}"`
+
+if [ ! `kubectl get serviceclasses -n rafal8 -o jsonpath="{.items}"` ] 
+then 
+  echo `kubectl get serviceclasses -n rafal8 -o jsonpath="{.items}"` 
+fi
+
+sleep 1
+
+EXTERNALNAME=`kubectl get serviceclasses -n $2 -o jsonpath="{.items[0].spec.externalName}"`
+
+cat <<EOF_ | kubectl create -f -
+apiVersion: servicecatalog.k8s.io/v1beta1
+kind: ServiceInstance
+metadata:
+  name: ${NAME}
+  namespace:  ${NAMESPACE}
+spec:
+  serviceClassExternalName: ${EXTERNALNAME}
+EOF_
 
 cat <<EOF | kubectl apply -f -
 apiVersion: kubeless.io/v1beta1
@@ -61,8 +84,6 @@ spec:
   topic: issuesevent.opened
 EOF
 
-echo "Lambda created. Subscribing..."
-
 cat <<EOF | kubectl apply -f -
 apiVersion: eventing.kyma-project.io/v1alpha1
 kind: Subscription
@@ -79,4 +100,19 @@ spec:
   source_id: ${NAME}-app
 EOF
 
-echo "Subscribed! Happy GitHub Connecting!"
+cat <<EOF | kubectl apply -f -
+apiVersion: eventing.knative.dev/v1alpha1
+kind: Subscription
+metadata:
+  finalizers:
+  - subscription-controller
+  generation: 1
+  name: ${NAME}-lambda-issuesevent.opened-v1
+  namespace: kyma-system
+spec:
+  channel:
+    apiVersion: eventing.knative.dev/v1alpha1
+    kind: Channel
+    name: ${NAME}
+  reply: {}
+EOF
