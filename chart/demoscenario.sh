@@ -18,7 +18,7 @@ EOF_
 
 sleep 1
 
-EXTERNALNAME=`kubectl get serviceclasses -n $2 -o jsonpath="{.items[0].spec.externalName}"`
+EXTERNALNAME=`kubectl get serviceclasses -n ${NAMESPACE} -o jsonpath="{.items[0].spec.externalName}"`
 
 cat <<EOF_ | kubectl create -f -
 apiVersion: servicecatalog.k8s.io/v1beta1
