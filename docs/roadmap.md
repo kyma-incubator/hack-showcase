@@ -6,7 +6,7 @@ Our scenario consists of two main components: GitHub Connector and Slack Connect
 ### Github Connector
 * [ ] Connector as a Kyma Add-On 
 * [ ] Convert all Github webhooks' payloads to AsyncAPI specification standard
-* [ ] Support of SSL certificates
+* [ ] Improve security
 * [ ] Setting up the GitHub webhooks from Kyma
 
 ### Kyma's Lambda Usage
@@ -15,4 +15,4 @@ Our scenario consists of two main components: GitHub Connector and Slack Connect
 
 ### Slack Connector
 * [ ] Connector as a Kyma Add-On 
-* [ ] Send notifications to corresponding people on Slack
+* [ ] Send notifications to corresponding channels on Slack
