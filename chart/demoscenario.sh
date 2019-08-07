@@ -100,19 +100,4 @@ spec:
   source_id: ${NAME}-app
 EOF
 
-cat <<EOF | kubectl apply -f -
-apiVersion: eventing.knative.dev/v1alpha1
-kind: Subscription
-metadata:
-  finalizers:
-  - subscription-controller
-  generation: 1
-  name: ${NAME}-lambda-issuesevent.opened-v1
-  namespace: kyma-system
-spec:
-  channel:
-    apiVersion: eventing.knative.dev/v1alpha1
-    kind: Channel
-    name: ${NAME}
-  reply: {}
-EOF
+echo "Happy GitHub Connecting!"

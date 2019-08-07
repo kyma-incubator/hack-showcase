@@ -10,8 +10,8 @@
 
 ## Prerequisites
 
-* Kyma with GitHub Connector deployed on your cluster (see [installation guide](helm-installation-tutorial.md)).
-* WebHook configured to deliver payload to the Connector's ```/webhook``` endpoint.
+- Kyma with GitHub Connector deployed on your cluster (see [installation guide](helm-installation-tutorial.md)).
+- WebHook configured to deliver payload to the Connector's ```/webhook``` endpoint.
 
 ## Configuration of ServiceInstance to use Lambda functions
 
@@ -74,20 +74,23 @@ After clicking **```+ Add Lambda```** you will be able to select triggering opti
 Everything should be working now.
 
 ### Option 2. Shell script
+
 1. Go to the `/chart/demoscenario` directory, where you can find `demoscenario.sh` script.
 
-2. Run the script and supply the name, which has to be the same as the one you used as release name while installing GitHub Connector with helm, and the namespace in which GitHub Connector application is running (github-connector)
-```
-sh demoscenario.sh gh-connector-example github-connector
-```
+2. Run the script and supply the name, which has to be the same as the one you used as release name while installing GitHub Connector with helm, and the namespace in which GitHub Connector application is running (github-connector).
 
-You can see output similar to the following:
-```
-serviceinstance.servicecatalog.k8s.io/gh-connector-example created
-Service Instance created. It's time for lambda function...
-function.kubeless.io/gh-connector-example-lambda created
-Lambda created. Subscribing...
-subscription.eventing.kyma-project.io/gh-connector-example-lambda-issuesevent-opened-v1 created
-Subscribed! Happy GitHub Connecting!
-```
-Lambda reacts to new issues opened in GitHub repository you are bound to. It logs `Issue opened` when someone creates a new issue.
+   ```shell
+   sh demoscenario.sh gh-connector-example github-connector
+   ```
+
+   You can see output similar to the following:
+
+   ```
+   applicationmapping.applicationconnector.kyma-project.io/gh-connector-example-app created
+   serviceinstance.servicecatalog.k8s.io/gh-connector-example created
+   function.kubeless.io/gh-connector-example-lambda created
+   subscription.eventing.kyma-project.io/gh-connector-example-lambda-issuesevent-opened-v1 created
+   Subscribed! Happy GitHub Connecting!
+   ```
+
+   Lambda reacts to new issues opened in GitHub repository you are bound to. It logs `Issue opened` when someone creates a new issue.
