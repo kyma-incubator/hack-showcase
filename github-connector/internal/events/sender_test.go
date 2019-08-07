@@ -24,7 +24,10 @@ type ClientMock struct {
 }
 
 func (c *ClientMock) Do(req *http.Request) (*http.Response, error) {
-	return &http.Response{}, nil
+	if req.URL.String() == "test" {
+		return nil, apperrors.Internal("Couldn't create a request")
+	}
+	return &http.Response{StatusCode: 200}, nil
 }
 
 func TestSendToKyma(t *testing.T) {
@@ -36,7 +39,7 @@ func TestSendToKyma(t *testing.T) {
 		assert.Equal(t, nil, k.SendToKyma("issuesevent.opened", "v1", "", "github-connector-app", json.RawMessage(toSend)))
 	})
 
-	t.Run("should return an internal error when given no event type", func(t *testing.T) {
+	t.Run("should return an internal error when wrong arguments", func(t *testing.T) {
 		//given
 		payload := toJSON{TestJSON: "test"}
 		toSend, err := json.Marshal(payload)
@@ -59,53 +62,30 @@ func TestSendToKyma(t *testing.T) {
 		assert.Equal(t, expected.Code(), actual.Code())
 	})
 
-	t.Run("should return an internal error when given no event version", func(t *testing.T) {
+	t.Run("should return an internal error when couldn't send a request", func(t *testing.T) {
 		//given
 		payload := toJSON{TestJSON: "test"}
 		toSend, err := json.Marshal(payload)
 		require.NoError(t, err)
-
 		mockValidator := &mocks.Validator{}
-		mockValidator.On("Validate", events.EventRequestPayload{"issuesevent.opened",
-			"",
+		mockValidator.On("Validate", events.EventRequestPayload{"",
+			"v1",
 			"",
 			time.Now().Format(time.RFC3339),
 			"github-connector-app",
 			json.RawMessage(toSend)}).Return(apperrors.Internal("test"))
-		k := events.NewSender(&ClientMock{}, mockValidator, "http://event-bus-publish.kyma-system:8080/v1/events")
+
+		k := events.NewSender(&ClientMock{}, mockValidator, "test")
 		expected := apperrors.Internal("test")
 
 		//when
-		actual := k.SendToKyma("issuesevent.opened", "", "", "github-connector-app", json.RawMessage(toSend))
+		actual := k.SendToKyma("", "v1", "", "github-connector-app", json.RawMessage(toSend))
 
 		//then
 		assert.Equal(t, expected.Code(), actual.Code())
 	})
 
-	t.Run("should return an internal error when given no source id", func(t *testing.T) {
-		//given
-		payload := toJSON{TestJSON: "test"}
-		toSend, err := json.Marshal(payload)
-		require.NoError(t, err)
-
-		mockValidator := &mocks.Validator{}
-		mockValidator.On("Validate", events.EventRequestPayload{"issuesevent.opened",
-			"v1",
-			"",
-			time.Now().Format(time.RFC3339),
-			"",
-			json.RawMessage(toSend)}).Return(apperrors.Internal("test"))
-		k := events.NewSender(&ClientMock{}, mockValidator, "http://event-bus-publish.kyma-system:8080/v1/events")
-		expected := apperrors.Internal("test")
-
-		//when
-		actual := k.SendToKyma("issuesevent.opened", "v1", "", "", json.RawMessage(toSend))
-
-		//then
-		assert.Equal(t, expected.Code(), actual.Code())
-	})
-
-	t.Run("should return no error when given proper arguments", func(t *testing.T) {
+	t.Run("should return no error when server responded with a 200 status code", func(t *testing.T) {
 		ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			checkEventRequest(t, r)
 			w.WriteHeader(http.StatusOK)
@@ -128,7 +108,7 @@ func TestSendToKyma(t *testing.T) {
 
 	})
 
-	t.Run("should return an error when given wrong arguments", func(t *testing.T) {
+	t.Run("should return an error when server didn't respond with a 200 status code", func(t *testing.T) {
 		// given
 		ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			checkEventRequest(t, r)
