@@ -16,13 +16,6 @@ metadata:
     release: ${NAME}
 EOF_
 
-echo `kubectl get serviceclasses -n rafal8 -o jsonpath="{.items}"`
-
-if [ ! `kubectl get serviceclasses -n rafal8 -o jsonpath="{.items}"` ] 
-then 
-  echo `kubectl get serviceclasses -n rafal8 -o jsonpath="{.items}"` 
-fi
-
 sleep 1
 
 EXTERNALNAME=`kubectl get serviceclasses -n $2 -o jsonpath="{.items[0].spec.externalName}"`
