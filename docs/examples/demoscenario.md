@@ -80,7 +80,7 @@ Everything should be working now.
 2. Run the script and supply the name, which has to be the same as the one you used as release name while installing GitHub Connector with helm, and the namespace in which GitHub Connector application is running (github-connector).
 
    ```shell
-   sh demoscenario.sh gh-connector-example github-connector
+   sh demoscenario.sh gh-connector-example {NAMESPACE}
    ```
 
    You can see output similar to the following:
