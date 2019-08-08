@@ -83,7 +83,7 @@ Everything should be working now.
    sh demoscenario.sh gh-connector-example {NAMESPACE}
    ```
 
-   You can see output similar to the following:
+   After you trigger the script you get the following output that shows the created resources:
 
    ```
    applicationmapping.applicationconnector.kyma-project.io/gh-connector-example-app created
