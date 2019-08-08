@@ -11,7 +11,8 @@
 
 ## Overview
 
-The purpose of this guide is to show how to configure GitHub Connector in a way that allows user to write Lambda Function that is fully functional and fully utilizes the functionality of the connector.
+This purpose of this guide is to show example usage of GitHub Connector, which allows you to to handle GitHub events. With it's help you will create a lamda in Kyma, which reacts to new issue on connected repository with a short message accessible in lambda's logs. 
+
 
 ## Prerequisites
 
@@ -82,7 +83,7 @@ Everything should be working now.
 
 1. Go to the `/chart/demoscenario` directory, where you can find `demoscenario.sh` script.
 
-2. Run the script and supply the name, which has to be the same as the one you used as release name while installing GitHub Connector with helm, and the namespace in which GitHub Connector application is running (github-connector).
+2. Run the script and supply the name, which has to be the same as the one you used as release name while installing GitHub Connector with helm, and the namespace in which GitHub Connector application is running.
 
    ```shell
    sh demoscenario.sh {NAME} {NAMESPACE}
@@ -98,4 +99,17 @@ Everything should be working now.
    Subscribed! Happy GitHub Connecting!
    ```
 
-   Lambda reacts to new issues opened in GitHub repository you are bound to. It logs `Issue opened` when someone creates a new issue.
+   Now your GitHub Connector is configured to react to new issues opened on GitHub repository you have connected to during Connector installation.
+
+   To test if connetion works, create a new issue on connected repository to trigger the event in lambda. Then, run this command to find lambda's name (it should consist of name you have provided earlier and *-lambda* suffix):
+
+   `kubectl get pods -n {NAMESPACE}`
+
+   Copy the output and paste it into this command to check lamda's logs:
+
+   `kubectl logs -n {NAMESPACE} {LAMBDA-NAME}`
+
+   After you run the command you should find a line containg phrase `Issue opened`. This means your lambda reacted to new issue opened event and you configured everything properly. 
+
+
+
