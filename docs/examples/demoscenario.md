@@ -44,6 +44,3 @@ This purpose of this guide is to show example usage of GitHub Connector, which a
 4. Run this command to get logs from the Pod that runs the lambda function and search for the "Issue opened" phrase to verify if you have configured everything properly and lambda reacts to the event.
 
    `kubectl logs -n {NAMESPACE} {LAMBDA-NAME} | grep "Issue opened"`
-
-
-
