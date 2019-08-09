@@ -54,30 +54,6 @@ To install Helm chart inside Kyma you have to:
     --namespace flying-seals . --tls
     ```
 
-## Uninstalling the chart from Kyma
-
-### Prerequisites
-
-To uninstall a helm chart from Kyma you have to:
-
-- be connected to your Kyma
-- have helm certificate from Kyma (check [Installation in Kyma using Helm](https://github.com/KarolJaksik/hack-showcase/tree/connector-docs/chart/githubconnector#steps))
-
-### Steps
-
-1. List your Helm charts using
-
-   ```shell
-   helm list --tls
-   ```
-
-   and find name of chart you want to delete. Copy it or memorize.
-
-2. Use command below to delete it
-
-   ```shell
-   helm delete {NAME} --purge --tls
-   ```
 
 ## Registering service in Kyma
 
