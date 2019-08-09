@@ -28,6 +28,7 @@ Install Connectors locally or on cluster. For installation details, see correspo
 
 Showcase covers user story described in the [`project concept`](https://github.com/kyma-incubator/hack-showcase/blob/master/docs/concept.md#reacting-to-prissue-comments), however considering the fact that connectors provide a way to communicate with external applications there are lots of possible use cases. Using the connector is as simple as deploying a new Lambda in Kyma - check corresponding [serverless documentation](https://kyma-project.io/docs/components/serverless) to find out more.
 
+Example of configuration of GitHub Connector can be found [here](/docs/examples/demoscenario.md).
 
 ## Development
 1. Fork the repository in Github.
