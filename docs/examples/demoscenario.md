@@ -37,11 +37,11 @@ This purpose of this guide is to show example usage of GitHub Connector, which a
 
    Now your GitHub Connector is configured to react to new issues opened on GitHub repository you have connected to during Connector installation.
 
-   To test if connetion works, create a new issue on connected repository to trigger the event in lambda. Then, run this command to find lambda's name:
+3. To test if connetion works, create a new issue on connected repository to trigger the event in lambda. Then, run this command to find lambda's name:
 
    `kubectl get pods -n {NAMESPACE}`
 
-   Copy the lambda's name from the output (it should consist of name you have provided earlier and `-lambda` suffix) and paste it into this command to check it's logs:
+4. Copy the lambda's name from the output (it should consist of name you have provided earlier and `-lambda` suffix) and paste it into this command to check it's logs:
 
    `kubectl logs -n {NAMESPACE} {LAMBDA-NAME}`
 
