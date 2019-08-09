@@ -39,12 +39,11 @@ This purpose of this guide is to show example usage of GitHub Connector, which a
 
    `kubectl get pods -n {NAMESPACE}`
 
-   >**NOTE:** Remember, that you should specify the Namespace in which you have deployed your lambda
+   >**NOTE:** Remember, that the Namespace must be the one in which you have deployed your lambda
 
 4. Run this command to get logs from the Pod that runs the lambda function and search for the "Issue opened" phrase to verify if you have configured everything properly and lambda reacts to the event.
 
    `kubectl logs -n {NAMESPACE} {LAMBDA-NAME} | grep "Issue opened"`
-
 
 
 
