@@ -25,10 +25,11 @@ To install GitHub Connector using Helm chart inside Kyma you have to:
 1. Go to Kyma repository and run script `/installation/scripts/tiller-tls.sh` to get certificates needed for using helm commands. By default they are stored in `~/.helm`. After that add `--tls` flag to every Helm command to authorize and authenticate yourself
 2. Install your chart running the command:
 ``` shell
-  helm install --set container.image={DOCKER-IMAGE} --set kymaAddress={KYMA_ADDRESS} -n {NAME} . --tls
+  helm install --set container.image={DOCKER_IMAGE} --set kymaAddress={KYMA_ADDRESS} -n {NAME} . --tls
   ```
   >**CAUTION:** Kyma address should be in the right format. It must consist of domain name, without dot  character at the beggining, for example `35.187.32.214.xip.io`
 
 >**NOTE:** To define Namespace in which chart should be installed add flag `--namespace`.
+
 
 
