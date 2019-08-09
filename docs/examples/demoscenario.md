@@ -35,15 +35,16 @@ This purpose of this guide is to show example usage of GitHub Connector, which a
 
    Now your GitHub Connector is configured to react to new issues opened on GitHub repository you have connected to during Connector installation.
 
-3. To test if connetion works, create a new issue on connected repository to trigger the event in lambda. Then, run this command to find lambda's name:
+3. To test if connetion works, create a new issue on connected repository to trigger the event in lambda. Then, run this command to find name of the Pod in which lambda is running:
 
    `kubectl get pods -n {NAMESPACE}`
 
-4. Copy the lambda's name from the output (it should consist of name you have provided earlier and `-lambda` suffix) and paste it into this command to check it's logs:
+   >**NOTE:** Remember, that you should specify the Namespace in which you have deployed your lambda
 
-   `kubectl logs -n {NAMESPACE} {LAMBDA-NAME}`
+4. Run this command to get logs from the Pod that runs the lambda function and search for the "Issue opened" phrase to verify if you have configured everything properly and lambda reacts to the event.
 
-   After you run the command you should find a line containg phrase `Issue opened`. This means your lambda reacted to new issue opened event and you configured everything properly. 
+   `kubectl logs -n {NAMESPACE} {LAMBDA-NAME} | grep "Issue opened"`
+
 
 
 
