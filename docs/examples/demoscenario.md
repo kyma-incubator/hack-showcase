@@ -6,7 +6,7 @@
 
 ## Overview
 
-This purpose of this guide is to show example usage of GitHub Connector, which allows you to to handle GitHub events. With it's help you will create a lamda in Kyma, which reacts to new issue on connected repository with a short message accessible in lambda's logs. 
+This purpose of this guide is to show example usage of GitHub Connector, which allows you to to handle GitHub events. With its help, you will create a lamda in Kyma, which reacts to new issues created in the connected repository with a short message accessible in lambda's logs. 
 
 
 ## Prerequisites
