@@ -2,6 +2,7 @@ package registration
 
 import (
 	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/apperrors"
@@ -11,11 +12,12 @@ import (
 const (
 	retryDelay                = 5 * time.Second
 	retriesCount              = 10
-	path                      = "../../internal/registration/configs/githubasyncAPI.json"
 	specificationURL          = "https://raw.githubusercontent.com/colunira/github-openapi/master/githubopenAPI.json"
 	applicationRegistryPrefix = "http://application-registry-external-api.kyma-integration.svc.cluster.local:8081/"
 	applicationRegistrySuffix = "-app/v1/metadata/services"
 )
+
+var path, _ = filepath.Abs("./../github-connector/internal/registration/configs/githubasyncAPI.json")
 
 //ServiceRegister is an interface containing all necessary functions required to register a service in Kyma Application Registry
 type ServiceRegister interface {
@@ -46,14 +48,14 @@ func (r serviceRegister) RegisterService() (string, apperrors.AppError) {
 	return id, nil
 }
 
-func (client *ServiceDetails) requestWithRetries() (string, error) {
+func (jsonBody *ServiceDetails) requestWithRetries() (string, error) {
 	var id string
 	var err error
 	register := NewRegisterRequestSender()
 	var applicationRegistryURL = applicationRegistryPrefix + os.Getenv("GITHUB_CONNECTOR_NAME") + applicationRegistrySuffix
 	for i := 0; i < retriesCount; i++ {
 		time.Sleep(retryDelay)
-		id, err = register.Do(jsonBody, applicationRegistryURL)
+		id, err = register.Do(*jsonBody, applicationRegistryURL)
 		if err == nil {
 			break
 		}
