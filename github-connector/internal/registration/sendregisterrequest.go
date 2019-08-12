@@ -10,6 +10,16 @@ import (
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/apperrors"
 )
 
+//RequestSender is an interface used to allow mocking sending service registration request
+type RequestSender interface {
+	Do(JSONBody ServiceDetails, url string) (string, error)
+}
+
+//requestSender is an struct used to allow mocking the service registration functions
+type requestSender struct {
+	sender RequestSender
+}
+
 //RegisterResponse contain structure of response json
 type RegisterResponse struct {
 	ID string
@@ -28,40 +38,13 @@ type RequestConfig struct {
 	Body io.Reader
 }
 
-//CreateJSONRequest - create http request, add headers and return client
-func CreateJSONRequest(config RequestConfig) (*http.Request, apperrors.AppError) {
-	if config.Type != "POST" {
-		return nil, apperrors.Internal("Wrong http request method")
-	}
-
-	req, err := http.NewRequest(config.Type, config.URL, config.Body)
-
-	if err != nil {
-		return nil, apperrors.Internal("Failed to create JSON request: %s", err.Error())
-	}
-
-	req.Header.Set("Content-Type", "application/json")
-
-	return req, nil
+//NewRegisterRequestSender creates a registerRequestSender instance with the passed in interface
+func NewRegisterRequestSender() requestSender {
+	return requestSender{}
 }
 
-//SendJSONRequest - create json struct and try post it into application-register's url
-func SendJSONRequest(config RegisterConfig) (*http.Response, apperrors.AppError) {
-
-	resp, err := config.HTTPClient.Do(config.HTTPRequest)
-
-	if err != nil {
-		return nil, apperrors.UpstreamServerCallFailed("Failed to make request to '%s': %s", config.HTTPRequest.URL, err.Error())
-	}
-
-	if resp.StatusCode != http.StatusOK {
-		return nil, apperrors.UpstreamServerCallFailed("Incorrect response code '%d' while sending JSON request from %s", resp.StatusCode, config.HTTPRequest.URL)
-	}
-	return resp, nil
-}
-
-//SendRegisterRequest - create request and send it to kyma application registry
-func SendRegisterRequest(JSONBody ServiceDetails, url string) (string, error) {
+//Do - create request and send it to kyma application registry
+func (r requestSender) Do(JSONBody ServiceDetails, url string) (string, error) {
 
 	// parse json to io.Reader
 	requestByte, err := json.Marshal(JSONBody)
@@ -71,29 +54,23 @@ func SendRegisterRequest(JSONBody ServiceDetails, url string) (string, error) {
 
 	requestReader := bytes.NewReader(requestByte)
 
-	// create POST request
-	requestConfig := RequestConfig{
-		Type: "POST",
-		URL:  url,
-		Body: requestReader,
+	httpRequest, err := http.NewRequest(http.MethodPost, url, requestReader)
+
+	if err != nil {
+		return "", apperrors.Internal("Failed to create JSON request: %s", err.Error())
 	}
 
-	httpRequest, apperr := CreateJSONRequest(requestConfig)
-	if apperr != nil {
-		return "", apperr.Append("While preparing application registry JSON request")
+	httpRequest.Header.Set("Content-Type", "application/json")
+
+	client := &http.Client{}
+	httpResponse, err := client.Do(httpRequest)
+
+	if err != nil {
+		return "", apperrors.UpstreamServerCallFailed("Failed to make request to '%s': %s", url, err.Error())
 	}
 
-	// create register config
-	config := RegisterConfig{
-		HTTPClient:  &http.Client{},
-		HTTPRequest: httpRequest,
-	}
-
-	// happy JSONRequestSend-ing!
-	httpResponse, apperr := SendJSONRequest(config)
-
-	if apperr != nil {
-		return "", apperr.Append("While sending application registry JSON request")
+	if httpResponse.StatusCode != http.StatusOK {
+		return "", apperrors.UpstreamServerCallFailed("Incorrect response code '%d' while sending JSON request from %s", httpResponse.StatusCode, url)
 	}
 
 	bodyBytes, err := ioutil.ReadAll(httpResponse.Body)

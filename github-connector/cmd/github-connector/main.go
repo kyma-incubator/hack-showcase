@@ -16,7 +16,8 @@ import (
 func main() {
 	log.Info("server started")
 
-	id, err := registration.RegisterService()
+	service := registration.NewServiceRegister()
+	id, err := service.RegisterService()
 	if err != nil {
 		log.Fatal("Fatal error: ", err.Error())
 	}

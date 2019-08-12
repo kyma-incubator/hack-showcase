@@ -2,7 +2,7 @@ package registration
 
 import "encoding/json"
 
-//ServiceDetails - main structure of register json
+//ServiceDetails - main structure of service register json
 type ServiceDetails struct {
 	Provider         string            `json:"provider"`
 	Name             string            `json:"name"`
