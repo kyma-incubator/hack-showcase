@@ -1,0 +1,11 @@
+apiVersion: applicationconnector.kyma-project.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .Release.Name }}-app
+  labels:
+    app: {{ include "slack-connector-chart.name" . }}
+    chart: {{ include "slack-connector-chart.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  description: {{ .Chart.Description }}
