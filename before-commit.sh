@@ -14,7 +14,7 @@ echo -e "${NC}"
 ##
 # DEP ENSURE
 ##
-dep ensure -v --vendor-only
+dep ensure -v --vendor-only ./github-connector
 ensureResult=$?
 if [ ${ensureResult} != 0 ]; then
 	echo -e "${RED}✗ dep ensure -v --vendor-only${NC}\n$ensureResult${NC}"
