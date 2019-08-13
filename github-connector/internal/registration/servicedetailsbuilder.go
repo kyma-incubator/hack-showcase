@@ -2,11 +2,13 @@ package registration
 
 import (
 	"os"
+
+	"github.com/kyma-incubator/hack-showcase/github-connector/internal/registration/configs"
 )
 
 //Builder is an interface containing all necessary functions required to build an ServiceDetails structure
 type Builder interface {
-	BuildServiceDetails(string, string) (ServiceDetails, error)
+	BuildServiceDetails(string) (ServiceDetails, error)
 }
 
 //ServiceDetailsBuilder is used for mocking building ServiceDetails struct
@@ -29,7 +31,7 @@ func (r serviceDetailsBuilder) BuildServiceDetails(url string) (ServiceDetails, 
 		API: &API{
 			TargetURL: "https://api.github.com",
 		},
-		Events: &Events{Spec: githubAsyncAPI},
+		Events: &Events{Spec: configs.GithubAsyncAPI},
 	}
 
 	jsonBody.API.SpecificationURL = url

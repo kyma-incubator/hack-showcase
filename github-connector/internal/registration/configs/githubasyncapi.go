@@ -1,6 +1,6 @@
-package registration
+package configs
 
-var githubAsyncAPI = []byte(`{
+var GithubAsyncAPI = []byte(`{
     "asyncapi": "1.0.0",
     "info": {
         "title": "github-events",
