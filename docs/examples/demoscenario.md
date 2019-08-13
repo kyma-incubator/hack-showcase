@@ -10,7 +10,7 @@ This purpose of this guide is to show example usage of GitHub Connector, which a
 
 ## Prerequisites
 
-- Kyma with GitHub Connector deployed on your cluster (see [installation guide](/chart/githubconnector/README.md)).
+- Kyma with the GitHub Connector [installed](/chart/githubconnector/README.md)).
 - WebHook configured to deliver payload to the Connector's `/webhook` endpoint.
 
 ### Steps
