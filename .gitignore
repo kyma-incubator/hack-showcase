@@ -16,3 +16,4 @@
 .*
 !.gitignore
 /github-connector/vendor
+/docs/.DS_Store
