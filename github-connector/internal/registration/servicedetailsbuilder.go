@@ -1,9 +1,10 @@
 package registration
 
 import (
+	"io/ioutil"
 	"os"
 
-	"github.com/kyma-incubator/hack-showcase/github-connector/internal/registration/configs"
+	"github.com/kyma-incubator/hack-showcase/github-connector/internal/apperrors"
 )
 
 //Builder is an interface containing all necessary functions required to build an ServiceDetails structure
@@ -31,8 +32,12 @@ func (r serviceDetailsBuilder) BuildServiceDetails(url string) (ServiceDetails, 
 		API: &API{
 			TargetURL: "https://api.github.com",
 		},
-		Events: &Events{Spec: configs.GithubAsyncAPI},
 	}
+	file, err := ioutil.ReadFile("githubasyncapi.json")
+	if err != nil {
+		return ServiceDetails{}, apperrors.Internal("While reading githubasyncapi.json: %s", err)
+	}
+	jsonBody.Events = &Events{Spec: file}
 
 	jsonBody.API.SpecificationURL = url
 	return jsonBody, nil
