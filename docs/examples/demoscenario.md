@@ -17,7 +17,7 @@ This purpose of this guide is to show example usage of GitHub Connector, which a
 
 1. Go to the `/chart/demoscenario` directory, where you can find `demoscenario.sh` script.
 
-2. Run the script and supply the name, which has to be the same as the one you used as release name while installing GitHub Connector with helm, and the Namespace in which GitHub Connector application is running.
+2. Run the script that sets the demo scenario up. Pass the name of the Helm release of the GitHub Connector and the Namespace in which you installed it. Run:
 
    ```shell
    sh demoscenario.sh {NAME} {NAMESPACE}
