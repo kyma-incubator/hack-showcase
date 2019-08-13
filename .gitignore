@@ -15,5 +15,5 @@
 # Directories
 .*
 !.gitignore
-/github-connector/vendor
+*/vendor
 /docs/.DS_Store
