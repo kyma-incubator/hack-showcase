@@ -1,4 +1,4 @@
-APP_NAME = hack-showcase
+APP_NAME = github-connector
 IMG = $(DOCKER_PUSH_REPOSITORY)$(DOCKER_PUSH_DIRECTORY)/$(APP_NAME)
 TAG = $(DOCKER_TAG)
 
