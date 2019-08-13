@@ -16,4 +16,5 @@ COPY --from=builder /app/main /app
 
 ARG github_secret
 ENV GITHUB_SECRET=${github_secret}
+
 CMD ["./main"]

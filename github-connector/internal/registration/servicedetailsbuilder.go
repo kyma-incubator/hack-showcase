@@ -1,10 +1,7 @@
 package registration
 
 import (
-	"io/ioutil"
 	"os"
-
-	"github.com/kyma-incubator/hack-showcase/github-connector/internal/apperrors"
 )
 
 //Builder is an interface containing all necessary functions required to build an ServiceDetails structure
@@ -13,12 +10,17 @@ type Builder interface {
 }
 
 //ServiceDetailsBuilder is used for mocking building ServiceDetails struct
-type ServiceDetailsBuilder struct {
+type serviceDetailsBuilder struct {
 	builder Builder
 }
 
-//BuildServiceDetails creates a ServiceDetails structure with provided API specification URL and events description json path
-func BuildServiceDetails(url string, path string) (ServiceDetails, error) {
+//NewServiceDetailsBuilder creates a serviceDetailsBuilder instance
+func NewServiceDetailsBuilder() serviceDetailsBuilder {
+	return serviceDetailsBuilder{}
+}
+
+//BuildServiceDetails creates a ServiceDetails structure with provided API specification URL
+func (r serviceDetailsBuilder) BuildServiceDetails(url string) (ServiceDetails, error) {
 
 	var jsonBody = ServiceDetails{
 		Provider:    "Kyma",
@@ -27,15 +29,9 @@ func BuildServiceDetails(url string, path string) (ServiceDetails, error) {
 		API: &API{
 			TargetURL: "https://api.github.com",
 		},
+		Events: &Events{Spec: githubAsyncAPI},
 	}
 
-	file, err := ioutil.ReadFile(path)
-	if err != nil {
-		return ServiceDetails{}, apperrors.Internal("While reading file: %s", err)
-	}
-	data := []byte(file)
-
-	jsonBody.Events = &Events{Spec: data}
 	jsonBody.API.SpecificationURL = url
 	return jsonBody, nil
 }

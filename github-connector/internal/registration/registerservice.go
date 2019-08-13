@@ -2,7 +2,6 @@ package registration
 
 import (
 	"os"
-	"path/filepath"
 	"time"
 
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/apperrors"
@@ -16,8 +15,6 @@ const (
 	applicationRegistryPrefix = "http://application-registry-external-api.kyma-integration.svc.cluster.local:8081/"
 	applicationRegistrySuffix = "-app/v1/metadata/services"
 )
-
-var path, _ = filepath.Abs("./../github-connector/internal/registration/configs/githubasyncAPI.json")
 
 //ServiceRegister is an interface containing all necessary functions required to register a service in Kyma Application Registry
 type ServiceRegister interface {
@@ -36,7 +33,8 @@ func NewServiceRegister() serviceRegister {
 //RegisterService - register service in Kyma and get a response
 func (r serviceRegister) RegisterService() (string, apperrors.AppError) {
 
-	jsonBody, err := BuildServiceDetails(specificationURL, path)
+	service := NewServiceDetailsBuilder()
+	jsonBody, err := service.BuildServiceDetails(specificationURL)
 	if err != nil {
 		return "", apperrors.Internal("While building service details json: %s", err)
 	}

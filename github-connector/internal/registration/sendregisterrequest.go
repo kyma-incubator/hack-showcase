@@ -3,7 +3,6 @@ package registration
 import (
 	"bytes"
 	"encoding/json"
-	"io"
 	"io/ioutil"
 	"net/http"
 
@@ -23,19 +22,6 @@ type requestSender struct {
 //RegisterResponse contain structure of response json
 type RegisterResponse struct {
 	ID string
-}
-
-//RegisterConfig contain configs
-type RegisterConfig struct {
-	HTTPClient  *http.Client
-	HTTPRequest *http.Request
-}
-
-//RequestConfig contain configs to create http requests
-type RequestConfig struct {
-	Type string
-	URL  string
-	Body io.Reader
 }
 
 //NewRegisterRequestSender creates a registerRequestSender instance with the passed in interface

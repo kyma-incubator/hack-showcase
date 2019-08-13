@@ -1,4 +1,6 @@
-{
+package registration
+
+var githubAsyncAPI = []byte(`{
     "asyncapi": "1.0.0",
     "info": {
         "title": "github-events",
@@ -973,4 +975,4 @@
             }
         }
     }
-}
+}`)
