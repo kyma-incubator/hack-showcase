@@ -22,38 +22,37 @@ type ServiceRegister interface {
 }
 
 type serviceRegister struct {
-	register ServiceRegister
+	builder       Builder
+	requestSender RequestSender
 }
 
 //NewServiceRegister creates a serviceRegister instance with the passed in interface
-func NewServiceRegister() serviceRegister {
-	return serviceRegister{}
+func NewServiceRegister(b Builder, r RequestSender) serviceRegister {
+	return serviceRegister{builder: b, requestSender: r}
 }
 
 //RegisterService - register service in Kyma and get a response
 func (r serviceRegister) RegisterService() (string, apperrors.AppError) {
 
-	service := NewServiceDetailsBuilder()
-	jsonBody, err := service.BuildServiceDetails(specificationURL)
+	jsonBody, err := r.builder.BuildServiceDetails(specificationURL)
 	if err != nil {
 		return "", apperrors.Internal("While building service details json: %s", err)
 	}
 
-	id, err := jsonBody.requestWithRetries()
+	id, err := jsonBody.requestWithRetries(r.requestSender)
 	if err != nil {
 		return "", apperrors.Internal("While trying to register service: %s", err.Error())
 	}
 	return id, nil
 }
 
-func (jsonBody *ServiceDetails) requestWithRetries() (string, error) {
+func (jsonBody *ServiceDetails) requestWithRetries(r RequestSender) (string, error) {
 	var id string
 	var err error
-	register := NewRegisterRequestSender()
 	var applicationRegistryURL = applicationRegistryPrefix + os.Getenv("GITHUB_CONNECTOR_NAME") + applicationRegistrySuffix
 	for i := 0; i < retriesCount; i++ {
 		time.Sleep(retryDelay)
-		id, err = register.Do(*jsonBody, applicationRegistryURL)
+		id, err = r.Do(*jsonBody, applicationRegistryURL)
 		if err == nil {
 			break
 		}
