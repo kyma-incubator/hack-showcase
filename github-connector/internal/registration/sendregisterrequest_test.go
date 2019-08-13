@@ -35,7 +35,13 @@ func TestDo(t *testing.T) {
 		//given
 		jsonBody := ServiceDetails{}
 		sender := NewRegisterRequestSender()
-		handler := http.HandlerFunc(exampleServiceID)
+		handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			id := RegisterResponse{ID: "123-456-789"}
+			res, err := json.Marshal(id)
+			if err != nil {
+			}
+			w.Write(res)
+		})
 		server := httptest.NewServer(handler)
 		defer server.Close()
 
@@ -51,14 +57,18 @@ func TestDo(t *testing.T) {
 		//given
 		jsonBody := ServiceDetails{}
 		sender := NewRegisterRequestSender()
-		handler := http.HandlerFunc(exampleServiceID)
+		handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			w.WriteHeader(404)
+		})
 		server := httptest.NewServer(handler)
 		defer server.Close()
 
 		//when
+		res, err := sender.Do(jsonBody, server.URL)
 
 		//then
-
+		assert.Error(t, err)
+		assert.Equal(t, "", res)
 	})
 }
 
