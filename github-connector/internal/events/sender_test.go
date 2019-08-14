@@ -59,7 +59,7 @@ func TestSendToKyma(t *testing.T) {
 		actual := k.SendToKyma("", "v1", "", "github-connector-app", json.RawMessage(toSend))
 
 		//then
-		assert.Equal(t, expected.Code(), actual.Code())
+		assert.Equal(t, expected.Code(), 245)
 	})
 
 	t.Run("should return an internal error when couldn't send a request", func(t *testing.T) {
