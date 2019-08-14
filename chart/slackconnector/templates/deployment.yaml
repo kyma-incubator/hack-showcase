@@ -3,10 +3,6 @@ kind: Deployment
 metadata:
   name: {{ .Release.Name }}
   labels:
-    app: {{ include "slackconnector.name" . }}
-    chart: {{ include "slackconnector.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
     app.kubernetes.io/name: {{ template "slackconnector.name" . }}
     helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
