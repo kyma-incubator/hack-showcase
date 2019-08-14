@@ -7,9 +7,11 @@ import (
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/apperrors"
 )
 
+const specificationURL = "https://raw.githubusercontent.com/colunira/github-openapi/master/githubopenAPI.json"
+
 //Builder is an interface containing all necessary functions required to build an ServiceDetails structure
 type Builder interface {
-	BuildServiceDetails(string) (ServiceDetails, error)
+	BuildServiceDetails() (ServiceDetails, error)
 }
 
 //ServiceDetailsBuilder is used for mocking building ServiceDetails struct
@@ -23,7 +25,7 @@ func NewServiceDetailsBuilder() serviceDetailsBuilder {
 }
 
 //BuildServiceDetails creates a ServiceDetails structure with provided API specification URL
-func (r serviceDetailsBuilder) BuildServiceDetails(url string) (ServiceDetails, error) {
+func (r serviceDetailsBuilder) BuildServiceDetails() (ServiceDetails, error) {
 
 	var jsonBody = ServiceDetails{
 		Provider:    "Kyma",
@@ -39,6 +41,6 @@ func (r serviceDetailsBuilder) BuildServiceDetails(url string) (ServiceDetails, 
 	}
 	jsonBody.Events = &Events{Spec: file}
 
-	jsonBody.API.SpecificationURL = url
+	jsonBody.API.SpecificationURL = specificationURL
 	return jsonBody, nil
 }

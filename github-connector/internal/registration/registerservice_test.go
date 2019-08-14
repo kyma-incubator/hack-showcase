@@ -21,7 +21,7 @@ func TestDo(t *testing.T) {
 	t.Run("should return an error when server is not responding", func(t *testing.T) {
 		//given
 		jsonBody := ServiceDetails{}
-		sender := NewRegisterRequestSender()
+		sender := NewRequestSender()
 
 		//when
 		res, err := sender.Do(jsonBody, "example.com")
@@ -34,7 +34,7 @@ func TestDo(t *testing.T) {
 	t.Run("should return service ID", func(t *testing.T) {
 		//given
 		jsonBody := ServiceDetails{}
-		sender := NewRegisterRequestSender()
+		sender := NewRequestSender()
 		handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			id := RegisterResponse{ID: "123-456-789"}
 			res, err := json.Marshal(id)
@@ -56,7 +56,7 @@ func TestDo(t *testing.T) {
 	t.Run("should return an error when server response with status code other than 200", func(t *testing.T) {
 		//given
 		jsonBody := ServiceDetails{}
-		sender := NewRegisterRequestSender()
+		sender := NewRequestSender()
 		handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(404)
 		})
@@ -69,6 +69,16 @@ func TestDo(t *testing.T) {
 		//then
 		assert.Error(t, err)
 		assert.Equal(t, "", res)
+	})
+}
+
+func TestNewRegisterRequestSender(t *testing.T) {
+	t.Run("should return requestSender struct", func(t *testing.T) {
+		//when
+		sender := NewRequestSender()
+
+		//then
+		assert.Equal(t, requestSender{}, sender)
 	})
 }
 
