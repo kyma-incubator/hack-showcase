@@ -75,3 +75,41 @@ if [ $(echo ${#goFmtResult}) != 0 ]
     	exit 1;
 	else echo -e "${GREEN}√ go fmt${NC}"
 fi
+
+##
+#  GO LINT
+##
+go build -o golint-vendored ./vendor/github.com/golang/lint/golint
+buildLintResult=$?
+if [ ${buildLintResult} != 0 ]; then
+	echo -e "${RED}✗ go build lint${NC}\n$buildLintResult${NC}"
+	exit 1
+fi
+
+golintResult=$(echo "${goFilesToCheck}" | xargs -L1 ./golint-vendored)
+rm golint-vendored
+
+if [ $(echo ${#golintResult}) != 0 ]; then
+	echo -e "${RED}✗ golint\n$golintResult${NC}"
+	exit 1
+else echo -e "${GREEN}√ golint${NC}"
+fi
+
+##
+# GO IMPORTS & FMT
+##
+go build -o goimports-vendored ./vendor/golang.org/x/tools/cmd/goimports
+buildGoImportResult=$?
+if [ ${buildGoImportResult} != 0 ]; then
+	echo -e "${RED}✗ go build goimports${NC}\n$buildGoImportResult${NC}"
+	exit 1
+fi
+
+goImportsResult=$(echo "${goFilesToCheck}" | xargs -L1 ./goimports-vendored -w -l)
+rm goimports-vendored
+
+if [ $(echo ${#goImportsResult}) != 0 ]; then
+	echo -e "${RED}✗ goimports and fmt${NC}\n$goImportsResult${NC}"
+	exit 1
+else echo -e "${GREEN}√ goimports and fmt${NC}"
+fi
