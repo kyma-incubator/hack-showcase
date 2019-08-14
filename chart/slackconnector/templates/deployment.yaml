@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    app: {{ include "slack-connector-chart.name" . }}
+    chart: {{ include "slack-connector-chart.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      containers:
+      - name: main
+        image: {{ .Values.container.image }}
+        resources:
+          limits:
+            memory: {{ .Values.container.limits.memory }}
+            cpu: {{ .Values.container.limits.cpu }}
+        ports:
+        - containerPort: {{ .Values.container.containerPort }}
+        env:
+        - name: PORT
+          value: {{ quote .Values.container.containerPort }}
+        - name: SLACK_CONNECTOR_NAME
+          value: {{ .Release.Name }}
