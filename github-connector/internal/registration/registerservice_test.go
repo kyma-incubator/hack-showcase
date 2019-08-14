@@ -1,4 +1,4 @@
-package registration
+package registration_test
 
 import (
 	"encoding/json"
@@ -6,81 +6,132 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/kyma-incubator/hack-showcase/github-connector/internal/apperrors"
+
 	"github.com/stretchr/testify/assert"
+
+	"github.com/kyma-incubator/hack-showcase/github-connector/internal/registration"
+	"github.com/kyma-incubator/hack-showcase/github-connector/internal/registration/mocks"
 )
 
+const expectedID = "123-456-789"
+
 func exampleServiceID(w http.ResponseWriter, r *http.Request) {
-	id := RegisterResponse{ID: "123-456-789"}
+	id := registration.RegisterResponse{ID: expectedID}
 	res, err := json.Marshal(id)
 	if err != nil {
 	}
 	w.Write(res)
 }
 
-func TestDo(t *testing.T) {
-	t.Run("should return an error when server is not responding", func(t *testing.T) {
-		//given
-		jsonBody := ServiceDetails{}
-		sender := NewRequestSender()
-
-		//when
-		res, err := sender.Do(jsonBody, "example.com")
-
-		//then
-		assert.Error(t, err)
-		assert.Equal(t, "", res)
-	})
-
+func TestRegisterService(t *testing.T) {
 	t.Run("should return service ID", func(t *testing.T) {
 		//given
-		jsonBody := ServiceDetails{}
-		sender := NewRequestSender()
-		handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			id := RegisterResponse{ID: "123-456-789"}
-			res, err := json.Marshal(id)
-			if err != nil {
-			}
-			w.Write(res)
-		})
+		handler := http.HandlerFunc(exampleServiceID)
 		server := httptest.NewServer(handler)
 		defer server.Close()
 
+		mockBuilder := &mocks.Builder{}
+		mockBuilder.On("BuildServiceDetails").Return(registration.ServiceDetails{}, nil)
+		mockBuilder.On("GetApplicationRegistryURL").Return(server.URL)
+
+		service := registration.NewServiceRegister("deploymentEnvName", mockBuilder)
+
 		//when
-		res, err := sender.Do(jsonBody, server.URL)
+		id, err := service.RegisterService()
 
 		//then
 		assert.NoError(t, err)
-		assert.Equal(t, "123-456-789", res)
+		assert.Equal(t, expectedID, id)
+
 	})
 
-	t.Run("should return an error when server response with status code other than 200", func(t *testing.T) {
+	t.Run("should return an error", func(t *testing.T) {
 		//given
-		jsonBody := ServiceDetails{}
-		sender := NewRequestSender()
-		handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			w.WriteHeader(404)
-		})
+		handler := http.HandlerFunc(exampleServiceID)
 		server := httptest.NewServer(handler)
 		defer server.Close()
 
+		mockBuilder := &mocks.Builder{}
+		mockBuilder.On("BuildServiceDetails").Return(registration.ServiceDetails{}, apperrors.Internal("error"))
+		mockBuilder.On("GetApplicationRegistryURL").Return(server.URL)
+
+		service := registration.NewServiceRegister("deploymentEnvName", mockBuilder)
+
 		//when
-		res, err := sender.Do(jsonBody, server.URL)
+		id, err := service.RegisterService()
 
 		//then
 		assert.Error(t, err)
-		assert.Equal(t, "", res)
+		assert.Equal(t, "", id)
+
 	})
 }
 
-func TestNewRegisterRequestSender(t *testing.T) {
-	t.Run("should return requestSender struct", func(t *testing.T) {
-		//when
-		sender := NewRequestSender()
+// func Test(t *testing.T) {
+// 	t.Run("should return an error when server is not responding", func(t *testing.T) {
+// 		//given
+// 		jsonBody := ServiceDetails{}
+// 		sender := NewRequestSender()
 
-		//then
-		assert.Equal(t, requestSender{}, sender)
-	})
-}
+// 		//when
+// 		res, err := sender.Do(jsonBody, "example.com")
+
+// 		//then
+// 		assert.Error(t, err)
+// 		assert.Equal(t, "", res)
+// 	})
+
+// 	t.Run("should return service ID", func(t *testing.T) {
+// 		//given
+// 		jsonBody := ServiceDetails{}
+// 		sender := NewRequestSender()
+// 		handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+// 			id := RegisterResponse{ID: "123-456-789"}
+// 			res, err := json.Marshal(id)
+// 			if err != nil {
+// 			}
+// 			w.Write(res)
+// 		})
+// 		server := httptest.NewServer(handler)
+// 		defer server.Close()
+
+// 		//when
+// 		res, err := sender.Do(jsonBody, server.URL)
+
+// 		//then
+// 		assert.NoError(t, err)
+// 		assert.Equal(t, "123-456-789", res)
+// 	})
+
+// 	t.Run("should return an error when server response with status code other than 200", func(t *testing.T) {
+// 		//given
+// 		jsonBody := ServiceDetails{}
+// 		sender := NewRequestSender()
+// 		handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+// 			w.WriteHeader(404)
+// 		})
+// 		server := httptest.NewServer(handler)
+// 		defer server.Close()
+
+// 		//when
+// 		res, err := sender.Do(jsonBody, server.URL)
+
+// 		//then
+// 		assert.Error(t, err)
+// 		assert.Equal(t, "", res)
+// 	})
+// }
+
+// func TestNewRegisterRequestSender(t *testing.T) {
+// 	t.Run("should return requestSender struct", func(t *testing.T) {
+// 		//when
+// 		sender := NewRequestSender()
+
+// 		//then
+// 		assert.Equal(t, requestSender{}, sender)
+// 	})
+// }
 
 // const (
 // 	exampleID = "123-456789-abcdefghi"
