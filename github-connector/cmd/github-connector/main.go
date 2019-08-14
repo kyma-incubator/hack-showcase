@@ -16,7 +16,7 @@ import (
 func main() {
 	log.Info("server started")
 
-	builder := registration.NewServiceDetailsBuilder()
+	builder := registration.NewServiceDetailsBuilder(registration.NewOSCommunicator())
 	service := registration.NewServiceRegister("GITHUB_CONNECTOR_NAME", builder)
 	id, err := service.RegisterService()
 	if err != nil {

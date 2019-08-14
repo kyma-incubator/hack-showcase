@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
-	"os"
 	"time"
 
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/apperrors"
@@ -13,15 +12,18 @@ import (
 )
 
 const (
-	retryDelay                = 5 * time.Second
-	retriesCount              = 10
-	applicationRegistryPrefix = "http://application-registry-external-api.kyma-integration.svc.cluster.local:8081/"
-	applicationRegistrySuffix = "-app/v1/metadata/services"
+	retryDelay   = 5 * time.Second
+	retriesCount = 10
 )
 
-//ServiceRegister is an interface containing all necessary functions required to register a service in Kyma Application Registry
+//Builder is an interface containing all necessary functions required to build an ServiceDetails structure
+type Builder interface {
+	BuildServiceDetails() (ServiceDetails, error)
+	GetApplicationRegistryURL() string
+}
+
 type ServiceRegister interface {
-	RegisterService() (string, error)
+	RegisterService() (string, apperrors.AppError)
 }
 
 type serviceRegister struct {
@@ -41,21 +43,20 @@ func (r serviceRegister) RegisterService() (string, apperrors.AppError) {
 	if err != nil {
 		return "", apperrors.Internal("While building service details json: %s", err)
 	}
-
-	id, err := jsonBody.requestWithRetries(r.envName)
+	id, err := jsonBody.requestWithRetries(r.envName, r.builder.GetApplicationRegistryURL())
 	if err != nil {
 		return "", apperrors.Internal("While trying to register service: %s", err.Error())
 	}
 	return id, nil
 }
 
-func (jsonBody *ServiceDetails) requestWithRetries(appName string) (string, error) {
+func (jsonBody *ServiceDetails) requestWithRetries(appName string, url string) (string, error) {
 	var id string
 	var err error
-	var applicationRegistryURL = applicationRegistryPrefix + os.Getenv(appName) + applicationRegistrySuffix
+
 	for i := 0; i < retriesCount; i++ {
 		time.Sleep(retryDelay)
-		id, err = sendRequest(*jsonBody, applicationRegistryURL)
+		id, err = sendRequest(*jsonBody, url)
 		if err == nil {
 			break
 		}
