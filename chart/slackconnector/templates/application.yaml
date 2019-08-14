@@ -3,12 +3,12 @@ kind: Application
 metadata:
   name: {{ .Release.Name }}-app
   labels:
-    app: {{ include "slack-connector-chart.name" . }}
-    chart: {{ include "slack-connector-chart.chart" . }}
+    app: {{ include "slackconnector.name" . }}
+    chart: {{ include "slackconnector.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
-    app.kubernetes.io/name: {{ template "name" . }}
-    helm.sh/chart: {{ .Chart.Name }}- {{ .Chart.Version | replace "+" "_" }}
+    app.kubernetes.io/name: {{ template "slackconnector.name" . }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/instance: {{ .Release.Name }}
 
