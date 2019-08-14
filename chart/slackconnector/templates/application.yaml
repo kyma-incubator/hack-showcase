@@ -1,7 +1,7 @@
 apiVersion: applicationconnector.kyma-project.io/v1alpha1
 kind: Application
 metadata:
-  name: {{ .Release.Name }}
+  name: {{ .Release.Name }}-app
   labels:
     app: {{ include "slackconnector.name" . }}
     app.kubernetes.io/name: {{ template "slackconnector.name" . }}
