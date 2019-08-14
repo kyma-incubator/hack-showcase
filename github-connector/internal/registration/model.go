@@ -1,4 +1,4 @@
-package model
+package registration
 
 import "encoding/json"
 

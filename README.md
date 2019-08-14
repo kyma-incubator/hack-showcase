@@ -3,6 +3,8 @@
  <img src="logo.png" width="235">
 </p>
 
+---
+
 [![Go Report Card](https://goreportcard.com/badge/github.com/kyma-incubator/hack-showcase)](https://goreportcard.com/report/github.com/kyma-incubator/hack-showcase)
 
 ---
@@ -38,7 +40,7 @@ Example of configuration of GitHub Connector can be found [here](/docs/examples/
     git clone git@github.com:{GitHubUsername}/hack-showcase.git $GOPATH/src/github.com/kyma-incubator/hack-showcase
     ```
 
-    Follow the steps described in the [`git-workflow.md`](https://github.com/kyma-project/community/blob/master/git-workflow.md#steps) document to configure your fork.
+    Follow the steps described in the [`git-workflow.md`](https://github.com/kyma-project/community/blob/master/contributing/03-git-workflow.md) document to configure your fork.
 
 3. Install dependencies.
 

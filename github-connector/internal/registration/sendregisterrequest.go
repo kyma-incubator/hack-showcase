@@ -1,4 +1,4 @@
-package registerservice
+package registration
 
 import (
 	"bytes"
@@ -8,7 +8,6 @@ import (
 	"net/http"
 
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/apperrors"
-	"github.com/kyma-incubator/hack-showcase/github-connector/internal/model"
 )
 
 //RegisterResponse contain structure of response json
@@ -62,7 +61,7 @@ func SendJSONRequest(config RegisterConfig) (*http.Response, apperrors.AppError)
 }
 
 //SendRegisterRequest - create request and send it to kyma application registry
-func SendRegisterRequest(JSONBody model.ServiceDetails, url string) (string, error) {
+func SendRegisterRequest(JSONBody ServiceDetails, url string) (string, error) {
 
 	// parse json to io.Reader
 	requestByte, err := json.Marshal(JSONBody)

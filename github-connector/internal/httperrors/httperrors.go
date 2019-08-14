@@ -32,7 +32,7 @@ func errorCodeToHttpStatus(code int) int {
 	case apperrors.CodeUpstreamServerCallFailed:
 		return http.StatusBadGateway
 	case apperrors.CodeAuthenticationFailed:
-              return http.StatusUnauthorized
+		return http.StatusUnauthorized
 	default:
 		return http.StatusInternalServerError
 	}

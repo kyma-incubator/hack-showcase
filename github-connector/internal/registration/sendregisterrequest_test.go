@@ -1,4 +1,4 @@
-package registerservice
+package registration
 
 import (
 	"bytes"
@@ -8,7 +8,6 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/kyma-incubator/hack-showcase/github-connector/internal/model"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -123,11 +122,11 @@ func TestSendJSONRequest_TestDataOK(t *testing.T) {
 func TestRegisterApp(t *testing.T) {
 	t.Run("should response exampleID", func(t *testing.T) {
 		//given
-		JSONBody := model.ServiceDetails{
+		JSONBody := ServiceDetails{
 			Provider:    "kyma",
 			Name:        "github-connector",
 			Description: "Boilerplate for GitHub connector",
-			API: &model.API{
+			API: &API{
 				TargetURL: "https://console.35.195.62.81.xip.io/github-api",
 			},
 		}
