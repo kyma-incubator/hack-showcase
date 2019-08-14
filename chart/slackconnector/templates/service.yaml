@@ -3,8 +3,8 @@ apiVersion: v1
 metadata:
   name: {{ .Release.Name }}
   labels:
-    app: {{ include "slack-connector-chart.name" . }}
-    chart: {{ include "slack-connector-chart.chart" . }}
+    app: {{ include "slack-connector.name" . }}
+    chart: {{ include "slack-connector.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
