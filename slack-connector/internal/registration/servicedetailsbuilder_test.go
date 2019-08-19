@@ -19,7 +19,7 @@ func TestBuildServiceDetails(t *testing.T) {
 		mockOSCommunicator.On("ReadFile", "slackasyncapi.json").Return(fileBody, nil)
 		mockOSCommunicator.On("GetEnv", "SLACK_CONNECTOR_NAME").Return("slack-connector")
 		builder := registration.NewServiceDetailsBuilder(mockOSCommunicator)
-		url := "https://raw.githubusercontent.com/colunira/github-openapi/master/githubopenAPI.json"
+		url := "https://raw.githubusercontent.com/kyma-incubator/hack-showcase/slack-connector-boilerplate/slack-connector/internal/registration/configs/slackopenapi.json"
 
 		//when
 		details, err := builder.BuildServiceDetails()
@@ -27,7 +27,7 @@ func TestBuildServiceDetails(t *testing.T) {
 		//then
 		assert.NoError(t, err)
 		assert.Equal(t, "Kyma", details.Provider)
-		assert.Equal(t, "GitHub Connector, which can be used for communication and handling events from GitHub", details.Description)
+		assert.Equal(t, "Slack Connector, which is used for registering Slack API in Kyma", details.Description)
 		assert.Equal(t, "https://slack.com/api/", details.API.TargetURL)
 		assert.Equal(t, jsonBody, details.Events.Spec)
 		assert.Equal(t, url, details.API.SpecificationURL)
