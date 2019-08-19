@@ -1,7 +1,6 @@
 package registration
 
 import (
-	"bytes"
 	"encoding/json"
 )
 
@@ -80,10 +79,4 @@ type DocsObject struct {
 	Title  string `json:"title"`
 	Type   string `json:"type"`
 	Source string `json:"source"`
-}
-
-type RequestConfig struct {
-	Type string        `json:"method"`
-	URL  string        `json:"url"`
-	Body *bytes.Reader `json:"reader,omitempty"`
 }
