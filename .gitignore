@@ -15,4 +15,4 @@
 # Directories
 .*
 !.gitignore
-/github-connector/vendor
+*/vendor
