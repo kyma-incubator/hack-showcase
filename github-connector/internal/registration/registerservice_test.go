@@ -35,7 +35,7 @@ func TestRegisterService(t *testing.T) {
 		mockBuilder.On("BuildServiceDetails").Return(registration.ServiceDetails{}, nil)
 		mockBuilder.On("GetApplicationRegistryURL").Return(server.URL)
 
-		service := registration.NewServiceRegister("deploymentEnvName", mockBuilder)
+		service := registration.NewServiceRegister("deploymentEnvName", mockBuilder, 1, 5)
 
 		//when
 		id, err := service.RegisterService()
@@ -56,7 +56,7 @@ func TestRegisterService(t *testing.T) {
 		mockBuilder.On("BuildServiceDetails").Return(registration.ServiceDetails{}, apperrors.Internal("error"))
 		mockBuilder.On("GetApplicationRegistryURL").Return(server.URL)
 
-		service := registration.NewServiceRegister("deploymentEnvName", mockBuilder)
+		service := registration.NewServiceRegister("deploymentEnvName", mockBuilder, 1, 5)
 
 		//when
 		id, err := service.RegisterService()
@@ -67,26 +67,47 @@ func TestRegisterService(t *testing.T) {
 		assert.Equal(t, "", id)
 	})
 
-	// t.Run("should return an error when cannot reach server", func(t *testing.T) {
-	// 	//given
-	// 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-	// 		w.WriteHeader(500)
-	// 	})
-	// 	server := httptest.NewServer(handler)
-	// 	defer server.Close()
+	t.Run("should return an error when cannot reach server", func(t *testing.T) {
+		//given
+		handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			w.WriteHeader(500)
+		})
+		server := httptest.NewServer(handler)
+		defer server.Close()
 
-	// 	mockBuilder := &mocks.Builder{}
-	// 	mockBuilder.On("BuildServiceDetails").Return(registration.ServiceDetails{}, nil)
-	// 	mockBuilder.On("GetApplicationRegistryURL").Return(server.URL)
+		mockBuilder := &mocks.Builder{}
+		mockBuilder.On("BuildServiceDetails").Return(registration.ServiceDetails{}, nil)
+		mockBuilder.On("GetApplicationRegistryURL").Return(server.URL)
+		service := registration.NewServiceRegister("ENV_VAR", mockBuilder, 1, 5)
 
-	// 	service := registration.NewServiceRegister("deploymentEnvName", mockBuilder)
+		//when
+		id, err := service.RegisterService()
 
-	// 	//when
-	// 	id, err := service.RegisterService()
+		//then
+		assert.Error(t, err)
+		assert.Equal(t, "", id)
+	})
 
-	// 	//then
-	// 	assert.Error(t, err)
-	// 	assert.EqualError(t, err, "While trying to register service: error")
-	// 	assert.Equal(t, "", id)
-	// })
+	t.Run("should return an error when server return other json structure than is described in RegisterResponse", func(t *testing.T) {
+		//given
+		handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			res := []byte(`{"error": "error message"}`)
+			w.Write(res)
+		})
+		server := httptest.NewServer(handler)
+		defer server.Close()
+
+		mockBuilder := &mocks.Builder{}
+		mockBuilder.On("BuildServiceDetails").Return(registration.ServiceDetails{}, apperrors.Internal("error"))
+		mockBuilder.On("GetApplicationRegistryURL").Return(server.URL)
+
+		service := registration.NewServiceRegister("deploymentEnvName", mockBuilder, 1, 5)
+
+		//when
+		id, err := service.RegisterService()
+
+		//then
+		assert.Error(t, err)
+		assert.Equal(t, "", id)
+	})
 }

@@ -17,7 +17,7 @@ func main() {
 	log.Info("server started")
 
 	builder := registration.NewServiceDetailsBuilder(registration.NewOSCommunicator())
-	service := registration.NewServiceRegister("GITHUB_CONNECTOR_NAME", builder)
+	service := registration.NewServiceRegister("GITHUB_CONNECTOR_NAME", builder, 5, 10)
 	id, err := service.RegisterService()
 	if err != nil {
 		log.Fatal("Fatal error: ", err.Error())

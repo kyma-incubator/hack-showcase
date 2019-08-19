@@ -52,6 +52,7 @@ func (r serviceDetailsBuilder) BuildServiceDetails() (ServiceDetails, error) {
 	return jsonBody, nil
 }
 
+//GetApplicationRegistryURL returnes a URL used to POST json to Kyma's application registry
 func (r serviceDetailsBuilder) GetApplicationRegistryURL() string {
 	return applicationRegistryPrefix + r.osCommunicator.GetEnv(applicationName) + applicationRegistrySuffix
 }
