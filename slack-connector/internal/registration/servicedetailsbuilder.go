@@ -42,7 +42,7 @@ func (r serviceDetailsBuilder) BuildServiceDetails() (ServiceDetails, error) {
 			TargetURL: "https://slack.com/api/",
 		},
 	}
-	file, err := r.osCommunicator.ReadFile("slackasyncapi.json")
+	file, err := r.osCommunicator.ReadFile("configs/slackasyncapi.json")
 	if err != nil {
 		return ServiceDetails{}, apperrors.Internal("While reading 'slackopenapi.json' spec: %s", err)
 	}
