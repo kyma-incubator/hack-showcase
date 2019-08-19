@@ -28,13 +28,22 @@ type ServiceRegister interface {
 }
 
 type serviceRegister struct {
-	envName string
-	builder Builder
+	envName      string
+	builder      Builder
+	register     ServiceRegister
+	retryDelay   int
+	retriesCount int
 }
 
 //NewServiceRegister creates a serviceRegister instance with the passed in interface
-func NewServiceRegister(deploymentEnvName string, b Builder) serviceRegister {
-	return serviceRegister{envName: deploymentEnvName, builder: b}
+func NewServiceRegister(deploymentEnvName string, b Builder, retryTime int, retries int) serviceRegister {
+
+	return serviceRegister{
+		envName:      deploymentEnvName,
+		builder:      b,
+		retryDelay:   retryTime * int(time.Second),
+		retriesCount: retries,
+	}
 }
 
 //RegisterService - register service in Kyma and get a response
@@ -44,7 +53,7 @@ func (r serviceRegister) RegisterService() (string, apperrors.AppError) {
 	if err != nil {
 		return "", apperrors.Internal("While building service details json: %s", err)
 	}
-	id, err := jsonBody.requestWithRetries(r.envName, r.builder.GetApplicationRegistryURL())
+	id, err := jsonBody.requestWithRetries(r.envName, r.builder.GetApplicationRegistryURL(), r.retryDelay, r.retriesCount)
 	if err != nil {
 		return "", apperrors.Internal("While trying to register service: %s", err.Error())
 	}
