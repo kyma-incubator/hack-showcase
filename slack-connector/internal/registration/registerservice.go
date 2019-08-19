@@ -33,8 +33,8 @@ type serviceRegister struct {
 }
 
 //NewServiceRegister creates a serviceRegister instance with the passed in interface
-func NewServiceRegister(deploymentEnvName string, sdb serviceDetailsBuilder) serviceRegister {
-	return serviceRegister{envName: deploymentEnvName, builder: sdb.builder}
+func NewServiceRegister(deploymentEnvName string, b Builder) serviceRegister {
+	return serviceRegister{envName: deploymentEnvName, builder: b}
 }
 
 //RegisterService - register service in Kyma and get a response

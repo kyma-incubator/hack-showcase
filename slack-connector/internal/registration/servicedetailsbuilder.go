@@ -32,7 +32,7 @@ func NewServiceDetailsBuilder(fr OSCommunicator) serviceDetailsBuilder {
 }
 
 //BuildServiceDetails creates a ServiceDetails structure with provided API specification URL
-func (r serviceDetailsBuilder) BuildServiceDetails(url string) (ServiceDetails, error) {
+func (r serviceDetailsBuilder) BuildServiceDetails() (ServiceDetails, error) {
 
 	var jsonBody = ServiceDetails{
 		Provider:    "Kyma",
@@ -44,7 +44,7 @@ func (r serviceDetailsBuilder) BuildServiceDetails(url string) (ServiceDetails, 
 	}
 	file, err := r.osCommunicator.ReadFile("slackasyncapi.json")
 	if err != nil {
-		return ServiceDetails{}, apperrors.Internal("While reading 'slackopenapi.json' specification: %s", err)
+		return ServiceDetails{}, apperrors.Internal("While reading 'slackopenapi.json' spec: %s", err)
 	}
 	jsonBody.Events = &Events{Spec: file}
 
