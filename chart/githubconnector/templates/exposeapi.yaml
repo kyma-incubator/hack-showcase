@@ -11,4 +11,4 @@ spec:
     service:
       name: {{ .Release.Name }}
       port: {{ .Values.service.port }}
-    hostname: githubconnector.{{ .Values.kymaAddress }}
+    hostname: {{ .Release.Name }}.{{ .Values.kymaAddress }}
