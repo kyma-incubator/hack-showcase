@@ -16,8 +16,8 @@ func TestBuildServiceDetails(t *testing.T) {
 		mockOSCommunicator := &mocks.OSCommunicator{}
 		fileBody := []byte(`{"json":"value"}`)
 		jsonBody := json.RawMessage(`{"json":"value"}`)
-		mockOSCommunicator.On("ReadFile", "githubasyncapi.json").Return(fileBody, nil)
-		mockOSCommunicator.On("GetEnv", "GITHUB_CONNECTOR_NAME").Return("slack-connector")
+		mockOSCommunicator.On("ReadFile", "slackasyncapi.json").Return(fileBody, nil)
+		mockOSCommunicator.On("GetEnv", "SLACK_CONNECTOR_NAME").Return("slack-connector")
 		builder := registration.NewServiceDetailsBuilder(mockOSCommunicator)
 		url := "https://raw.githubusercontent.com/colunira/github-openapi/master/githubopenAPI.json"
 
@@ -28,15 +28,15 @@ func TestBuildServiceDetails(t *testing.T) {
 		assert.NoError(t, err)
 		assert.Equal(t, "Kyma", details.Provider)
 		assert.Equal(t, "GitHub Connector, which can be used for communication and handling events from GitHub", details.Description)
-		assert.Equal(t, "https://api.github.com", details.API.TargetURL)
+		assert.Equal(t, "https://slack.com/api/", details.API.TargetURL)
 		assert.Equal(t, jsonBody, details.Events.Spec)
 		assert.Equal(t, url, details.API.SpecificationURL)
 	})
 
 	t.Run("should return error and empty ServiceDetails{}", func(t *testing.T) {
 		mockOSCommunicator := &mocks.OSCommunicator{}
-		mockOSCommunicator.On("ReadFile", "githubasyncapi.json").Return(nil, apperrors.Internal("error"))
-		mockOSCommunicator.On("GetEnv", "GITHUB_CONNECTOR_NAME").Return("slack-connector")
+		mockOSCommunicator.On("ReadFile", "slackasyncapi.json").Return(nil, apperrors.Internal("error"))
+		mockOSCommunicator.On("GetEnv", "SLACK_CONNECTOR_NAME").Return("slack-connector")
 		builder := registration.NewServiceDetailsBuilder(mockOSCommunicator)
 
 		//when
@@ -52,7 +52,7 @@ func TestGetApplicationRegistryURL(t *testing.T) {
 	t.Run("should return proper URL", func(t *testing.T) {
 		//given
 		mockOSCommunicator := &mocks.OSCommunicator{}
-		mockOSCommunicator.On("GetEnv", "GITHUB_CONNECTOR_NAME").Return("slack-connector")
+		mockOSCommunicator.On("GetEnv", "SLACK_CONNECTOR_NAME").Return("slack-connector")
 		targetURL := "http://application-registry-external-api.kyma-integration.svc.cluster.local:8081/slack-connector-app/v1/metadata/services"
 		builder := registration.NewServiceDetailsBuilder(mockOSCommunicator)
 

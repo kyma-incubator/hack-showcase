@@ -60,12 +60,12 @@ func (r serviceRegister) RegisterService() (string, apperrors.AppError) {
 	return id, nil
 }
 
-func (jsonBody *ServiceDetails) requestWithRetries(appName string, url string) (string, error) {
+func (jsonBody *ServiceDetails) requestWithRetries(appName string, url string, retryDelay int, retriesCount int) (string, error) {
 	var id string
 	var err error
 
 	for i := 0; i < retriesCount; i++ {
-		time.Sleep(retryDelay)
+		time.Sleep(time.Duration(retryDelay))
 		id, err = sendRequest(*jsonBody, url)
 		if err == nil {
 			break
