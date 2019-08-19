@@ -1,7 +1,3 @@
-package configs
-
-//SlackAsyncAPI is a AsyncAPI 1.2.0 standard specification for Slack Events
-var SlackAsyncAPI = []byte(`
 {
     "asyncapi": "1.2.0",
     "baseTopic": "slack.events",
@@ -2191,4 +2187,3 @@ var SlackAsyncAPI = []byte(`
         }
     }
 }
-`)
