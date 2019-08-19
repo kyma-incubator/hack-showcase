@@ -10,8 +10,8 @@
 [[projects]]
   name = "github.com/google/go-github"
   packages = ["github"]
-  revision = "c756c329c19dbbadba0675b42af693093c3f2c45"
-  version = "v27.0.1"
+  revision = "4c1ec01570ac97daecec8c2b62b07176700f093d"
+  version = "v27.0.4"
 
 [[projects]]
   name = "github.com/google/go-querystring"
@@ -50,8 +50,8 @@
     "mock",
     "require"
   ]
-  revision = "ffdc059bfe9ce6a4e144ba849dbedead332c6053"
-  version = "v1.3.0"
+  revision = "221dbe5ed46703ee255b1da0dec05086f5035f62"
+  version = "v1.4.0"
 
 [[projects]]
   branch = "master"
@@ -71,11 +71,17 @@
   branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix"]
-  revision = "fae7ac547cb717d141c433a2a173315e216b64c4"
+  revision = "fde4db37ae7ad8191b03d30d27f258b5291ae4e3"
+
+[[projects]]
+  name = "gopkg.in/yaml.v2"
+  packages = ["."]
+  revision = "51d6538a90f86fe93ac480b35f37b2be17fef232"
+  version = "v2.2.2"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "89655c3919fed4281751c7b6ac2bf8544776703707440e1c02106e14c4d4f2d8"
+  inputs-digest = "c3d451a8e4be35851e22fa74feb67f98e1713e029f25db72f03613f3e0105b46"
   solver-name = "gps-cdcl"
   solver-version = 1
