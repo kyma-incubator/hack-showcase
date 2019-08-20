@@ -61,9 +61,9 @@ func (wh *WebHookHandler) HandleWebhook(w http.ResponseWriter, r *http.Request) 
 
 	switch e := event.(type) {
 	case *github.IssuesEvent:
-
-		apperr = wh.sender.SendToKyma("issuesevent.opened", "v1", "", os.Getenv("GITHUB_CONNECTOR_NAME")+"-app", payload)
-
+		if e.GetAction() == "opened" {
+			apperr = wh.sender.SendToKyma("issuesevent.opened", "v1", "", os.Getenv("GITHUB_CONNECTOR_NAME")+"-app", payload)
+		}
 	case *github.PullRequestReviewEvent:
 		if e.GetAction() == "submitted" {
 			apperr = wh.sender.SendToKyma("pullrequestreviewevent.submitted", "v1", "", os.Getenv("GITHUB_CONNECTOR_NAME")+"-app", payload)

@@ -1,8 +1,8 @@
 package registration
 
 import (
+	"fmt"
 	"io/ioutil"
-	"os"
 
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/apperrors"
 )
@@ -11,37 +11,37 @@ const (
 	specificationURL          = "https://raw.githubusercontent.com/colunira/github-openapi/master/githubopenAPI.json"
 	applicationRegistryPrefix = "http://application-registry-external-api.kyma-integration.svc.cluster.local:8081/"
 	applicationRegistrySuffix = "-app/v1/metadata/services"
-	applicationName           = "GITHUB_CONNECTOR_NAME"
+	applicationRegistryFormat = "%s%s%s"
 )
 
-//OSCommunicator is an interface used to allow mocking file reading
-type OSCommunicator interface {
-	ReadFile(string) ([]byte, error)
-	GetEnv(string) string
+//FileReader is an interface used to allow mocking file reading
+type FileReader interface {
+	Read(string) ([]byte, error)
 }
 
 type payloadBuilder struct {
-	builder        PayloadBuilder
-	osCommunicator OSCommunicator
+	builder         PayloadBuilder
+	fileReader      FileReader
+	applicationName string
 }
 
 //NewPayloadBuilder creates a serviceDetailsPayloadBuilder instance
-func NewPayloadBuilder(fr OSCommunicator) payloadBuilder {
-	return payloadBuilder{osCommunicator: fr}
+func NewPayloadBuilder(fr FileReader, appName string) payloadBuilder {
+	return payloadBuilder{fileReader: fr, applicationName: appName}
 }
 
 //Build creates a ServiceDetails structure with provided API specification URL
 func (r payloadBuilder) Build() (ServiceDetails, error) {
 
-	var jsonBody = ServiceDetails{
+	jsonBody := ServiceDetails{
 		Provider:    "Kyma",
-		Name:        r.osCommunicator.GetEnv(applicationName),
+		Name:        r.applicationName,
 		Description: "GitHub Connector, which can be used for communication and handling events from GitHub",
 		API: &API{
 			TargetURL: "https://api.github.com",
 		},
 	}
-	file, err := r.osCommunicator.ReadFile("githubasyncapi.json")
+	file, err := r.fileReader.Read("githubasyncapi.json")
 	if err != nil {
 		return ServiceDetails{}, apperrors.Internal("While reading githubasyncapi.json: %s", err)
 	}
@@ -53,24 +53,19 @@ func (r payloadBuilder) Build() (ServiceDetails, error) {
 
 //GetApplicationRegistryURL returns a URL used to POST json to Kyma's application registry
 func (r payloadBuilder) GetApplicationRegistryURL() string {
-	return applicationRegistryPrefix + r.osCommunicator.GetEnv(applicationName) + applicationRegistrySuffix
+	return fmt.Sprintf(applicationRegistryFormat, applicationRegistryPrefix, r.applicationName, applicationRegistrySuffix)
 }
 
-//ReadFile reads file specified with given path using ioutil library
-func (r osCommunicator) ReadFile(path string) ([]byte, error) {
+//Read reads file specified with given path using ioutil library
+func (r fileReader) Read(path string) ([]byte, error) {
 	return ioutil.ReadFile(path)
 }
 
-type osCommunicator struct {
-	osCommunicator OSCommunicator
+type fileReader struct {
+	fileReader FileReader
 }
 
-//NewOSCommunicator creates new osCommunicator struct
-func NewOSCommunicator() osCommunicator {
-	return osCommunicator{}
-}
-
-//GetEnv returns environmental variable of a given name
-func (r osCommunicator) GetEnv(name string) string {
-	return os.Getenv(name)
+//NewFileReader creates new fileReader struct
+func NewFileReader() fileReader {
+	return fileReader{}
 }

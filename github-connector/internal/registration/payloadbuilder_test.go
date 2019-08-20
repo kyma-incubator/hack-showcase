@@ -13,12 +13,11 @@ import (
 func TestBuild(t *testing.T) {
 	t.Run("should return proper values", func(t *testing.T) {
 		//given
-		mockOSCommunicator := &mocks.OSCommunicator{}
+		mockFileReader := &mocks.FileReader{}
 		fileBody := []byte(`{"json":"value"}`)
 		jsonBody := json.RawMessage(`{"json":"value"}`)
-		mockOSCommunicator.On("ReadFile", "githubasyncapi.json").Return(fileBody, nil)
-		mockOSCommunicator.On("GetEnv", "GITHUB_CONNECTOR_NAME").Return("github-connector")
-		builder := registration.NewPayloadBuilder(mockOSCommunicator)
+		mockFileReader.On("Read", "githubasyncapi.json").Return(fileBody, nil)
+		builder := registration.NewPayloadBuilder(mockFileReader, "github-connector")
 		url := "https://raw.githubusercontent.com/colunira/github-openapi/master/githubopenAPI.json"
 
 		//when
@@ -34,10 +33,9 @@ func TestBuild(t *testing.T) {
 	})
 
 	t.Run("should return error and empty ServiceDetails{}", func(t *testing.T) {
-		mockOSCommunicator := &mocks.OSCommunicator{}
-		mockOSCommunicator.On("ReadFile", "githubasyncapi.json").Return(nil, apperrors.Internal("error"))
-		mockOSCommunicator.On("GetEnv", "GITHUB_CONNECTOR_NAME").Return("github-connector")
-		builder := registration.NewPayloadBuilder(mockOSCommunicator)
+		mockFileReader := &mocks.FileReader{}
+		mockFileReader.On("Read", "githubasyncapi.json").Return(nil, apperrors.Internal("error"))
+		builder := registration.NewPayloadBuilder(mockFileReader, "github-connector")
 
 		//when
 		details, err := builder.Build()
@@ -51,10 +49,9 @@ func TestBuild(t *testing.T) {
 func TestGetApplicationRegistryURL(t *testing.T) {
 	t.Run("should return proper URL", func(t *testing.T) {
 		//given
-		mockOSCommunicator := &mocks.OSCommunicator{}
-		mockOSCommunicator.On("GetEnv", "GITHUB_CONNECTOR_NAME").Return("github-connector")
+		mockFileReader := &mocks.FileReader{}
 		targetURL := "http://application-registry-external-api.kyma-integration.svc.cluster.local:8081/github-connector-app/v1/metadata/services"
-		builder := registration.NewPayloadBuilder(mockOSCommunicator)
+		builder := registration.NewPayloadBuilder(mockFileReader, "github-connector")
 
 		//when
 		path := builder.GetApplicationRegistryURL()
