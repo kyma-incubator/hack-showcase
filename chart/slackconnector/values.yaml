@@ -1,14 +1,15 @@
 replicaCount: 1
 
 container:
-  image: flyingseals/slack-connector:1.0.0
+  image: kymaflyingseals/slack-connector:0.0.4
 
   containerPort: 8080
   limits:
     memory: "128Mi"
-    cpu: "500m"
+    cpu: "100m"
 
 service:
   port: 80
 
 kymaAddress: 35.195.198.66.xip.io
+slackBotToken: {token}

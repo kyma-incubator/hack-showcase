@@ -33,3 +33,13 @@ spec:
           value: {{ quote .Values.container.containerPort }}
         - name: SLACK_CONNECTOR_NAME
           value: {{ .Release.Name }}
+      - name: slack-token
+        image: redis
+        volumeMounts:
+        - name: slack-token
+          mountPath: "/slack-token"
+          readOnly: true
+      volumes:
+      - name: slack-token
+        secret:
+          secretName: {{ .Release.Name }}-token
