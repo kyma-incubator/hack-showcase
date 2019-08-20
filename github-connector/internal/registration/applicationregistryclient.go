@@ -23,7 +23,6 @@ type ApplicationRegistryClient interface {
 }
 
 type applicationRegistryClient struct {
-	envName      string
 	builder      PayloadBuilder
 	register     ApplicationRegistryClient
 	retryDelay   int
@@ -31,10 +30,9 @@ type applicationRegistryClient struct {
 }
 
 //NewApplicationRegistryClient creates a applicationRegistryClient instance with the passed in interface
-func NewApplicationRegistryClient(deploymentEnvName string, b PayloadBuilder, retryTime int, retries int) applicationRegistryClient {
+func NewApplicationRegistryClient(b PayloadBuilder, retryTime int, retries int) applicationRegistryClient {
 
 	return applicationRegistryClient{
-		envName:      deploymentEnvName,
 		builder:      b,
 		retryDelay:   retryTime * int(time.Second),
 		retriesCount: retries,
@@ -48,14 +46,14 @@ func (r applicationRegistryClient) RegisterService() (string, apperrors.AppError
 	if err != nil {
 		return "", apperrors.Internal("While building service details json: %s", err)
 	}
-	id, err := jsonBody.requestWithRetries(r.envName, r.builder.GetApplicationRegistryURL(), r.retryDelay, r.retriesCount)
+	id, err := jsonBody.requestWithRetries(r.builder.GetApplicationRegistryURL(), r.retryDelay, r.retriesCount)
 	if err != nil {
 		return "", apperrors.Internal("While trying to register service: %s", err.Error())
 	}
 	return id, nil
 }
 
-func (jsonBody *ServiceDetails) requestWithRetries(appName string, url string, retryDelay int, retriesCount int) (string, error) {
+func (jsonBody *ServiceDetails) requestWithRetries(url string, retryDelay int, retriesCount int) (string, error) {
 	var id string
 	var err error
 
@@ -111,7 +109,7 @@ func sendRequest(JSONBody ServiceDetails, url string) (string, error) {
 	bodyBytes, err := ioutil.ReadAll(httpResponse.Body)
 
 	if err != nil {
-		return "", apperrors.UpstreamServerCallFailed("Failed to read service ID from application registry JSON response: %s", err)
+		return "", apperrors.Internal("Failed to read service ID from application registry JSON response: %s", err)
 	}
 
 	var jsonResponse RegisterResponse

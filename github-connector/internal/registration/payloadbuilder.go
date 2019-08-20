@@ -51,7 +51,7 @@ func (r payloadBuilder) Build() (ServiceDetails, error) {
 	return jsonBody, nil
 }
 
-//GetApplicationRegistryURL returnes a URL used to POST json to Kyma's application registry
+//GetApplicationRegistryURL returns a URL used to POST json to Kyma's application registry
 func (r payloadBuilder) GetApplicationRegistryURL() string {
 	return applicationRegistryPrefix + r.osCommunicator.GetEnv(applicationName) + applicationRegistrySuffix
 }
