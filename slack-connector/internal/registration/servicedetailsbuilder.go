@@ -39,7 +39,8 @@ func (r serviceDetailsBuilder) BuildServiceDetails() (ServiceDetails, error) {
 		Name:        r.osCommunicator.GetEnv(applicationName),
 		Description: "Slack Connector, which is used for registering Slack API in Kyma",
 		API: &API{
-			TargetURL: "https://slack.com/api/",
+			TargetURL:                      "https://slack.com/api/",
+			SpecificationRequestParameters: &SpecificationRequestParameters{Headers: &Headers{CustomHeader: []string{"test-token"}}},
 		},
 	}
 	file, err := r.osCommunicator.ReadFile("slackasyncapi.json")
