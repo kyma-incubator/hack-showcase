@@ -117,7 +117,7 @@ func sendRequest(JSONBody ServiceDetails, url string) (string, error) {
 	var jsonResponse RegisterResponse
 	err = json.Unmarshal(bodyBytes, &jsonResponse)
 	if err != nil {
-		return "", apperrors.Internal("Failed while unmarshaling JSON response from application registry: %s", err)
+		return "", apperrors.Internal("Failed while unmarshalling JSON response from application registry: %s", err)
 	}
 	return jsonResponse.ID, nil
 }
