@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestBuildServiceDetails(t *testing.T) {
+func TestBuild(t *testing.T) {
 	t.Run("should return proper values", func(t *testing.T) {
 		//given
 		mockOSCommunicator := &mocks.OSCommunicator{}
@@ -18,11 +18,11 @@ func TestBuildServiceDetails(t *testing.T) {
 		jsonBody := json.RawMessage(`{"json":"value"}`)
 		mockOSCommunicator.On("ReadFile", "githubasyncapi.json").Return(fileBody, nil)
 		mockOSCommunicator.On("GetEnv", "GITHUB_CONNECTOR_NAME").Return("github-connector")
-		builder := registration.NewServiceDetailsBuilder(mockOSCommunicator)
+		builder := registration.NewPayloadBuilder(mockOSCommunicator)
 		url := "https://raw.githubusercontent.com/colunira/github-openapi/master/githubopenAPI.json"
 
 		//when
-		details, err := builder.BuildServiceDetails()
+		details, err := builder.Build()
 
 		//then
 		assert.NoError(t, err)
@@ -37,10 +37,10 @@ func TestBuildServiceDetails(t *testing.T) {
 		mockOSCommunicator := &mocks.OSCommunicator{}
 		mockOSCommunicator.On("ReadFile", "githubasyncapi.json").Return(nil, apperrors.Internal("error"))
 		mockOSCommunicator.On("GetEnv", "GITHUB_CONNECTOR_NAME").Return("github-connector")
-		builder := registration.NewServiceDetailsBuilder(mockOSCommunicator)
+		builder := registration.NewPayloadBuilder(mockOSCommunicator)
 
 		//when
-		details, err := builder.BuildServiceDetails()
+		details, err := builder.Build()
 
 		//then
 		assert.Error(t, err)
@@ -54,7 +54,7 @@ func TestGetApplicationRegistryURL(t *testing.T) {
 		mockOSCommunicator := &mocks.OSCommunicator{}
 		mockOSCommunicator.On("GetEnv", "GITHUB_CONNECTOR_NAME").Return("github-connector")
 		targetURL := "http://application-registry-external-api.kyma-integration.svc.cluster.local:8081/github-connector-app/v1/metadata/services"
-		builder := registration.NewServiceDetailsBuilder(mockOSCommunicator)
+		builder := registration.NewPayloadBuilder(mockOSCommunicator)
 
 		//when
 		path := builder.GetApplicationRegistryURL()

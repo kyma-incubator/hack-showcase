@@ -11,29 +11,29 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-//Builder is an interface containing all necessary functions required to build an ServiceDetails structure
-type Builder interface {
-	BuildServiceDetails() (ServiceDetails, error)
+//PayloadBuilder is an interface containing all necessary functions required to build an ServiceDetails structure
+type PayloadBuilder interface {
+	Build() (ServiceDetails, error)
 	GetApplicationRegistryURL() string
 }
 
-//ServiceRegister is an interface containing all necessary functions required to register service in Kyma's application registry
-type ServiceRegister interface {
+//ApplicationRegistryClient is an interface containing all necessary functions required to register service in Kyma's application registry
+type ApplicationRegistryClient interface {
 	RegisterService() (string, apperrors.AppError)
 }
 
-type serviceRegister struct {
+type applicationRegistryClient struct {
 	envName      string
-	builder      Builder
-	register     ServiceRegister
+	builder      PayloadBuilder
+	register     ApplicationRegistryClient
 	retryDelay   int
 	retriesCount int
 }
 
-//NewServiceRegister creates a serviceRegister instance with the passed in interface
-func NewServiceRegister(deploymentEnvName string, b Builder, retryTime int, retries int) serviceRegister {
+//NewApplicationRegistryClient creates a applicationRegistryClient instance with the passed in interface
+func NewApplicationRegistryClient(deploymentEnvName string, b PayloadBuilder, retryTime int, retries int) applicationRegistryClient {
 
-	return serviceRegister{
+	return applicationRegistryClient{
 		envName:      deploymentEnvName,
 		builder:      b,
 		retryDelay:   retryTime * int(time.Second),
@@ -42,9 +42,9 @@ func NewServiceRegister(deploymentEnvName string, b Builder, retryTime int, retr
 }
 
 //RegisterService - register service in Kyma and get a response
-func (r serviceRegister) RegisterService() (string, apperrors.AppError) {
+func (r applicationRegistryClient) RegisterService() (string, apperrors.AppError) {
 
-	jsonBody, err := r.builder.BuildServiceDetails()
+	jsonBody, err := r.builder.Build()
 	if err != nil {
 		return "", apperrors.Internal("While building service details json: %s", err)
 	}

@@ -20,19 +20,18 @@ type OSCommunicator interface {
 	GetEnv(string) string
 }
 
-//ServiceDetailsBuilder is used for mocking building ServiceDetails struct
-type serviceDetailsBuilder struct {
-	builder        Builder
+type payloadBuilder struct {
+	builder        PayloadBuilder
 	osCommunicator OSCommunicator
 }
 
-//NewServiceDetailsBuilder creates a serviceDetailsBuilder instance
-func NewServiceDetailsBuilder(fr OSCommunicator) serviceDetailsBuilder {
-	return serviceDetailsBuilder{osCommunicator: fr}
+//NewPayloadBuilder creates a serviceDetailsPayloadBuilder instance
+func NewPayloadBuilder(fr OSCommunicator) payloadBuilder {
+	return payloadBuilder{osCommunicator: fr}
 }
 
-//BuildServiceDetails creates a ServiceDetails structure with provided API specification URL
-func (r serviceDetailsBuilder) BuildServiceDetails() (ServiceDetails, error) {
+//Build creates a ServiceDetails structure with provided API specification URL
+func (r payloadBuilder) Build() (ServiceDetails, error) {
 
 	var jsonBody = ServiceDetails{
 		Provider:    "Kyma",
@@ -52,8 +51,8 @@ func (r serviceDetailsBuilder) BuildServiceDetails() (ServiceDetails, error) {
 	return jsonBody, nil
 }
 
-//GetApplicationRegistryURL returns a URL used to POST json to Kyma's application registry
-func (r serviceDetailsBuilder) GetApplicationRegistryURL() string {
+//GetApplicationRegistryURL returnes a URL used to POST json to Kyma's application registry
+func (r payloadBuilder) GetApplicationRegistryURL() string {
 	return applicationRegistryPrefix + r.osCommunicator.GetEnv(applicationName) + applicationRegistrySuffix
 }
 
