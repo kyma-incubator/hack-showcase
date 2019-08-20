@@ -35,7 +35,7 @@ func TestRegisterService(t *testing.T) {
 		mockPayloadBuilder.On("Build").Return(registration.ServiceDetails{}, nil)
 		mockPayloadBuilder.On("GetApplicationRegistryURL").Return(server.URL)
 
-		service := registration.NewApplicationRegistryClient("deploymentEnvName", mockPayloadBuilder, 1, 5)
+		service := registration.NewApplicationRegistryClient(mockPayloadBuilder, 1, 5)
 
 		//when
 		id, err := service.RegisterService()
@@ -56,7 +56,7 @@ func TestRegisterService(t *testing.T) {
 		mockPayloadBuilder.On("Build").Return(registration.ServiceDetails{}, apperrors.Internal("error"))
 		mockPayloadBuilder.On("GetApplicationRegistryURL").Return(server.URL)
 
-		service := registration.NewApplicationRegistryClient("deploymentEnvName", mockPayloadBuilder, 1, 5)
+		service := registration.NewApplicationRegistryClient(mockPayloadBuilder, 1, 5)
 
 		//when
 		id, err := service.RegisterService()
@@ -78,7 +78,7 @@ func TestRegisterService(t *testing.T) {
 		mockPayloadBuilder := &mocks.PayloadBuilder{}
 		mockPayloadBuilder.On("Build").Return(registration.ServiceDetails{}, nil)
 		mockPayloadBuilder.On("GetApplicationRegistryURL").Return(server.URL)
-		service := registration.NewApplicationRegistryClient("ENV_VAR", mockPayloadBuilder, 1, 5)
+		service := registration.NewApplicationRegistryClient(mockPayloadBuilder, 1, 5)
 
 		//when
 		id, err := service.RegisterService()
@@ -101,7 +101,7 @@ func TestRegisterService(t *testing.T) {
 		mockPayloadBuilder.On("Build").Return(registration.ServiceDetails{}, apperrors.Internal("error"))
 		mockPayloadBuilder.On("GetApplicationRegistryURL").Return(server.URL)
 
-		service := registration.NewApplicationRegistryClient("deploymentEnvName", mockPayloadBuilder, 1, 5)
+		service := registration.NewApplicationRegistryClient(mockPayloadBuilder, 1, 5)
 
 		//when
 		id, err := service.RegisterService()
