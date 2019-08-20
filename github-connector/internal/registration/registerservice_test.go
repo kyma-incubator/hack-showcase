@@ -88,7 +88,7 @@ func TestRegisterService(t *testing.T) {
 		assert.Equal(t, "", id)
 	})
 
-	t.Run("should return an error when server return other json structure than is described in RegisterResponse", func(t *testing.T) {
+	t.Run("should return an error when server returns other json structure than described in RegisterResponse", func(t *testing.T) {
 		//given
 		handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			res := []byte(`{"error": "error message"}`)
