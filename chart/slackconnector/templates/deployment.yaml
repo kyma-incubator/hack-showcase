@@ -3,10 +3,12 @@ kind: Deployment
 metadata:
   name: {{ .Release.Name }}
   labels:
-    app: {{ include "github-connector-chart.name" . }}
-    chart: {{ include "github-connector-chart.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    app: {{ include "slackconnector.name" . }}
+    app.kubernetes.io/name: {{ template "slackconnector.name" . }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -29,6 +31,5 @@ spec:
         env:
         - name: PORT
           value: {{ quote .Values.container.containerPort }}
-        - name: GITHUB_CONNECTOR_NAME
+        - name: SLACK_CONNECTOR_NAME
           value: {{ .Release.Name }}
-

@@ -1,0 +1,14 @@
+replicaCount: 1
+
+container:
+  image: flyingseals/slack-connector:1.0.0
+
+  containerPort: 8080
+  limits:
+    memory: "128Mi"
+    cpu: "500m"
+
+service:
+  port: 80
+
+kymaAddress: 35.195.198.66.xip.io

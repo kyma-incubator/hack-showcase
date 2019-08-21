@@ -16,7 +16,9 @@ import (
 func main() {
 	log.Info("server started")
 
-	id, err := registration.RegisterService()
+	builder := registration.NewPayloadBuilder(registration.NewFileReader(), os.Getenv("GITHUB_CONNECTOR_NAME"))
+	id, err := registration.NewApplicationRegistryClient(builder, 5, 10).RegisterService()
+
 	if err != nil {
 		log.Fatal("Fatal error: ", err.Error())
 	}
@@ -24,7 +26,7 @@ func main() {
 		"id": id,
 	}).Info("Service registered")
 
-	kyma := events.NewSender(&http.Client{}, events.NewValidator(), "http://event-bus-publish.kyma-system:8080/v1/events")
+	kyma := events.NewSender(&http.Client{}, events.NewValidator(), "http://event-publish-service.kyma-system:8080/v1/events")
 	webhook := handlers.NewWebHookHandler(
 		github.ReceivingEventsWrapper{},
 		kyma,

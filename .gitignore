@@ -16,4 +16,3 @@
 .*
 !.gitignore
 */vendor
-/docs/.DS_Store
