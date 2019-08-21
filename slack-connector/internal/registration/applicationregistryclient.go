@@ -11,35 +11,28 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-const (
-	retryDelay   = 5 * time.Second
-	retriesCount = 10
-)
-
-//Builder is an interface containing all necessary functions required to build an ServiceDetails structure
-type Builder interface {
-	BuildServiceDetails() (ServiceDetails, error)
+//PayloadBuilder is an interface containing all necessary functions required to build an ServiceDetails structure
+type PayloadBuilder interface {
+	Build() (ServiceDetails, error)
 	GetApplicationRegistryURL() string
 }
 
-//ServiceRegister is an interface containing all necessary functions required to register a service in Kyma Application Registry
-type ServiceRegister interface {
+//ApplicationRegistryClient is an interface containing all necessary functions required to register service in Kyma's application registry
+type ApplicationRegistryClient interface {
 	RegisterService() (string, apperrors.AppError)
 }
 
-type serviceRegister struct {
-	envName      string
-	builder      Builder
-	register     ServiceRegister
+type applicationRegistryClient struct {
+	builder      PayloadBuilder
+	register     ApplicationRegistryClient
 	retryDelay   int
 	retriesCount int
 }
 
-//NewServiceRegister creates a serviceRegister instance with the passed in interface
-func NewServiceRegister(deploymentEnvName string, b Builder, retryTime int, retries int) serviceRegister {
+//NewApplicationRegistryClient creates a applicationRegistryClient instance with the passed in interface
+func NewApplicationRegistryClient(b PayloadBuilder, retryTime int, retries int) applicationRegistryClient {
 
-	return serviceRegister{
-		envName:      deploymentEnvName,
+	return applicationRegistryClient{
 		builder:      b,
 		retryDelay:   retryTime * int(time.Second),
 		retriesCount: retries,
@@ -47,20 +40,20 @@ func NewServiceRegister(deploymentEnvName string, b Builder, retryTime int, retr
 }
 
 //RegisterService - register service in Kyma and get a response
-func (r serviceRegister) RegisterService() (string, apperrors.AppError) {
+func (r applicationRegistryClient) RegisterService() (string, apperrors.AppError) {
 
-	jsonBody, err := r.builder.BuildServiceDetails()
+	jsonBody, err := r.builder.Build()
 	if err != nil {
 		return "", apperrors.Internal("While building service details json: %s", err)
 	}
-	id, err := jsonBody.requestWithRetries(r.envName, r.builder.GetApplicationRegistryURL(), r.retryDelay, r.retriesCount)
+	id, err := jsonBody.requestWithRetries(r.builder.GetApplicationRegistryURL(), r.retryDelay, r.retriesCount)
 	if err != nil {
 		return "", apperrors.Internal("While trying to register service: %s", err.Error())
 	}
 	return id, nil
 }
 
-func (jsonBody *ServiceDetails) requestWithRetries(appName string, url string, retryDelay int, retriesCount int) (string, error) {
+func (jsonBody *ServiceDetails) requestWithRetries(url string, retryDelay int, retriesCount int) (string, error) {
 	var id string
 	var err error
 

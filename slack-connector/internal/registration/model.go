@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 )
 
-//ServiceDetails - main structure of service register json
+//ServiceDetails - main structure of content required to register service
 type ServiceDetails struct {
 	Provider         string            `json:"provider"`
 	Name             string            `json:"name"`
