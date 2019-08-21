@@ -17,4 +17,7 @@ func main() {
 	log.WithFields(log.Fields{
 		"id": id,
 	}).Info("Service registered")
+
+	for true {
+	}
 }
