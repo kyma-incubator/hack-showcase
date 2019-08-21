@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	log.Info("server started")
+	log.Info("Registration started.")
 
 	builder := registration.NewServiceDetailsBuilder(registration.NewOSCommunicator())
 	service := registration.NewServiceRegister("SLACK_CONNECTOR_NAME", builder, 5, 10)
@@ -16,8 +16,8 @@ func main() {
 	}
 	log.WithFields(log.Fields{
 		"id": id,
-	}).Info("Service registered")
+	}).Info("Service registered.")
 
-	for true {
+	for true { // Temporary solution
 	}
 }

@@ -33,3 +33,6 @@ spec:
           value: {{ quote .Values.container.containerPort }}
         - name: SLACK_CONNECTOR_NAME
           value: {{ .Release.Name }}
+        - name: SLACK_BOT_TOKEN
+          value: {{ .Values.slackBotToken }}
+          
