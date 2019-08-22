@@ -64,6 +64,10 @@ func (wh *WebHookHandler) HandleWebhook(w http.ResponseWriter, r *http.Request) 
 		if e.GetAction() == "opened" {
 			apperr = wh.sender.SendToKyma("issuesevent.opened", "v1", "", os.Getenv("GITHUB_CONNECTOR_NAME")+"-app", payload)
 		}
+	case *github.PullRequestEvent:
+		if e.GetAction() == "opened" {
+			apperr = wh.sender.SendToKyma("pullrequestevent.opened", "v1", "", os.Getenv("GITHUB_CONNECTOR_NAME")+"-app", payload)
+		}
 	case *github.PullRequestReviewEvent:
 		if e.GetAction() == "submitted" {
 			apperr = wh.sender.SendToKyma("pullrequestreviewevent.submitted", "v1", "", os.Getenv("GITHUB_CONNECTOR_NAME")+"-app", payload)
