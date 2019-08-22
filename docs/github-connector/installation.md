@@ -1,8 +1,9 @@
 # GitHub Connector Installation
 
-- [Installation in Kyma environment with Helm](#installing-in-kyma-using-helm)
-	- [Prerequisites](#prerequisites-1)
-	- [Steps](#steps)
+- [GitHub Connector Installation](#github-connector-installation)
+  - [Installation in Kyma with Helm](#installation-in-kyma-with-helm)
+    - [Prerequisites](#prerequisites)
+    - [Steps](#steps)
 
 ## Installation in Kyma with Helm
 
@@ -23,3 +24,4 @@
     >**CAUTION:** Kyma address should be in the right format. It must consist of domain name, without dot  character at the beggining, for example `35.187.32.214.xip.io`
 
     >**NOTE:** To define Namespace in which chart should be installed add flag `--namespace`.
+3. For further steps see [configuration page](/docs/github-connector/configuration.md)
