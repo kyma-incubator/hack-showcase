@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	specificationURL          = "https://raw.githubusercontent.com/kyma-incubator/hack-showcase/slack-connector-boilerplate/slack-connector/internal/registration/configs/slackopenapi.json" // to edit after merge
+	SpecificationURL          = "https://raw.githubusercontent.com/kyma-incubator/hack-showcase/slack-connector-boilerplate/slack-connector/internal/registration/configs/slackopenapi.json" // to edit after merge
 	applicationRegistryPrefix = "http://application-registry-external-api.kyma-integration.svc.cluster.local:8081/"
 	applicationRegistrySuffix = "-app/v1/metadata/services"
 	applicationRegistryFormat = "%s%s%s"
@@ -25,11 +25,12 @@ type payloadBuilder struct {
 	builder         PayloadBuilder
 	fileReader      FileReader
 	applicationName string
+	slackBotToken   string
 }
 
 //NewPayloadBuilder creates a serviceDetailsPayloadBuilder instance
-func NewPayloadBuilder(fr FileReader, appName string) payloadBuilder {
-	return payloadBuilder{fileReader: fr, applicationName: appName}
+func NewPayloadBuilder(fr FileReader, appName string, token string) payloadBuilder {
+	return payloadBuilder{fileReader: fr, applicationName: appName, slackBotToken: token}
 }
 
 //Build creates a ServiceDetails structure with provided API specification URL
@@ -41,16 +42,17 @@ func (r payloadBuilder) Build() (ServiceDetails, error) {
 		Description: "Slack Connector, which is used for registering Slack API in Kyma",
 		API: &API{
 			TargetURL:         "https://slack.com/api",
-			RequestParameters: &RequestParameters{Headers: &Headers{CustomHeader: []string{os.Getenv("SLACK_BOT_TOKEN")}}},
+			RequestParameters: &RequestParameters{Headers: &Headers{CustomHeader: []string{"Bearer " + r.slackBotToken}}},
 		},
 	}
+	fmt.Println(os.Getenv("SLACK_BOT_TOKEN"))
 	file, err := r.fileReader.Read("slackasyncapi.json")
 	if err != nil {
 		return ServiceDetails{}, apperrors.Internal("While reading 'slackopenapi.json' spec: %s", err)
 	}
 	jsonBody.Events = &Events{Spec: file}
 
-	jsonBody.API.SpecificationURL = specificationURL
+	jsonBody.API.SpecificationURL = SpecificationURL
 	return jsonBody, nil
 }
 

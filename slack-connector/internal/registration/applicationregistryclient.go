@@ -98,10 +98,6 @@ func sendRequest(JSONBody ServiceDetails, url string) (string, error) {
 	client := &http.Client{}
 	httpResponse, err := client.Do(httpRequest)
 
-	// testRequest, _ := http.NewRequest(http.MethodPost, "http://webhook.site/0d4831cc-5681-41d7-b52a-5d5f593b826a", requestReader)
-	// testRequest.Header.Set("Content-Type", "application/json")
-	// _, _ = client.Do(testRequest)
-
 	if err != nil {
 		return "", apperrors.UpstreamServerCallFailed("Failed to make request to '%s': %s", url, err.Error())
 	}

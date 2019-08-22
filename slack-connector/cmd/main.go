@@ -10,7 +10,7 @@ import (
 func main() {
 	log.Info("Registration started.")
 
-	builder := registration.NewPayloadBuilder(registration.NewFileReader(), os.Getenv("SLACK_CONNECTOR_NAME"))
+	builder := registration.NewPayloadBuilder(registration.NewFileReader(), os.Getenv("SLACK_CONNECTOR_NAME"), os.Getenv("SLACK_BOT_TOKEN"))
 	id, err := registration.NewApplicationRegistryClient(builder, 5, 10).RegisterService()
 	if err != nil {
 		log.Fatal("Fatal error: ", err.Error())
