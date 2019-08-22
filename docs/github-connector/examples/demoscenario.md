@@ -10,8 +10,8 @@ This purpose of this guide is to show example usage of GitHub Connector, which a
 
 ## Prerequisites
 
-- Kyma with the GitHub Connector [installed](/chart/githubconnector/README.md).
-- GitHub webhook [configured](https://developer.github.com/webhooks/creating/) to deliver payload to the Connector's `/webhook` endpoint.
+- Kyma with the GitHub Connector [installed](/docs/github-connector/installation.md).
+- GitHub webhook [configured](/docs/github-connector/configuration.md) to deliver payload to the Connector's `/webhook` endpoint.
 
 ### Steps
 
