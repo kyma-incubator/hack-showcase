@@ -11,5 +11,5 @@ container:
 service:
   port: 80
 
-kymaAddress: {kymaAdress}
+kymaAddress: adress
 slackBotToken: token
