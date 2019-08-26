@@ -2,6 +2,7 @@ package main
 
 import (
 	"os"
+	"sync"
 
 	"github.com/kyma-incubator/hack-showcase/slack-connector/internal/registration"
 	log "github.com/sirupsen/logrus"
@@ -19,6 +20,7 @@ func main() {
 		"id": id,
 	}).Info("Service registered.")
 
-	for true { // Temporary solution
-	}
+	var wg sync.WaitGroup
+	wg.Add(1)
+	wg.Wait()
 }
