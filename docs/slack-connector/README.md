@@ -23,7 +23,7 @@ Slack Connector is a component which allows contact from inside of Kyma environm
 
 2. Copy the authentication token. You will need it later in the Helm command.
 3. Go to [Kyma repository](https://github.com/kyma-project/kyma) and run script `/installation/scripts/tiller-tls.sh` to get certificates needed for using Helm commands. By default they are stored in `~/.helm` directory. After that add `--tls` flag to every Helm command to authorize and authenticate yourself
-4. Go to `chart/slackconnector` directory. Run the command to install Slack Connector:
+4. Go to the `chart/slackconnector` directory. Run this command to install Slack Connector:
 
     ``` shell
     helm install --set container.image={DOCKER_IMAGE} --set kymaAddress={KYMA_ADDRESS} --set slackBotToken={SLACK_TOKEN} -n {RELEASE_NAME} . --tls
