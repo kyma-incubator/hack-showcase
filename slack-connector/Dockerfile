@@ -4,7 +4,7 @@ WORKDIR /go/src/github.com/kyma-incubator/hack-showcase/slack-connector
 
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o main ./cmd
+RUN CGO_ENABLED=0 GOOS=linux go build -o main ./cmd/slack-connector
 RUN mkdir /app && mv ./main /app/main && mv ./internal/registration/configs/slackasyncapi.json /app/slackasyncapi.json
 
 FROM alpine:3.10
