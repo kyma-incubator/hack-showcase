@@ -19,7 +19,7 @@ Slack Connector is a component which allows contact from inside of Kyma environm
 ### Steps
 
 1. Go to the [authentication page](https://auth-slack.herokuapp.com/). Click `Add to Slack`. This redirects you to another page. Select your desired workspace and click `Allow`.
-    >**NOTE:** If the link does not work, it means that an application that authenticates the connector in your workspace does not exist and you have to create it yourself. To create an application like that, see [this tutorial](https://api.slack.com/docs/oauth#flow) in the Slack API documentation.
+    >**NOTE:** If the link does not work, it means that an application that authenticates the connector in your workspace does not exist and you have to create it yourself. To create such an application, see [this tutorial](https://api.slack.com/docs/oauth#flow) in the Slack API documentation.
 
 2. Copy the authentication token. You will need it later in the Helm command.
 3. Go to [Kyma repository](https://github.com/kyma-project/kyma) and run the script `/installation/scripts/tiller-tls.sh` to get certificates needed for using Helm commands. By default they are stored in `~/.helm` directory. After that add `--tls` flag to every Helm command to authorize and authenticate yourself
