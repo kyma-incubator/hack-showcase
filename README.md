@@ -57,4 +57,4 @@ Example of configuration of GitHub Connector can be found [here](/docs/examples/
     ```
 
 ## Roadmap
-For detailed plans for the future development, see the project [`roadmap`](/docs/roadmap).
+For detailed plans for the future development, see the project [`roadmap`](/docs/roadmap.md).
