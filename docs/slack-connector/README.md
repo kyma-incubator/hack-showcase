@@ -18,7 +18,7 @@ Slack Connector is a component which allows for communication between the Kyma e
 
 ### Steps
 
-1. Visit our [authentication page](https://auth-slack.herokuapp.com/). Click `Add to Slack`. You will be redirected to another page. Select your desired workspace and click `Allow`
+1. Go to the [authentication page](https://auth-slack.herokuapp.com/). Click `Add to Slack`. This redirects you to another page. Select your desired workspace and click `Allow`.
     >**NOTE:** If the link doesn't work it means that you have to create an application like that yourself. The tutorial for that can be found in the Slack API [documentation](https://api.slack.com/docs/oauth#flow).
 
 2. Copy the authentication token. You will need it later in the Helm command.
