@@ -1,4 +1,4 @@
-# Using the GitHub Connector <!-- omit in toc -->
+# Using GitHub Connector <!-- omit in toc -->
 
 - [Overview](#overview)
 - [Prerequisites](#prerequisites)
@@ -43,7 +43,7 @@ This purpose of this guide is to show example usage of GitHub Connector, which a
 
    >**NOTE:** Remember, that the Namespace must be the one in which you have deployed your lambda
 
-    3. Get logs from the Pod that runs the lambda function. Run this command:
+    1. Get logs from the Pod that runs the lambda function. Run this command:
 
    `kubectl logs -n {NAMESPACE} {LAMBDA-NAME} | grep "Issue opened"`
 

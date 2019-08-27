@@ -1,4 +1,4 @@
-# Configuring the GitHub Connector
+# Configuring GitHub Connector
 
 ## Overview
 

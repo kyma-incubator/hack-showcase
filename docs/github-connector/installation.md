@@ -1,6 +1,6 @@
-# The GitHub Connector Installation
+# GitHub Connector Installation
 
-- [The GitHub Connector Installation](#the-github-connector-installation)
+- [GitHub Connector Installation](#github-connector-installation)
   - [Installation in Kyma with Helm](#installation-in-kyma-with-helm)
     - [Prerequisites](#prerequisites)
     - [Steps](#steps)
