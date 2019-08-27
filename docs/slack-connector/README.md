@@ -29,5 +29,5 @@ Slack Connector is a component which allows for communication between the Kyma e
     helm install --set container.image={DOCKER_IMAGE} --set kymaAddress={KYMA_ADDRESS} --set slackBotToken={SLACK_TOKEN} -n {RELEASE_NAME} . --tls
     ```
 
-    >**CAUTION:** Kyma address should be in the right format. It must consist of domain name, without dot  character at the beggining, for example `35.187.32.214.xip.io`
+    >**CAUTION:** Make sure that the Kyma address is in the correct format. It must consist of the domain name, without the dot character at the beginning. For example, `35.187.32.214.xip.io`.
     >**NOTE:** To define Namespace in which chart should be installed add flag `--namespace`.
