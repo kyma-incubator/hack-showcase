@@ -7,7 +7,7 @@
 
 ## Overview
 
-Slack Connector is a component which allows contact from inside of Kyma environment to the Slack API.
+Slack Connector is a component which allows for communication between the Kyma environment and the Slack API.
 
 ## Installation in Kyma with Helm
 
