@@ -25,7 +25,7 @@ If you want to run connectors separately from Kyma, check certain connector's do
 Install Connectors locally or on cluster. For installation details, see corresponding guide:
 
 * [Github Connector Installation](/docs/github-connector/installation.md)
-* ~~Slack Connector installation~~
+* [Slack Connector installation](/docs/slack-connector/installation.md)
 
 ## Usage
 
