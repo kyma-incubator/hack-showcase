@@ -1,0 +1,16 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+      "kymaAddress": {
+        "type": "string",
+        "title": "Kyma address",
+        "description" : "Kyma domain address"
+      },
+      "container.image": {
+        "type": "string",
+        "title": "Docker image",
+        "description" : "The GitHub Connector image on DockerHub"
+      }
+    }
+  }

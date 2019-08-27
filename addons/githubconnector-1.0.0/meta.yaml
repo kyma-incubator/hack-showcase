@@ -1,0 +1,10 @@
+name: github-connector
+version: 0.0.1
+id: a2bfb890-6f3a-4510-a745-ae2c805f5710 #generated online, not sure if it's correct 
+description: "Allows to utilize GitHub events and communicate with GitHub through its API"
+displayName: "GitHub Connector"
+
+tags: github
+longDescription: "to fill"
+imageURL: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
+documentationURL: https://github.com/kyma-incubator/hack-showcase/tree/master/docs/github-connector
