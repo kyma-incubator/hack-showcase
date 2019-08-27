@@ -2,11 +2,11 @@
 
 ## Overview
 
-The GitHub Connector is an additional tool for handling GitHub events in Kyma. It registers GitHub API and events in Kyma Application Registry. Then, it converts events incoming from connected GitHub webhooks into format acceptable by Kyma Event Bus and forwards them. For now it handles those events:
+The GitHub Connector is an additional tool to Kyma for handling GitHub events. It registers GitHub API and events in the Application Registry. Then, it converts events incoming from connected GitHub webhooks to the format acceptable by Kyma and forwards them to the Event Bus. The GitHub Connector handles these events:
 
-- new pull request,
-- new issue,
-- new review on pull request.
+- new pull request
+- new pull request review
+- new issue
 
 ## Table of Contents
 

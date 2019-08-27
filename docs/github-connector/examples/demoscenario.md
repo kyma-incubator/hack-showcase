@@ -1,8 +1,8 @@
-# Using GitHub Connector <!-- omit in toc -->
+# Using the GitHub Connector <!-- omit in toc -->
 
 - [Overview](#overview)
 - [Prerequisites](#prerequisites)
-- [Steps](#steps)
+  - [Steps](#steps)
 
 ## Overview
 
@@ -11,7 +11,7 @@ This purpose of this guide is to show example usage of GitHub Connector, which a
 ## Prerequisites
 
 - Kyma with the GitHub Connector [installed](/docs/github-connector/installation.md).
-- GitHub webhook [configured](/docs/github-connector/configuration.md) to deliver payload to the Connector's `/webhook` endpoint.
+- GitHub webhook [configured](/docs/github-connector/configuration.md) to deliver payload to the GitHub Connector's `/webhook` endpoint.
 
 ### Steps
 
