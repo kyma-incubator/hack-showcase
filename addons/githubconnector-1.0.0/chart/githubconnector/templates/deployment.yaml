@@ -30,5 +30,5 @@ spec:
         - name: PORT
           value: {{ quote .Values.container.containerPort }}
         - name: GITHUB_CONNECTOR_NAME
-          value: {{ .Release.Name | trunc 63 | trimSuffix "-" }}
+          value: {{ .Release.Name | trunc 58 | trimSuffix "-" }}
 
