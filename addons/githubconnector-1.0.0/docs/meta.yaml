@@ -10,7 +10,7 @@ docs:
         - type: asyncapi
           name: asyncapi
           mode: package
-          filter: docs/githubasyncAPI\.json
+          filter: docs/githubasyncapi\.json
         - type: openapi
           name: openapi
           mode: package
