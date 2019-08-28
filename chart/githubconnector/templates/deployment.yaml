@@ -31,4 +31,8 @@ spec:
           value: {{ quote .Values.container.containerPort }}
         - name: GITHUB_CONNECTOR_NAME
           value: {{ .Release.Name }}
+        - name: GITHUB_REPO_URL
+          value: {{ .Values.githubURL }}
+        - name: GITHUB_TOKEN
+          value: {{ .Values.githubToken }}          
 

@@ -11,3 +11,7 @@ service:
   port: 80
 
 kymaAddress: 35.195.198.66.xip.io
+
+githubURL: repos/:owner/:repo
+
+githubToken: sampleToken
