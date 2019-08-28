@@ -7,10 +7,16 @@
         "title": "Kyma address",
         "description" : "Kyma domain address"
       },
-      "image": {
+      "githubURL": {
         "type": "string",
-        "title": "Docker image",
-        "description" : "The GitHub Connector image on DockerHub"
+        "title": "GitHub repository",
+        "description" : "Link to GitHub repository in proper format@"
+      },
+      "githubToken": {
+        "type":"string",
+        "title":"Token",
+        "description": "The GitHub repository token, which you can find on this site: https://auth-github-connector.herokuapp.com/"
       }
-    }
+    },
+    "required":["token","kymaAddress"]
   }

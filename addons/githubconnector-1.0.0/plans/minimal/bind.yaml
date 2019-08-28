@@ -1,3 +1,0 @@
-credential:
-  - name: CHANNEL_ID
-    value: {{ .Values.channelID }}
