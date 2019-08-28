@@ -9,6 +9,6 @@ metadata:
     heritage: {{ .Release.Service | trunc 32 | trimSuffix "-" }}
 spec:
     service:
-      name: {{ .Release.Name }}
+      name: {{ .Release.Name | trunc 32 | trimSuffix "-" }}
       port: {{ .Values.service.port }}
     hostname: {{ .Release.Name | trunc 32 | trimSuffix "-" }}.{{ .Values.kymaAddress }}
