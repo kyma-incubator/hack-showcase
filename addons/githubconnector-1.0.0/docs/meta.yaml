@@ -1,0 +1,17 @@
+docs:
+  - template:
+      displayName: "Documentation for testing-0.0.1"
+      description: "Overall documentation"
+      sources:
+        - type: markdown
+          name: docs
+          mode: package
+          filter: (docs/(.*?)\.md$)|(docs/assets)
+        - type: asyncapi
+          name: asyncapi
+          mode: package
+          filter: docs/githubasyncAPI\.json
+        - type: openapi
+          name: openapi
+          mode: package
+          filter: docs/githubopenAPI\.json
