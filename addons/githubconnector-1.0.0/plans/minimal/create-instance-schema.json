@@ -7,7 +7,7 @@
         "title": "Kyma address",
         "description" : "Kyma domain address"
       },
-      "container.image": {
+      "image": {
         "type": "string",
         "title": "Docker image",
         "description" : "The GitHub Connector image on DockerHub"

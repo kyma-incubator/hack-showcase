@@ -1,0 +1,11 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+      "channelID": {
+        "type": "string",
+        "title": "Channel",
+        "description": "Specify channel you want to send messages to"
+      }
+    }
+  }
