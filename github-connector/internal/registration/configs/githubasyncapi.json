@@ -6,9 +6,9 @@
       "description": "Github Events v1"
     },
     "topics": {
-      "issuesevent.opened.v1": {
+      "IssuesEvent.v1": {
         "subscribe": {
-          "summary": "New issue opened on github repository",
+          "summary": "Triggered when an issue is opened, edited, deleted, transferred, pinned, unpinned, closed, reopened, assigned, unassigned, labeled, unlabeled, locked, unlocked, milestoned, or demilestoned.",
           "payload": {
             "type": "object",
             "required": [
@@ -37,9 +37,9 @@
           }
         }
       },
-      "pullrequestreviewevent.submitted.v1": {
+      "PullRequestReviewEvent.v1": {
         "subscribe": {
-          "summary": "Triggered when a pull request review is submitted into a non-pending state.",
+          "summary": "Triggered when a pull request review is submitted into a non-pending state, the body is edited, or the review is dismissed.",
           "payload": {
             "type": "object",
             "required": [
@@ -68,9 +68,9 @@
           }
         }
       },
-      "pullrequestevent.opened.v1": {
+      "PullRequestEvent.v1": {
         "subscribe": {
-          "summary": "Triggered when a new pull request is opened",
+          "summary": "Triggered when a pull request is assigned, unassigned, labeled, unlabeled, opened, edited, closed, reopened, synchronize, ready_for_review, locked, unlocked or when a pull request review is requested or removed.",
           "payload": {
             "type": "object",
             "required": [
