@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/github"
+	"github.com/kyma-incubator/hack-showcase/github-connector/internal/hooks"
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/registration"
 
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/events"
@@ -25,6 +26,9 @@ func main() {
 	log.WithFields(log.Fields{
 		"id": id,
 	}).Info("Service registered")
+
+	creator := hooks.NewCreator(os.Getenv("GITHUB_TOKEN"), os.Getenv("GITHUB_REPO_URL"))
+	creator.Create()
 
 	kyma := events.NewSender(&http.Client{}, events.NewValidator(), "http://event-publish-service.kyma-system:8080/v1/events")
 	webhook := handlers.NewWebHookHandler(
