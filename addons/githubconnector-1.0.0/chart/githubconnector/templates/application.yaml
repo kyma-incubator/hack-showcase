@@ -1,11 +1,11 @@
 apiVersion: applicationconnector.kyma-project.io/v1alpha1
 kind: Application
 metadata:
-  name: {{ .Release.Name }}-app
+  name: {{ .Release.Name | trunc 63 | trimSuffix "-" }}-app
   labels:
     app: {{ include "github-connector-chart.name" . }}
     chart: {{ include "github-connector-chart.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name | trunc 63 | trimSuffix "-" }}
+    heritage: {{ .Release.Service | trunc 63 | trimSuffix "-" }}
 spec:
   description: {{ .Chart.Description }}

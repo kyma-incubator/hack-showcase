@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}
+  name: {{ .Release.Name | trunc 63 | trimSuffix "-" }}
   labels:
     app: {{ include "github-connector-chart.name" . }}
     chart: {{ include "github-connector-chart.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name | trunc 63 | trimSuffix "-" }}
+    heritage: {{ .Release.Service | trunc 63 | trimSuffix "-" }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ .Release.Name }}
+      app: {{ .Release.Name | trunc 63 | trimSuffix "-" }}
   template:
     metadata:
       labels:
-        app: {{ .Release.Name }}
+        app: {{ .Release.Name | trunc 63 | trimSuffix "-" }}
     spec:
       containers:
       - name: main
@@ -30,5 +30,5 @@ spec:
         - name: PORT
           value: {{ quote .Values.container.containerPort }}
         - name: GITHUB_CONNECTOR_NAME
-          value: {{ .Release.Name }}
+          value: {{ .Release.Name | trunc 63 | trimSuffix "-" }}
 
