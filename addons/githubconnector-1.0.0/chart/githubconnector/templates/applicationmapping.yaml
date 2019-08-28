@@ -1,0 +1,4 @@
+apiVersion: applicationconnector.kyma-project.io/v1alpha1
+kind: ApplicationMapping
+metadata:
+  name: {{ .Release.Name | trunc 32 | trimSuffix "-" }}-app
