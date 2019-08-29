@@ -1,15 +1,15 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: {{ include "github-connector-chart.release.name" }}
+  name: {{ include "github-connector-chart.release.name" . }}
   labels:
     app: {{ include "github-connector-chart.name" . }}
     chart: {{ include "github-connector-chart.chart" . }}
-    release: {{ include "github-connector-chart.release.name" }}
-    heritage: {{ include "github-connector-chart.release.service" }}
+    release: {{ include "github-connector-chart.release.name" . }}
+    heritage: {{ include "github-connector-chart.release.service" . }}
 spec:
   selector:
-    app: {{ include "github-connector-chart.release.name" }}
+    app: {{ include "github-connector-chart.release.name" . }}
   type: ClusterIP
   ports:
     - name: http
