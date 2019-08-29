@@ -11,15 +11,12 @@ import (
 )
 
 const (
-	linkPrefix = "https://api.github.com/"
-	linkSuffix = "/hooks"
-	linkFormat = "%s%s%s"
-
 	kymaURLPrefix = "https://"
 	kymaURLSuffix = "/webhook"
 	kymaURLFormat = "%s%s%s"
 )
 
+//Creator is an struct that contain informations about github's repo/org url, OAuth token and allow creating webhooks
 type Creator struct {
 	token   string
 	repoURL string
@@ -30,10 +27,9 @@ func NewCreator(t string, rURL string) Creator {
 	return Creator{token: t, repoURL: rURL}
 }
 
-//Create create webhook in github's repository or organization
+//Create build request and create webhook in github's repository or organization
 func (c Creator) Create(kURL string) apperrors.AppError {
-
-	githubURL := fmt.Sprintf(linkFormat, linkPrefix, c.repoURL, linkSuffix)
+	githubURL := c.repoURL
 	kymaURL := fmt.Sprintf(kymaURLFormat, kymaURLPrefix, kURL, kymaURLSuffix)
 	token := "token " + c.token
 	hook := HookJSON{

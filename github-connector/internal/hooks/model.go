@@ -1,5 +1,6 @@
 package hooks
 
+//HookJSON define all fields of github's POST method for creating webhooks
 type HookJSON struct {
 	Name   string   `json:"name"`
 	Active bool     `json:"active"`
@@ -7,6 +8,7 @@ type HookJSON struct {
 	Events []string `json:"events,omitempty"`
 }
 
+//Config define structure of HookJSON's config
 type Config struct {
 	URL         string `json:"url"`
 	ContentType string `json:"content_type,omitempty"`
