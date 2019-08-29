@@ -13,3 +13,4 @@ service:
 
 kymaAddress: adress
 slackBotToken: token
+workspace: {{ include "slack-connector-chart.random.workspace.id" }}

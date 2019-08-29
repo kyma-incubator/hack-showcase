@@ -1,5 +1,9 @@
 {{- define "slack-connector-chart.release.name" -}}
-{{- printf "slack-connector-%s" (randAlphaNum 4) | lower -}}
+{{- printf "slack-connector-%s" .Values.workspace | trunc 31 | trimSuffix "-"  -}}
+{{- end -}}
+
+{{- define "slack-connector-chart.random.workspace.id" -}}
+{{- printf "%s" randAlphaNum 4 | lower -}}
 {{- end -}}
 
 {{- define "slack-connector-chart.release.service" -}}
