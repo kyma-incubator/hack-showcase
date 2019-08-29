@@ -29,10 +29,10 @@ func main() {
 
 	creator := hooks.NewCreator(os.Getenv("GITHUB_TOKEN"), os.Getenv("GITHUB_REPO_URL"))
 	err = creator.Create(os.Getenv("KYMA_ADDRESS"))
-
 	if err != nil {
 		log.Fatal("Fatal error: ", err.Error())
 	}
+	log.Info("Webhook created!")
 
 	kyma := events.NewSender(&http.Client{}, events.NewValidator(), "http://event-publish-service.kyma-system:8080/v1/events")
 	webhook := handlers.NewWebHookHandler(

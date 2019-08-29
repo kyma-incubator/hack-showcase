@@ -7,7 +7,6 @@ import (
 	"net/http"
 
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/apperrors"
-	log "github.com/sirupsen/logrus"
 )
 
 const (
@@ -59,16 +58,12 @@ func (c Creator) Create(kURL string) apperrors.AppError {
 
 	client := &http.Client{}
 	httpResponse, err := client.Do(httpRequest)
-
-	if httpResponse.StatusCode != http.StatusCreated {
-		return apperrors.UpstreamServerCallFailed("Failed to make request to '%s': %s", githubURL, err.Error())
-	}
-
 	if err != nil {
 		return apperrors.UpstreamServerCallFailed("Failed to make request to '%s': %s", githubURL, err.Error())
 	}
 
-	log.Info("Webhook created!")
-
+	if httpResponse.StatusCode != http.StatusCreated {
+		return apperrors.UpstreamServerCallFailed("Bad response code. Maybe webhook already exist?")
+	}
 	return nil
 }
