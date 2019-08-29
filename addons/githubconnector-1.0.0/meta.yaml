@@ -1,6 +1,6 @@
 name: github-connector
 version: 0.0.1
-id: a2bfb890-6f3a-4510-a745-ae2c805f5710 #generated online, not sure if it's correct 
+id: 807f6de6-1234-4868-bbb8-c56649896b57 #generated online, not sure if it's correct 
 description: "Allows to utilize GitHub events and communicate with GitHub through its API"
 displayName: "GitHub Connector"
 
