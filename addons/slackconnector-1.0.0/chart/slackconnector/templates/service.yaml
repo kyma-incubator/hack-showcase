@@ -3,8 +3,8 @@ apiVersion: v1
 metadata:
   name: {{ .Release.Name }}
   labels:
-    app: {{ include "slackconnector.name" . }}
-    app.kubernetes.io/name: {{ template "slackconnector.name" . }}
+    app: {{ include "slack-connector-chart.name" . }}
+    app.kubernetes.io/name: {{ template "slack-connector-chart.name" . }}
     helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/instance: {{ .Release.Name }}
