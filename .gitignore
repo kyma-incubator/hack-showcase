@@ -15,7 +15,6 @@
 # Directories
 .*
 !.gitignore
-!.gitmodules
 */vendor
 *.REST
 *.HTTP

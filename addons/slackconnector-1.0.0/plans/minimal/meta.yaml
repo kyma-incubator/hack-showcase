@@ -1,6 +1,0 @@
-name: minimal
-id: 3c88526d-1f49-4b55-98ff-ec8914b42e85
-description: "The minimal plan for installing/uninstalling the Slack Connector"
-displayName: Minimal
-bindable: false
-free: true

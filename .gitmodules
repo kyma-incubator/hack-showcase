@@ -1,6 +1,0 @@
-[submodule "addons/slackconnector-1.0.0/chart/addons/slackconnector-1.0.0/chart/slackconnector"]
-	path = addons/slackconnector-1.0.0/chart/addons/slackconnector-1.0.0/chart/slackconnector
-	url = https://github.com/kyma-incubator/hack-showcase.git
-[submodule "addons/slackconnector-1.0.0/chart/slackconnector"]
-	path = addons/slackconnector-1.0.0/chart/slackconnector
-	url = https://github.com/kyma-incubator/hack-showcase.git
