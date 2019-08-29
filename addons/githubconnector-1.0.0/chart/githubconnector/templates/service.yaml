@@ -1,15 +1,15 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: {{ .Release.Name | trunc 32 | trimSuffix "-" }}
+  name: {{ include "release.name" }}
   labels:
     app: {{ include "github-connector-chart.name" . }}
     chart: {{ include "github-connector-chart.chart" . }}
-    release: {{ .Release.Name | trunc 32 | trimSuffix "-" }}
-    heritage: {{ .Release.Service | trunc 32 | trimSuffix "-" }}
+    release: {{ include "release.name" }}
+    heritage: {{ include "release.service" }}
 spec:
   selector:
-    app: {{ .Release.Name | trunc 32 | trimSuffix "-" }}
+    app: {{ include "release.name" }}
   type: ClusterIP
   ports:
     - name: http
