@@ -11,6 +11,11 @@
         "type":"string",
         "title":"Bot Token",
         "description": "The Slack workspace token, which you can find on this site: https://auth-slack.herokuapp.com/"
+      },
+      "workspace": {
+        "type":"string",
+        "title":"Workspace Name",
+        "description": "The name of workspace application is installed to."
       }
     },
     "required":["slackBotToken","kymaAddress"]
