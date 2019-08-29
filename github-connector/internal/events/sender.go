@@ -11,8 +11,6 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-const eventBusURL = "http://event-bus-publish.kyma-system:8080/v1/events"
-
 //Sender is a struct used to allow mocking the SendToKyma function
 type Sender struct {
 	validator  Validator
