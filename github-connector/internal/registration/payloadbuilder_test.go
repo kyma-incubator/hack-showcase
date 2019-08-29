@@ -18,7 +18,7 @@ func TestBuild(t *testing.T) {
 		jsonBody := json.RawMessage(`{"json":"value"}`)
 		mockFileReader.On("Read", "githubasyncapi.json").Return(fileBody, nil)
 		builder := registration.NewPayloadBuilder(mockFileReader, "github-connector")
-		url := "https://raw.githubusercontent.com/colunira/github-openapi/master/githubopenAPI.json"
+		url := "https://raw.githubusercontent.com/kyma-incubator/hack-showcase/master/github-connector/internal/registration/configs/githubopenAPI.json"
 
 		//when
 		details, err := builder.Build()
