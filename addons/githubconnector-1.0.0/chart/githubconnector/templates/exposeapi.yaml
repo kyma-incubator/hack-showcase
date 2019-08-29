@@ -1,7 +1,7 @@
 apiVersion: gateway.kyma-project.io/v1alpha2
 kind: Api
 metadata:
-  name: {{ include "github-connector-chart.release.name" . }}
+  name: {{ include "github-connector-chart.repository" . }}
   labels:
     app: {{ include "github-connector-chart.name" . }}
     chart: {{ include "github-connector-chart.chart" . }}
@@ -9,6 +9,6 @@ metadata:
     heritage: {{ include "github-connector-chart.release.service" . }}
 spec:
     service:
-      name: {{ include "github-connector-chart.release.name" . }}
+      name: {{ include "github-connector-chart.repository" . }}
       port: {{ .Values.service.port }}
-    hostname: {{ include "github-connector-chart.release.name" . }}.{{ .Values.kymaAddress }}
+    hostname: {{ include "github-connector-chart.repository" . }}.{{ .Values.kymaAddress }}

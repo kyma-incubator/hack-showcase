@@ -1,7 +1,7 @@
 apiVersion: applicationconnector.kyma-project.io/v1alpha1
 kind: Application
 metadata:
-  name: {{ include "github-connector-chart.release.name" . }}-app
+  name: {{ include "github-connector-chart.repository" . }}-app
   labels:
     app: {{ include "github-connector-chart.name" . }}
     chart: {{ include "github-connector-chart.chart" . }}

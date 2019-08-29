@@ -42,3 +42,7 @@ Create chart name and version as used by the chart label.
 {{- define "github-connector-chart.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
+
+{{- define "github-connector-chart.repository" -}}
+{{- printf "github-%s" .Values.githubURL | trimAll "repos/" | trimAll "orgs/" | replace "/" "-" | trunc 47 | trimSuffix "-" -}}
+{{- end -}}
