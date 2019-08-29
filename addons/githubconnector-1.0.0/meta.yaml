@@ -1,10 +1,11 @@
 name: github-connector
-version: 0.0.1
-id: 807f6de6-1234-4868-bbb8-c56649896b57 #generated online, not sure if it's correct 
-description: "Allows to utilize GitHub events and communicate with GitHub through its API"
+version: 0.2.0
+id: 807f6de6-1234-4868-bbb8-c56649896b57
 displayName: "GitHub Connector"
+description: "Allows to utilize GitHub events and communicate with GitHub through its API."
 
 tags: github
-longDescription: "to fill"
+providerDisplayName: Kyma
+longDescription: "Allows to utilize GitHub events and communicate with GitHub through its API."
 imageURL: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
 documentationURL: https://github.com/kyma-incubator/hack-showcase/tree/master/docs/github-connector

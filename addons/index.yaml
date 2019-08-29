@@ -2,10 +2,10 @@ apiVersion: v1
 entries:
   githubconnector:
     - name: githubconnector
-      description: "GitHub Connector amazing app - tell friends!"
+      description: "GitHub Connector"
       version: 1.0.0
   slackconnector:
     - name: slackconnector
-      description: "Slack Connector for Kyma in Kyma. Kyma."
+      description: "Slack Connector"
       version: 1.0.0
       
