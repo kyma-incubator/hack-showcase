@@ -1,7 +1,7 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: {{ .Release.Name }}
+  name: {{ include "slack-connector-chart.release.name" . }}
   labels:
     app: {{ include "slack-connector-chart.name" . }}
     app.kubernetes.io/name: {{ template "slack-connector-chart.name" . }}
@@ -11,7 +11,7 @@ metadata:
 
 spec:
   selector:
-    app: {{ .Release.Name }}
+    app: {{ include "slack-connector-chart.name" . }}
   type: ClusterIP
   ports:
     - name: http

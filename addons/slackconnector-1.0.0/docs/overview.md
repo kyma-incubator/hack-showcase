@@ -1,3 +1,3 @@
 # Overview
 
-Welcome to the GitHub Connector addon!
+Welcome to the Slack Connector addon!
