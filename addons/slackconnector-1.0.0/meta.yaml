@@ -1,0 +1,10 @@
+name: slack-connector
+version: 0.0.1
+id: 7629244a-98bb-4cb8-a2b0-5f5527c8ecaa #generated online, not sure if it's correct 
+description: "Allows to communicate with Slack through its API"
+displayName: "Slack Connector"
+
+tags: slack
+longDescription: "to fill"
+imageURL: https://cdn.brandfolder.io/5H442O3W/as/pl546j-7le8zk-199wkt/Slack_Mark.svg
+documentationURL: https://github.com/kyma-incubator/hack-showcase/tree/master/docs/slack-connector
