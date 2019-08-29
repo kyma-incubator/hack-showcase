@@ -1,0 +1,17 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+      "kymaAddress": {
+        "type": "string",
+        "title": "Kyma address",
+        "description" : "Kyma domain address"
+      },
+      "slackBotToken": {
+        "type":"string",
+        "title":"Token",
+        "description": "The Slack workspace token, which you can get on this site: https://auth-slack.herokuapp.com/"
+      }
+    },
+    "required":["slackBotToken", "kymaAddress"]
+  }
