@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"os"
 	"reflect"
@@ -60,8 +61,10 @@ func (wh *WebHookHandler) HandleWebhook(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	log.Info(reflect.Indirect(reflect.ValueOf(event)).Type().Name())
-	apperr = wh.sender.SendToKyma(reflect.Indirect(reflect.ValueOf(event)).Type().Name(), "v1", "", os.Getenv("GITHUB_CONNECTOR_NAME")+"-app", payload)
+	eventType := reflect.Indirect(reflect.ValueOf(event)).Type().Name()
+	sourceID := fmt.Sprintf("%s-app", os.Getenv("GITHUB_CONNECTOR_NAME"))
+	log.Info(eventType)
+	apperr = wh.sender.SendToKyma(eventType, "v1", "", sourceID, payload)
 
 	if apperr != nil {
 		log.Info(apperrors.Internal("While handling the event: %s", apperr.Error()))
