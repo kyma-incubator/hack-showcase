@@ -27,6 +27,14 @@ If release name contains chart name it will be used as a full name.
 Create chart name and version as used by the chart label.
 */}}
 
+{{- define "release.name" -}}
+{{- default .Release.Name | trunc 31 | trimSuffix "-" -}}
+{{- end -}}
+
+{{- define "release.service" -}}
+{{- default .Release.Service | trunc 31 | trimSuffix "-" -}}
+{{- end -}}
+
 {{- define "github-connector-chart.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}

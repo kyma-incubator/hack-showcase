@@ -1,14 +1,14 @@
 apiVersion: gateway.kyma-project.io/v1alpha2
 kind: Api
 metadata:
-  name: {{ .Release.Name | trunc 32 | trimSuffix "-" }}
+  name: {{ include "release.name" }}
   labels:
     app: {{ include "github-connector-chart.name" . }}
     chart: {{ include "github-connector-chart.chart" . }}
-    release: {{ .Release.Name | trunc 32 | trimSuffix "-" }}
-    heritage: {{ .Release.Service | trunc 32 | trimSuffix "-" }}
+    release: {{ include "release.name" }}
+    heritage: {{ include "release.service" }}
 spec:
     service:
-      name: {{ .Release.Name | trunc 32 | trimSuffix "-" }}
+      name: {{ include "release.name" }}
       port: {{ .Values.service.port }}
-    hostname: {{ .Release.Name | trunc 32 | trimSuffix "-" }}.{{ .Values.kymaAddress }}
+    hostname: {{ include "release.name" }}.{{ .Values.kymaAddress }}
