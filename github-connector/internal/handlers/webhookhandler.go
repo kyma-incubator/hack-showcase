@@ -2,8 +2,10 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"os"
+	"reflect"
 
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/httperrors"
 
@@ -59,33 +61,11 @@ func (wh *WebHookHandler) HandleWebhook(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	switch e := event.(type) {
-	case *github.IssuesEvent:
-		apperr = wh.sender.SendToKyma("IssuesEvent", "v1", "", os.Getenv("GITHUB_CONNECTOR_NAME")+"-app", payload)
-	case *github.PullRequestEvent:
-		apperr = wh.sender.SendToKyma("PullRequestEvent", "v1", "", os.Getenv("GITHUB_CONNECTOR_NAME")+"-app", payload)
-	case *github.PullRequestReviewEvent:
-		apperr = wh.sender.SendToKyma("PullRequestReviewEvent", "v1", "", os.Getenv("GITHUB_CONNECTOR_NAME")+"-app", payload)
-	case *github.PushEvent:
-		log.Infof("Push")
-	case *github.WatchEvent:
-		log.Infof("%s is watching repo '%s'.",
-			e.GetSender().GetLogin(), e.GetRepo().GetFullName())
-	case *github.StarEvent:
-		if e.GetAction() == "created" {
-			log.Infof("Repository starred.")
-		} else if e.GetAction() == "deleted" {
-			log.Infof("Repository unstarred.")
-		}
-	case *github.PingEvent:
+	eventType := reflect.Indirect(reflect.ValueOf(event)).Type().Name()
+	sourceID := fmt.Sprintf("%s-app", os.Getenv("GITHUB_CONNECTOR_NAME"))
+	log.Info(eventType)
+	apperr = wh.sender.SendToKyma(eventType, "v1", "", sourceID, payload)
 
-	default:
-		apperr := apperrors.NotFound("Unknown event type: '%s'", github.WebHookType(r))
-
-		log.Warnf(apperr.Error())
-		httperrors.SendErrorResponse(apperr, w)
-		return
-	}
 	if apperr != nil {
 		log.Info(apperrors.Internal("While handling the event: %s", apperr.Error()))
 		return

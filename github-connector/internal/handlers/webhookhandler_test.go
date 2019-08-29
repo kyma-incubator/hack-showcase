@@ -133,8 +133,7 @@ func TestWebhookHandler(t *testing.T) {
 		require.NoError(t, err)
 		mockValidator.On("GetToken").Return("test")
 		mockValidator.On("ValidatePayload", req, []byte("test")).Return(mockPayload, nil)
-		mockValidator.On("ParseWebHook", "", mockPayload).Return(1, nil)
-
+		mockValidator.On("ParseWebHook", "", mockPayload).Return(nil, apperrors.NotFound("Unknown event"))
 		wh := NewWebHookHandler(mockValidator, mockSender)
 
 		// when
