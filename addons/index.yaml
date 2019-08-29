@@ -4,6 +4,7 @@ entries:
     - name: githubconnector
       description: "GitHub Connector amazing app - tell friends!"
       version: 1.0.0
+  slackconnector:
     - name: slackconnector
       description: "Slack Connector for Kyma in Kyma. Kyma."
       version: 1.0.0
