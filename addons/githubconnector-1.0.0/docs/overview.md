@@ -21,4 +21,3 @@ In this plan you have to provide only only neccessary values.
 |----------------|-------------------|--------|------------------------------------------------------------------------------------------------------------|----------|
 | githubToken    | Token             | string | The GitHub repository token, which you can find on this site: https://auth-github-connector.herokuapp.com/ | yes      |
 | githubURL      | GitHub repository | string | Link to GitHub repository in proper format: repos/:owner/:repo or orgs/:org                                | yes      |
-| kymaAddress    | Kyma address      | string | Kyma domain address                                                                                        | yes      |
