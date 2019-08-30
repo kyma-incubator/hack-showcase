@@ -7,5 +7,5 @@ description: "Allows communication with Slack using Slack Web API."
 tags: slack
 providerDisplayName: Kyma
 longDescription: "Allows communication with Slack using Slack Web API."
-imageURL: https://cdn.brandfolder.io/5H442O3W/as/pl546j-7le8zk-199wkt/Slack_Mark.svg?width=256&height=256
+imageURL: https://cdn.brandfolder.io/5H442O3W/as/pl546j-7le8zk-4nzzs1/Slack_Mark_Web.png
 documentationURL: https://github.com/kyma-incubator/hack-showcase/tree/master/docs/slack-connector
