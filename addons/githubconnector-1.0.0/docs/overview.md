@@ -17,7 +17,7 @@ Now you can start using the GitHub Connector. Add new event trigger to react to 
 
 In this plan you have to provide only only neccessary values.
 
-| PARAMETER NAME | DISPALAY NAME     | TYPE   | DESCRIPTION                                                                                                | REQUIRED |
+| PARAMETER NAME | DISPLAY NAME     | TYPE   | DESCRIPTION                                                                                                | REQUIRED |
 |----------------|-------------------|--------|------------------------------------------------------------------------------------------------------------|----------|
 | githubToken    | Token             | string | The GitHub repository token, which you can find on this site: https://auth-github-connector.herokuapp.com/ | yes      |
 | githubURL      | GitHub repository | string | Link to GitHub repository in proper format: repos/:owner/:repo or orgs/:org                                | yes      |
