@@ -8,7 +8,7 @@ type PayloadDetails struct {
 	Events []string `json:"events,omitempty"`
 }
 
-//Config define structure of HookJSON's config
+//Config defines the structure of HookJSON's config
 type Config struct {
 	URL         string `json:"url"`
 	ContentType string `json:"content_type,omitempty"`
