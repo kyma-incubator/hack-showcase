@@ -4,7 +4,7 @@ package hook
 type PayloadDetails struct {
 	Name   string   `json:"name"`
 	Active bool     `json:"active"`
-	Config *Config  `json:"config"`
+	Config Config   `json:"config"`
 	Events []string `json:"events,omitempty"`
 }
 

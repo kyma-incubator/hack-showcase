@@ -5,6 +5,7 @@ import (
 
 	"github.com/google/go-github/github"
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/apperrors"
+	"github.com/kyma-incubator/hack-showcase/github-connector/internal/handlers"
 )
 
 //ReceivingEventsWrapper that bundles the github library functions into one struct with a Validator interface
@@ -12,8 +13,9 @@ type ReceivingEventsWrapper struct {
 	secret string
 }
 
-func NewReceivingEventsWrapper(s string) ReceivingEventsWrapper {
-	return ReceivingEventsWrapper{secret: s}
+//NewReceivingEventsWrapper return ReceivingEventsWrapper struct
+func NewReceivingEventsWrapper(s string) handlers.Validator {
+	return &ReceivingEventsWrapper{secret: s}
 }
 
 //ValidatePayload is a function used for checking whether the secret provided in the request is correct

@@ -29,15 +29,6 @@ func NewHook(URL string) Hook {
 	return Hook{kymaURL: kURL}
 }
 
-func createSecret(charset string) string {
-	seed := rand.New(rand.NewSource(time.Now().UnixNano()))
-	secret := make([]byte, (rand.Intn(7) + 8))
-	for i := range secret {
-		secret[i] = charset[seed.Intn(len(charset))]
-	}
-	return string(secret)
-}
-
 //Create build request and create webhook in github's repository or organization
 func (c Hook) Create(t string, githubURL string) (string, apperrors.AppError) {
 	token := fmt.Sprintf("token %s", t)
@@ -45,7 +36,7 @@ func (c Hook) Create(t string, githubURL string) (string, apperrors.AppError) {
 	hook := PayloadDetails{
 		Name:   "web",
 		Active: true,
-		Config: &Config{
+		Config: Config{
 			URL:         c.kymaURL,
 			InsecureSSL: "1",
 			ContentType: "json",
@@ -78,4 +69,13 @@ func (c Hook) Create(t string, githubURL string) (string, apperrors.AppError) {
 		return "", apperrors.UpstreamServerCallFailed("Unpredicted response code: %v", httpResponse.StatusCode)
 	}
 	return secret, nil
+}
+
+func createSecret(charset string) string {
+	seed := rand.New(rand.NewSource(time.Now().UnixNano()))
+	secret := make([]byte, (rand.Intn(7) + 8))
+	for i := range secret {
+		secret[i] = charset[seed.Intn(len(charset))]
+	}
+	return string(secret)
 }

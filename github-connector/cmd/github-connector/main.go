@@ -30,7 +30,7 @@ func main() {
 	webHook := hook.NewHook(os.Getenv("KYMA_ADDRESS"))
 	hookSecret, err := webHook.Create(os.Getenv("GITHUB_TOKEN"), os.Getenv("GITHUB_REPO_URL"))
 	if err != nil {
-		log.Fatal("Fatal error: ", err.Error())
+		log.Fatalf("Fatal error: %s", err.Error())
 	}
 	log.Info("Webhook created!")
 
