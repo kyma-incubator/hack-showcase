@@ -40,7 +40,7 @@ func createSecret(charset string) string {
 
 //Create build request and create webhook in github's repository or organization
 func (c Hook) Create(t string, githubURL string) (string, apperrors.AppError) {
-	token := "token " + t
+	token := fmt.Sprintf("token %s",t)
 	secret := createSecret(charset)
 	hook := PayloadDetails{
 		Name:   "web",
