@@ -4,7 +4,7 @@
     "properties": {
       "kymaAddress": {
         "type": "string",
-        "title": "Kyma address",
+        "title": "Kyma Address",
         "description" : "Kyma domain address"
       },
       "slackBotToken": {
@@ -15,7 +15,7 @@
       "workspaceName": {
         "type":"string",
         "title":"Workspace Name",
-        "description": "The name of workspace application is installed to."
+        "description": "The name of workspace application will be installed to."
       }
     },
     "required":["slackBotToken","kymaAddress", "workspaceName"]
