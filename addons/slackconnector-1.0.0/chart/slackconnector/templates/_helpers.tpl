@@ -1,5 +1,5 @@
 {{- define "slack-connector-chart.release.name" -}}
-{{- printf "slack-connector-%s" .Values.workspaceName | trunc 31 | trimSuffix "-" -}}
+{{- regexReplaceAll "[^a-zA-Z\\d\\w:]" (printf "slack-connector-%s" .Values.workspaceName | lower) "-" | replace "--" "-" | trunc 31 | trimSuffix "-" -}}
 {{- end -}}
 
 {{- define "slack-connector-chart.release.service" -}}
