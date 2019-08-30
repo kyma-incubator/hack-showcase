@@ -18,5 +18,5 @@
         "description": "The GitHub repository token, which you can find on this site: https://auth-github-connector.herokuapp.com/"
       }
     },
-    "required":["githubToken","kymaAddress"]
+    "required":["githubToken","kymaAddress","githubURL"]
   }
