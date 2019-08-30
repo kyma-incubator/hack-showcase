@@ -75,7 +75,7 @@ func (c Hook) Create(t string, githubURL string) (string, apperrors.AppError) {
 	}
 
 	if httpResponse.StatusCode != http.StatusCreated {
-		return "", apperrors.UpstreamServerCallFailed("Bad response code. Maybe webhook already exist?")
+		return "", apperrors.UpstreamServerCallFailed("Unpredicted response code: %v", httpResponse.StatusCode)
 	}
 	return secret, nil
 }

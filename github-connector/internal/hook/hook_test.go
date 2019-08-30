@@ -20,7 +20,7 @@ func exampleHookUnprocessableEntity(w http.ResponseWriter, r *http.Request) {
 }
 
 func TestCreate(t *testing.T) {
-	t.Run("should return nil", func(t *testing.T) {
+	t.Run("should return nil when response status is equal Created", func(t *testing.T) {
 		//given
 		handler := http.HandlerFunc(exampleHookCreate)
 		server := httptest.NewServer(handler)
@@ -33,7 +33,7 @@ func TestCreate(t *testing.T) {
 		assert.NotEqual(t, "", token)
 	})
 
-	t.Run("should return error", func(t *testing.T) {
+	t.Run("should return error when response status is not equal Created", func(t *testing.T) {
 		//given
 		handler := http.HandlerFunc(exampleHookUnprocessableEntity)
 		server := httptest.NewServer(handler)
