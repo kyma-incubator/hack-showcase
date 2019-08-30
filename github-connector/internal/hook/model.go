@@ -1,7 +1,7 @@
-package hooks
+package hook
 
-//HookJSON define all fields of github's POST method for creating webhooks
-type HookJSON struct {
+//HookDetails define all fields of github's POST method for creating webhooks
+type HookDetails struct {
 	Name   string   `json:"name"`
 	Active bool     `json:"active"`
 	Config *Config  `json:"config"`

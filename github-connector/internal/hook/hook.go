@@ -1,4 +1,4 @@
-package hooks
+package hook
 
 import (
 	"bytes"
@@ -15,27 +15,25 @@ const (
 	kymaURLFormat = "%s%s%s"
 )
 
-//Creator is an struct that contain informations about github's repo/org url, OAuth token and allow creating webhooks
-type Creator struct {
-	token   string
-	repoURL string
+//Hook is an struct that contain informations about github's repo/org url, OAuth token and allow creating webhooks
+type Hook struct {
+	kymaURL string
 }
 
-//NewCreator create Creator structure
-func NewCreator(t string, rURL string) Creator {
-	return Creator{token: t, repoURL: rURL}
+//NewHook create Hook structure
+func NewHook(URL string) Hook {
+	kURL := fmt.Sprintf(kymaURLFormat, kymaURLPrefix, URL, kymaURLSuffix)
+	return Hook{kymaURL: kURL}
 }
 
 //Create build request and create webhook in github's repository or organization
-func (c Creator) Create(kURL string) apperrors.AppError {
-	githubURL := c.repoURL
-	kymaURL := fmt.Sprintf(kymaURLFormat, kymaURLPrefix, kURL, kymaURLSuffix)
-	token := "token " + c.token
-	hook := HookJSON{
+func (c Hook) Create(t string, githubURL string) apperrors.AppError {
+	token := "token " + t
+	hook := HookDetails{
 		Name:   "web",
 		Active: true,
 		Config: &Config{
-			URL:         kymaURL,
+			URL:         c.kymaURL,
 			InsecureSSL: "1",
 			ContentType: "json",
 		},

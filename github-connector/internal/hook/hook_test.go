@@ -1,11 +1,11 @@
-package hooks_test
+package hook_test
 
 import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
-	"github.com/kyma-incubator/hack-showcase/github-connector/internal/hooks"
+	"github.com/kyma-incubator/hack-showcase/github-connector/internal/hook"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -25,9 +25,9 @@ func TestCreate(t *testing.T) {
 		handler := http.HandlerFunc(exampleHookCreate)
 		server := httptest.NewServer(handler)
 		defer server.Close()
-		creator := hooks.NewCreator(sampleToken, server.URL)
+		creator := hook.NewHook("URL")
 		//when
-		err := creator.Create("URL")
+		err := creator.Create(sampleToken, server.URL)
 		//then
 		assert.NoError(t, err)
 	})
@@ -37,9 +37,9 @@ func TestCreate(t *testing.T) {
 		handler := http.HandlerFunc(exampleHookUnprocessableEntity)
 		server := httptest.NewServer(handler)
 		defer server.Close()
-		creator := hooks.NewCreator(sampleToken, server.URL)
+		creator := hook.NewHook("URL")
 		//when
-		err := creator.Create("URL")
+		err := creator.Create(sampleToken, server.URL)
 		//then
 		assert.Error(t, err)
 	})

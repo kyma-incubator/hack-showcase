@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/github"
-	"github.com/kyma-incubator/hack-showcase/github-connector/internal/hooks"
+	"github.com/kyma-incubator/hack-showcase/github-connector/internal/hook"
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/registration"
 
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/events"
@@ -27,8 +27,8 @@ func main() {
 		"id": id,
 	}).Info("Service registered")
 
-	creator := hooks.NewCreator(os.Getenv("GITHUB_TOKEN"), os.Getenv("GITHUB_REPO_URL"))
-	err = creator.Create(os.Getenv("KYMA_ADDRESS"))
+	creator := hook.NewHook(os.Getenv("KYMA_ADDRESS"))
+	err = creator.Create(os.Getenv("GITHUB_TOKEN"), os.Getenv("GITHUB_REPO_URL"))
 	if err != nil {
 		log.Fatal("Fatal error: ", err.Error())
 	}
