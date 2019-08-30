@@ -2,11 +2,6 @@
     "$schema": "http://json-schema.org/draft-04/schema#",
     "type": "object",
     "properties": {
-      "kymaAddress": {
-        "type": "string",
-        "title": "Kyma address",
-        "description" : "Kyma domain address"
-      },
       "githubURL": {
         "type": "string",
         "title": "GitHub repository",
@@ -18,5 +13,5 @@
         "description": "The GitHub repository token, which you can find on this site: https://auth-github-connector.herokuapp.com/"
       }
     },
-    "required":["githubToken","kymaAddress","githubURL"]
+    "required":["githubToken","githubURL"]
   }
