@@ -5,21 +5,26 @@ import (
 
 	"github.com/google/go-github/github"
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/apperrors"
-	"github.com/kyma-incubator/hack-showcase/github-connector/internal/handlers"
 )
 
-//ReceivingEventsWrapper that bundles the github library functions into one struct with a Validator interface
-type ReceivingEventsWrapper struct {
+type receivingEventsWrapper struct {
 	secret string
 }
 
-//NewReceivingEventsWrapper return ReceivingEventsWrapper struct
-func NewReceivingEventsWrapper(s string) handlers.Validator {
-	return &ReceivingEventsWrapper{secret: s}
+//Validator is an interface used to allow mocking the github library methods
+type Validator interface {
+	ValidatePayload(*http.Request, []byte) ([]byte, apperrors.AppError)
+	ParseWebHook(string, []byte) (interface{}, apperrors.AppError)
+	GetToken() string
+}
+
+//NewReceivingEventsWrapper return receivingEventsWrapper struct
+func NewReceivingEventsWrapper(s string) Validator {
+	return &receivingEventsWrapper{secret: s}
 }
 
 //ValidatePayload is a function used for checking whether the secret provided in the request is correct
-func (wh ReceivingEventsWrapper) ValidatePayload(r *http.Request, b []byte) ([]byte, apperrors.AppError) {
+func (wh receivingEventsWrapper) ValidatePayload(r *http.Request, b []byte) ([]byte, apperrors.AppError) {
 	payload, err := github.ValidatePayload(r, b)
 	if err != nil {
 		return nil, apperrors.AuthenticationFailed("Authentication during GitHub payload validation failed: %s", err)
@@ -28,7 +33,7 @@ func (wh ReceivingEventsWrapper) ValidatePayload(r *http.Request, b []byte) ([]b
 }
 
 //ParseWebHook parses the raw json payload into an event struct
-func (wh ReceivingEventsWrapper) ParseWebHook(s string, b []byte) (interface{}, apperrors.AppError) {
+func (wh receivingEventsWrapper) ParseWebHook(s string, b []byte) (interface{}, apperrors.AppError) {
 	webhook, err := github.ParseWebHook(s, b)
 	if err != nil {
 		return nil, apperrors.WrongInput("Failed to parse incomming github payload into struct: %s", err)
@@ -37,6 +42,6 @@ func (wh ReceivingEventsWrapper) ParseWebHook(s string, b []byte) (interface{}, 
 }
 
 //GetToken is a function that looks for the secret in the environment
-func (wh ReceivingEventsWrapper) GetToken() string {
+func (wh receivingEventsWrapper) GetToken() string {
 	return wh.secret
 }

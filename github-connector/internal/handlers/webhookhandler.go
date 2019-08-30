@@ -7,20 +7,13 @@ import (
 	"os"
 	"reflect"
 
+	"github.com/google/go-github/github"
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/httperrors"
 
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/apperrors"
-
-	"github.com/google/go-github/github"
+	git "github.com/kyma-incubator/hack-showcase/github-connector/internal/github"
 	log "github.com/sirupsen/logrus"
 )
-
-//Validator is an interface used to allow mocking the github library methods
-type Validator interface {
-	ValidatePayload(*http.Request, []byte) ([]byte, apperrors.AppError)
-	ParseWebHook(string, []byte) (interface{}, apperrors.AppError)
-	GetToken() string
-}
 
 //Sender is an interface used to allow mocking sending events to Kyma's event bus
 type Sender interface {
@@ -29,12 +22,12 @@ type Sender interface {
 
 //WebHookHandler is a struct used to allow mocking the github library methods
 type WebHookHandler struct {
-	validator Validator
+	validator git.Validator
 	sender    Sender
 }
 
 //NewWebHookHandler creates a new webhook handler with the passed interface
-func NewWebHookHandler(v Validator, s Sender) *WebHookHandler {
+func NewWebHookHandler(v git.Validator, s Sender) *WebHookHandler {
 	return &WebHookHandler{validator: v, sender: s}
 }
 
