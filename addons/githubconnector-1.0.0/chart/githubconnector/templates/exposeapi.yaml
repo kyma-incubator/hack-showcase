@@ -11,4 +11,4 @@ spec:
     service:
       name: {{ include "github-connector-chart.repository" . }}
       port: {{ .Values.service.port }}
-    hostname: {{ include "github-connector-chart.repository" . }}.{{ .Values.kymaAddress }}
+    hostname: {{ include "github-connector-chart.repository" . }}

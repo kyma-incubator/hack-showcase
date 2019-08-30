@@ -1,0 +1,9 @@
+apiVersion: gateway.kyma-project.io/v1alpha2
+kind: Api
+metadata:
+  name: api-test
+spec:
+    service:
+      name: test-service
+      port: 8080
+    hostname: test
