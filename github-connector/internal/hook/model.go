@@ -1,6 +1,6 @@
 package hook
 
-//PayloadDetails define all fields of github's POST method for creating webhooks
+//PayloadDetails defines all fields of github's POST method for creating webhooks
 type PayloadDetails struct {
 	Name   string   `json:"name"`
 	Active bool     `json:"active"`
