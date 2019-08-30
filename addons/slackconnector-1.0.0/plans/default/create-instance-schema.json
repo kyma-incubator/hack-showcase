@@ -2,11 +2,6 @@
     "$schema": "http://json-schema.org/draft-04/schema#",
     "type": "object",
     "properties": {
-      "kymaAddress": {
-        "type": "string",
-        "title": "Kyma Address",
-        "description" : "Kyma domain address."
-      },
       "slackBotToken": {
         "type":"string",
         "title":"Bot Token",
@@ -18,5 +13,5 @@
         "description": "The name of workspace application will be installed to."
       }
     },
-    "required":["slackBotToken","kymaAddress", "workspaceName"]
+    "required":["slackBotToken", "workspaceName"]
   }

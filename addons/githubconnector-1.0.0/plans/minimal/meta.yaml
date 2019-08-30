@@ -1,6 +1,0 @@
-name: minimal
-id: 9bcb14ad-1b9b-4fff-819e-66d2bd32c0ae
-description: "The minimal plan for installing/uninstalling the GitHub Connector"
-displayName: Minimal
-bindable: false
-free: true

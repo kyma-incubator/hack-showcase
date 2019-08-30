@@ -13,11 +13,11 @@ Now you can start using the GitHub Connector. Add new event trigger to react to 
 
 ## Provisioning
 
-### Minimal plan
+### Default plan
 
-In this plan you have to provide only only neccessary values.
+In this plan you have to provide only only necessary values.
 
-| PARAMETER NAME | DISPLAY NAME     | TYPE   | DESCRIPTION                                                                                                | REQUIRED |
-|----------------|-------------------|--------|------------------------------------------------------------------------------------------------------------|----------|
-| githubToken    | Token             | string | The GitHub repository token, which you can find on this site: https://auth-github-connector.herokuapp.com/ | yes      |
-| githubURL      | GitHub repository | string | Link to GitHub repository in proper format: repos/:owner/:repo or orgs/:org                                | yes      |
+| PARAMETER NAME | DISPLAY NAME | TYPE | DESCRIPTION | REQUIRED |
+|----------------|--------------|------|-------------|:--------:|
+| `githubToken` | Token | `string` | The GitHub repository token, which you can find on this site: <https://auth-github-connector.herokuapp.com/> | yes |
+| `githubURL` | GitHub repository | `string` | Link to GitHub repository in proper format: repos/:owner/:repo or orgs/:org | yes |
