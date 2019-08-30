@@ -18,7 +18,7 @@ const (
 	charset       = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 )
 
-//Hook is an struct that contain informations about github's repo/org url, OAuth token and allow creating webhooks
+//Hook is a struct that contains information about github's repo/org url, OAuth token and allows creating webhooks
 type Hook struct {
 	kymaURL string
 }
