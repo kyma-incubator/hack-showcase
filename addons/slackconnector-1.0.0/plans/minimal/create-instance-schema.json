@@ -5,7 +5,7 @@
       "kymaAddress": {
         "type": "string",
         "title": "Kyma Address",
-        "description" : "Kyma domain address"
+        "description" : "Kyma domain address."
       },
       "slackBotToken": {
         "type":"string",
