@@ -27,8 +27,8 @@ func main() {
 		"id": id,
 	}).Info("Service registered")
 
-	creator := hook.NewHook(os.Getenv("KYMA_ADDRESS"))
-	err = creator.Create(os.Getenv("GITHUB_TOKEN"), os.Getenv("GITHUB_REPO_URL"))
+	webHook := hook.NewHook(os.Getenv("KYMA_ADDRESS"))
+	hookSecret, err := webHook.Create(os.Getenv("GITHUB_TOKEN"), os.Getenv("GITHUB_REPO_URL"))
 	if err != nil {
 		log.Fatal("Fatal error: ", err.Error())
 	}
@@ -36,7 +36,7 @@ func main() {
 
 	kyma := events.NewSender(&http.Client{}, events.NewValidator(), "http://event-publish-service.kyma-system:8080/v1/events")
 	webhook := handlers.NewWebHookHandler(
-		github.ReceivingEventsWrapper{},
+		github.NewReceivingEventsWrapper(hookSecret),
 		kyma,
 	)
 

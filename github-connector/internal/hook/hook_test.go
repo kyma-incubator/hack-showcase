@@ -25,11 +25,12 @@ func TestCreate(t *testing.T) {
 		handler := http.HandlerFunc(exampleHookCreate)
 		server := httptest.NewServer(handler)
 		defer server.Close()
-		creator := hook.NewHook("URL")
+		webhook := hook.NewHook("URL")
 		//when
-		err := creator.Create(sampleToken, server.URL)
+		token, err := webhook.Create(sampleToken, server.URL)
 		//then
 		assert.NoError(t, err)
+		assert.NotEqual(t, "", token)
 	})
 
 	t.Run("should return error", func(t *testing.T) {
@@ -37,10 +38,11 @@ func TestCreate(t *testing.T) {
 		handler := http.HandlerFunc(exampleHookUnprocessableEntity)
 		server := httptest.NewServer(handler)
 		defer server.Close()
-		creator := hook.NewHook("URL")
+		webhook := hook.NewHook("URL")
 		//when
-		err := creator.Create(sampleToken, server.URL)
+		token, err := webhook.Create(sampleToken, server.URL)
 		//then
 		assert.Error(t, err)
+		assert.Equal(t, "", token)
 	})
 }

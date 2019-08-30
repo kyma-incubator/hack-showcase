@@ -15,7 +15,4 @@ RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
 COPY --from=builder /app/main /app
 COPY --from=builder /app/githubasyncapi.json /app
 
-ARG github_secret
-ENV GITHUB_SECRET=${github_secret}
-
 CMD ["./main"]

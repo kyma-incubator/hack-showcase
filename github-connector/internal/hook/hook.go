@@ -4,7 +4,9 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"math/rand"
 	"net/http"
+	"time"
 
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/apperrors"
 )
@@ -13,6 +15,7 @@ const (
 	kymaURLPrefix = "https://"
 	kymaURLSuffix = "/webhook"
 	kymaURLFormat = "%s%s%s"
+	charset       = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 )
 
 //Hook is an struct that contain informations about github's repo/org url, OAuth token and allow creating webhooks
@@ -26,30 +29,41 @@ func NewHook(URL string) Hook {
 	return Hook{kymaURL: kURL}
 }
 
+func createSecret(charset string) string {
+	seed := rand.New(rand.NewSource(time.Now().UnixNano()))
+	secret := make([]byte, (rand.Intn(7) + 8))
+	for i := range secret {
+		secret[i] = charset[seed.Intn(len(charset))]
+	}
+	return string(secret)
+}
+
 //Create build request and create webhook in github's repository or organization
-func (c Hook) Create(t string, githubURL string) apperrors.AppError {
+func (c Hook) Create(t string, githubURL string) (string, apperrors.AppError) {
 	token := "token " + t
-	hook := HookDetails{
+	secret := createSecret(charset)
+	hook := PayloadDetails{
 		Name:   "web",
 		Active: true,
 		Config: &Config{
 			URL:         c.kymaURL,
 			InsecureSSL: "1",
 			ContentType: "json",
+			Secret:      secret,
 		},
 		Events: []string{"*"},
 	}
 
 	payloadJSON, err := json.Marshal(hook)
 	if err != nil {
-		return apperrors.Internal("Failed to marshal hook: %s", err.Error())
+		return "", apperrors.Internal("Failed to marshal hook: %s", err.Error())
 	}
 
 	requestReader := bytes.NewReader(payloadJSON)
 	httpRequest, err := http.NewRequest(http.MethodPost, githubURL, requestReader)
 
 	if err != nil {
-		return apperrors.Internal("Failed to create JSON request: %s", err.Error())
+		return "", apperrors.Internal("Failed to create JSON request: %s", err.Error())
 	}
 
 	httpRequest.Header.Set("Authorization", token)
@@ -57,11 +71,11 @@ func (c Hook) Create(t string, githubURL string) apperrors.AppError {
 	client := &http.Client{}
 	httpResponse, err := client.Do(httpRequest)
 	if err != nil {
-		return apperrors.UpstreamServerCallFailed("Failed to make request to '%s': %s", githubURL, err.Error())
+		return "", apperrors.UpstreamServerCallFailed("Failed to make request to '%s': %s", githubURL, err.Error())
 	}
 
 	if httpResponse.StatusCode != http.StatusCreated {
-		return apperrors.UpstreamServerCallFailed("Bad response code. Maybe webhook already exist?")
+		return "", apperrors.UpstreamServerCallFailed("Bad response code. Maybe webhook already exist?")
 	}
-	return nil
+	return secret, nil
 }

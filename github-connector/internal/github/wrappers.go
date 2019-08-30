@@ -2,7 +2,6 @@ package github
 
 import (
 	"net/http"
-	"os"
 
 	"github.com/google/go-github/github"
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/apperrors"
@@ -10,6 +9,11 @@ import (
 
 //ReceivingEventsWrapper that bundles the github library functions into one struct with a Validator interface
 type ReceivingEventsWrapper struct {
+	secret string
+}
+
+func NewReceivingEventsWrapper(s string) ReceivingEventsWrapper {
+	return ReceivingEventsWrapper{secret: s}
 }
 
 //ValidatePayload is a function used for checking whether the secret provided in the request is correct
@@ -32,5 +36,5 @@ func (wh ReceivingEventsWrapper) ParseWebHook(s string, b []byte) (interface{}, 
 
 //GetToken is a function that looks for the secret in the environment
 func (wh ReceivingEventsWrapper) GetToken() string {
-	return os.Getenv("GITHUB_SECRET")
+	return wh.secret
 }
