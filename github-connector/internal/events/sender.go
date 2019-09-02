@@ -69,11 +69,10 @@ func (k Sender) SendToKyma(eventType, eventTypeVersion, eventID, sourceID string
 	if err != nil {
 		return apperrors.Internal("While sending the event to the EventBus: %s", err.Error())
 	}
-
+	log.Info(response)
 	if response.StatusCode != http.StatusOK {
 		return apperrors.Internal("Error sending event: %s", err)
 	}
 
-	log.Info(response)
 	return nil
 }

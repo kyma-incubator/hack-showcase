@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-	"reflect"
+	"strings"
 
 	"github.com/kyma-incubator/hack-showcase/slack-connector/internal/httperrors"
 	"github.com/nlopes/slack/slackevents"
@@ -18,7 +18,7 @@ import (
 
 //Validator is an interface used to allow mocking the github library methods
 type Validator interface {
-	ValidatePayload(*http.Request, []byte) ([]byte, apperrors.AppError)
+	ValidatePayload(*http.Request, []byte) (bool, apperrors.AppError)
 	ParseWebHook([]byte) (interface{}, apperrors.AppError)
 	GetToken() string
 }
@@ -44,9 +44,9 @@ func (wh *WebHookHandler) HandleWebhook(w http.ResponseWriter, r *http.Request) 
 	defer r.Body.Close()
 	buf := new(bytes.Buffer)
 	buf.ReadFrom(r.Body)
-	body := buf.String()
+	payload := buf.String()
 
-	payload, apperr := wh.validator.ValidatePayload(r, []byte(wh.validator.GetToken()))
+	_, apperr := wh.validator.ValidatePayload(r, []byte(wh.validator.GetToken()))
 
 	if apperr != nil {
 		apperr = apperr.Append("While handling '/webhook' endpoint")
@@ -55,8 +55,9 @@ func (wh *WebHookHandler) HandleWebhook(w http.ResponseWriter, r *http.Request) 
 		httperrors.SendErrorResponse(apperr, w)
 		return
 	}
+	event, apperr := wh.validator.ParseWebHook([]byte(payload))
 
-	event, apperr := wh.validator.ParseWebHook(payload)
+	log.Info(event)
 	if apperr != nil {
 		apperr = apperr.Append("While handling '/webhook' endpoint")
 
@@ -64,22 +65,29 @@ func (wh *WebHookHandler) HandleWebhook(w http.ResponseWriter, r *http.Request) 
 		httperrors.SendErrorResponse(apperr, w)
 		return
 	}
+	var replacer = strings.NewReplacer("_", ".")
+	eventType := event.(slackevents.EventsAPIEvent).InnerEvent.Type //e.g.: "member_joined_channel"
+	withDots := replacer.Replace(eventType)
+	log.Info(withDots)
+	// member_joined_channel -> (	slack.events.member.joined.channel) => sendToKyma()
+	eventTypeToKyma := fmt.Sprintf("slack.events.%s", withDots)
+	log.Info(eventTypeToKyma)
 
-	eventType := reflect.Indirect(reflect.ValueOf(event)).Type().Name()
-
-	if eventType == "URLVerification" {
+	log.Info(eventType)
+	if event.(slackevents.EventsAPIEvent).Type == slackevents.URLVerification {
 		var r *slackevents.ChallengeResponse
-		err := json.Unmarshal([]byte(body), &r)
+		log.Info([]byte(payload))
+		err := json.Unmarshal([]byte(payload), &r)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 		}
-		w.Header().Set("Content-Type", "text")
+		w.Header().Set("Content-Type", "text/plain")
 		w.Write([]byte(r.Challenge))
 	}
 
 	sourceID := fmt.Sprintf("%s-app", os.Getenv("SLACK_CONNECTOR_NAME"))
 	log.Info(eventType)
-	apperr = wh.sender.SendToKyma(eventType, "v1", "", sourceID, payload)
+	apperr = wh.sender.SendToKyma(withDots, "v1", "", sourceID, []byte(payload))
 
 	if apperr != nil {
 		log.Info(apperrors.Internal("While handling the event: %s", apperr.Error()))
