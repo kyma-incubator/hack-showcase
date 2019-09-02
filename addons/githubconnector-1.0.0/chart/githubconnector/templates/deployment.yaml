@@ -31,4 +31,6 @@ spec:
           value: {{ quote .Values.container.containerPort }}
         - name: GITHUB_CONNECTOR_NAME
           value: {{ include "github-connector-chart.repository" . }}
+        - name: KYMA_ADDRESS
+          value: {{ include "github-connector-chart.repository" . }}.{{ .Values.kymaAddress }}
 
