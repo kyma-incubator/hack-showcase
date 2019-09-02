@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -35,11 +34,8 @@ func NewWebHookHandler(v slack.Validator, s Sender) *WebHookHandler {
 //HandleWebhook is a function that handles the /webhook endpoint.
 func (wh *WebHookHandler) HandleWebhook(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
-	buf := new(bytes.Buffer)
-	buf.ReadFrom(r.Body)
-	payload := buf.String()
 
-	_, apperr := wh.validator.ValidatePayload(r, []byte(wh.validator.GetToken()))
+	payload, apperr := wh.validator.ValidatePayload(r, []byte(wh.validator.GetToken()))
 
 	if apperr != nil {
 		apperr = apperr.Append("While handling '/webhook' endpoint")
@@ -48,7 +44,7 @@ func (wh *WebHookHandler) HandleWebhook(w http.ResponseWriter, r *http.Request) 
 		httperrors.SendErrorResponse(apperr, w)
 		return
 	}
-	event, apperr := wh.validator.ParseWebHook([]byte(payload))
+	event, apperr := wh.validator.ParseWebHook(payload)
 
 	log.Info(event)
 	if apperr != nil {

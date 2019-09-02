@@ -35,4 +35,6 @@ spec:
           value: {{ .Release.Name }}
         - name: SLACK_BOT_TOKEN
           value: {{ .Values.slackBotToken }}
+        - name: SLACK_SECRET
+          value: {{ .Values.slackSecret }}
           
