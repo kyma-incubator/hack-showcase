@@ -1,0 +1,15 @@
+replicaCount: 1
+
+container:
+  image: kymaflyingseals/slack-connector:0.1.0
+
+  containerPort: 8080
+  limits:
+    memory: "128Mi"
+    cpu: "100m"
+
+service:
+  port: 80
+
+kymaAddress: adress
+slackBotToken: token
