@@ -15,3 +15,5 @@ service:
 githubURL: repos/:owner/:repo
 
 githubToken: sampleToken
+
+kymaAddress: kyma.address.com
