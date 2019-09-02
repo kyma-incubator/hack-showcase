@@ -56,7 +56,7 @@ func (wh *WebHookHandler) HandleWebhook(w http.ResponseWriter, r *http.Request) 
 
 	eventType := reflect.Indirect(reflect.ValueOf(event)).Type().Name()
 	sourceID := fmt.Sprintf("%s-app", os.Getenv("GITHUB_CONNECTOR_NAME"))
-	log.Info(eventType)
+	log.Info(fmt.Sprintf("Event type '%s' received.", eventType))
 	apperr = wh.sender.SendToKyma(eventType, "v1", "", sourceID, payload)
 
 	if apperr != nil {
