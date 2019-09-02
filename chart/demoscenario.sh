@@ -23,7 +23,7 @@ if getopts 'h' option; then
 fi
 
 case $# in
-	0)	echo "ERROR: No arguments supplied. Please specify {NAME} and {NAMESPACE}, e.g.: \n'sh $0 helm-release-name namespace-name'."
+	0)	echo "ERROR: No arguments supplied. Please specify {NAME} and {NAMESPACE}."
 		echo "$usage"
 		exit 1
 	;;
@@ -31,7 +31,7 @@ case $# in
 		echo "$usage"
 		exit 1
 	;;
-	*) exit 0;
+	*)
 esac
 
 NAME=$1
