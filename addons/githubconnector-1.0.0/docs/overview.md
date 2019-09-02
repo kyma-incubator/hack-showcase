@@ -15,9 +15,21 @@ Now you can start using the GitHub Connector. Add new event trigger to react to 
 
 ### Default plan
 
-In this plan you have to provide only only necessary values.
+In this plan you have to provide only necessary values.
 
 | PARAMETER NAME | DISPLAY NAME | TYPE | DESCRIPTION | REQUIRED |
 |----------------|--------------|------|-------------|:--------:|
 | `githubToken` | Token | `string` | The GitHub repository token, which you can find on this site: <https://auth-github-connector.herokuapp.com/> | yes |
 | `githubURL` | GitHub repository | `string` | Link to GitHub repository in proper format: repos/:owner/:repo or orgs/:org | yes |
+| `kymaAddress` | Kyma address | `string` | Kyma domain address in proper format, for example 104.155.45.210.xip.io | yes |
+
+### Dev plan
+
+In this plan you have to provide necessary values and can specify a Docker image to use to install the GitHub Connector.
+
+| PARAMETER NAME | DISPLAY NAME | TYPE | DESCRIPTION | REQUIRED |
+|----------------|--------------|------|-------------|:--------:|
+| `githubToken` | Token | `string` | The GitHub repository token, which you can find on this site: <https://auth-github-connector.herokuapp.com/> | yes |
+| `githubURL` | GitHub repository | `string` | Link to GitHub repository in proper format: repos/:owner/:repo or orgs/:org | yes |
+| `kymaAddress` | Kyma address | `string` | Kyma domain address in proper format, for example 104.155.45.210.xip.io | yes |
+| `image` | Docker image | `string` | The GitHub Connector image on DockerHub | no |
