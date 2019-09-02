@@ -12,24 +12,17 @@ type ReceivingEventsWrapper struct {
 }
 
 //ValidatePayload is a function used for checking whether the secret provided in the request is correct
-func (wh ReceivingEventsWrapper) ValidatePayload(r *http.Request, b []byte) (bool, apperrors.AppError) {
-
-	// buf := new(bytes.Buffer)
-	// buf.ReadFrom(r.Body)
-	// body := buf.String()
-
-	// isValid := subtle.ConstantTimeCompare([]byte(body), b)
-	// if isValid != 1 {
-	// 	var err error
-	// 	return false, apperrors.AuthenticationFailed("Authentication during Slack payload validation failed: %s", err)
-	// }
-	// return true, nil
-	return true, nil
+func (wh ReceivingEventsWrapper) ValidatePayload(r *http.Request, b []byte) ([]byte, apperrors.AppError) {
+	payload, err := slack.ValidatePayload(r, b)
+	if err != nil {
+		return nil, apperrors.AuthenticationFailed("Authentication during GitHub payload validation failed: %s", err)
+	}
+	return payload, nil
 }
 
 //ParseWebHook parses the raw json payload into an event struct
 func (wh ReceivingEventsWrapper) ParseWebHook(b []byte) (interface{}, apperrors.AppError) {
-	webhook, err := slackevents.ParseEvent(b, slackevents.OptionVerifyToken(&slackevents.TokenComparator{VerificationToken: "Otf0ZyDSMAXH2yOVqs7nunt6"}))
+	webhook, err := slackevents.ParseEvent(b)
 	if err != nil {
 		return slackevents.EventsAPIEvent{}, apperrors.WrongInput("Failed to parse incomming slack payload into struct: %s", err)
 	}
@@ -38,5 +31,5 @@ func (wh ReceivingEventsWrapper) ParseWebHook(b []byte) (interface{}, apperrors.
 
 //GetToken is a function that looks for the secret in the environment
 func (wh ReceivingEventsWrapper) GetToken() string {
-	return "Otf0ZyDSMAXH2yOVqs7nunt6"
+	return os.Getenv("SLACK_SECRET")
 }
