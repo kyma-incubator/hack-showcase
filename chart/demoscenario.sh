@@ -45,9 +45,9 @@ metadata:
 	name: ${NAME}-app
 	namespace: ${NAMESPACE}
 	labels:
-	app: ${NAME}-app
-	chart: github-connector
-	release: ${NAME}
+		app: ${NAME}-app
+		chart: github-connector
+		release: ${NAME}
 EOF_
 
 sleep 1
@@ -71,42 +71,42 @@ metadata:
 	name: ${NAME}-lambda
 	namespace: ${NAMESPACE}
 	labels:
-	app: ${NAME}
+		app: ${NAME}
 spec:
 	deployment:
-	spec:
-		template:
 		spec:
-			containers:
-			- name: ""
-			resources: {}
+			template:
+				spec:
+					containers:
+					- name: ""
+						resources: {}
 	deps: |-
-	{
-		"name": "example-1",
-		"version": "0.0.1",
-		"dependencies": {
-			"request": "^2.85.0"
+		{
+			"name": "example-1",
+			"version": "0.0.1",
+			"dependencies": {
+				"request": "^2.85.0"
+			}
 		}
-	}
 	function: |-
-	module.exports = { main: function (event, context) {
-		console.log("Issue opened")
-	} }
+		module.exports = { main: function (event, context) {
+			console.log("Issue opened")
+		} }
 	function-content-type: text
 	handler: handler.main
 	horizontalPodAutoscaler:
-	spec:
-		maxReplicas: 0
+		spec:
+			maxReplicas: 0
 	runtime: nodejs8
 	service:
-	ports:
-	- name: http-function-port
-		port: 8080
-		protocol: TCP
-		targetPort: 8080
-	selector:
-		created-by: kubeless
-		function: ${NAME}-lambda
+		ports:
+		- name: http-function-port
+			port: 8080
+			protocol: TCP
+			targetPort: 8080
+		selector:
+			created-by: kubeless
+			function: ${NAME}-lambda
 	timeout: ""
 	topic: issuesevent.opened
 EOF
@@ -116,7 +116,7 @@ apiVersion: eventing.kyma-project.io/v1alpha1
 kind: Subscription
 metadata:
 	labels:
-	Function: ${NAME}-lambda
+		Function: ${NAME}-lambda
 	name: ${NAME}-lambda-issuesevent-opened-v1sub
 	namespace: ${NAMESPACE}
 spec:
@@ -128,3 +128,4 @@ spec:
 EOF
 
 echo "Happy GitHub Connecting!"
+exit 0
