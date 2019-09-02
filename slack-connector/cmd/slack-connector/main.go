@@ -25,7 +25,7 @@ func main() {
 
 	kyma := events.NewSender(&http.Client{}, events.NewValidator(), "http://event-publish-service.kyma-system:8080/v1/events")
 	webhook := handlers.NewWebHookHandler(
-		slack.ReceivingEventsWrapper{},
+		slack.NewReceivingEventsWrapper(os.Getenv("SLACK_SECRET")),
 		kyma,
 	)
 

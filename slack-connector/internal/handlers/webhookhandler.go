@@ -12,16 +12,9 @@ import (
 	"github.com/nlopes/slack/slackevents"
 
 	"github.com/kyma-incubator/hack-showcase/slack-connector/internal/apperrors"
-
+	"github.com/kyma-incubator/hack-showcase/slack-connector/internal/slack"
 	log "github.com/sirupsen/logrus"
 )
-
-//Validator is an interface used to allow mocking the github library methods
-type Validator interface {
-	ValidatePayload(*http.Request, []byte) (bool, apperrors.AppError)
-	ParseWebHook([]byte) (interface{}, apperrors.AppError)
-	GetToken() string
-}
 
 //Sender is an interface used to allow mocking sending events to Kyma's event bus
 type Sender interface {
@@ -30,12 +23,12 @@ type Sender interface {
 
 //WebHookHandler is a struct used to allow mocking the github library methods
 type WebHookHandler struct {
-	validator Validator
+	validator slack.Validator
 	sender    Sender
 }
 
 //NewWebHookHandler creates a new webhook handler with the passed interface
-func NewWebHookHandler(v Validator, s Sender) *WebHookHandler {
+func NewWebHookHandler(v slack.Validator, s Sender) *WebHookHandler {
 	return &WebHookHandler{validator: v, sender: s}
 }
 
