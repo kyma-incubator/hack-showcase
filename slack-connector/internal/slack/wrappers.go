@@ -1,6 +1,11 @@
 package slack
 
 import (
+	"crypto/hmac"
+	"crypto/sha256"
+	"encoding/hex"
+	"fmt"
+	"io/ioutil"
 	"net/http"
 
 	"github.com/kyma-incubator/hack-showcase/slack-connector/internal/apperrors"
@@ -25,10 +30,29 @@ type Validator interface {
 }
 
 //ValidatePayload is a function used for checking whether the secret provided in the request is correct
-func (wh receivingEventsWrapper) ValidatePayload(r *http.Request, b []byte) ([]byte, apperrors.AppError) {
-	//TODO: https://api.slack.com/docs/verifying-requests-from-slack#about
+func (wh receivingEventsWrapper) ValidatePayload(r *http.Request, secret []byte) ([]byte, apperrors.AppError) {
+	timestamp := r.Header.Get("X-Slack-Request-Timestamp")
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		return []byte{}, apperrors.Internal("While reading Slack request body: %s", err)
+	}
+	basestring := fmt.Sprintf("v0:%s:%s", timestamp, body)
 
-	return []byte{}, nil
+	h := hmac.New(sha256.New, []byte(secret))
+
+	_, err = h.Write([]byte(basestring))
+	if err != nil {
+		return []byte{}, apperrors.Internal("Failed to validate payload: %s", err)
+	}
+
+	sha := "v0=" + hex.EncodeToString(h.Sum(nil))
+	slackSign := r.Header.Get("X-Slack-Signature")
+
+	if slackSign != sha {
+		return []byte{}, apperrors.AuthenticationFailed("Failed to validate signature: Signature is different than expected")
+	}
+
+	return body, nil
 }
 
 //ParseWebHook parses the raw json payload into an event struct
