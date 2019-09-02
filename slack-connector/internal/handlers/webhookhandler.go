@@ -63,8 +63,6 @@ func (wh *WebHookHandler) HandleWebhook(w http.ResponseWriter, r *http.Request) 
 	withDots := replacer.Replace(eventType)
 	log.Info(withDots)
 	// member_joined_channel -> (	slack.events.member.joined.channel) => sendToKyma()
-	eventTypeToKyma := fmt.Sprintf("slack.events.%s", withDots)
-	log.Info(eventTypeToKyma)
 
 	log.Info(eventType)
 	if event.(slackevents.EventsAPIEvent).Type == slackevents.URLVerification {

@@ -8,10 +8,12 @@ import (
 	"os"
 	"testing"
 
-	"github.com/google/go-github/github"
-	"github.com/kyma-incubator/hack-showcase/github-connector/internal/handlers/mocks"
+	"github.com/nlopes/slack/slackevents"
 
-	"github.com/kyma-incubator/hack-showcase/github-connector/internal/apperrors"
+	"github.com/kyma-incubator/hack-showcase/slack-connector/internal/handlers/mocks"
+	slack "github.com/kyma-incubator/hack-showcase/slack-connector/internal/slack/mocks"
+
+	"github.com/kyma-incubator/hack-showcase/slack-connector/internal/apperrors"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -47,7 +49,7 @@ func TestWebhookHandler(t *testing.T) {
 		req.Header.Set("Content-Type", "application/json")
 
 		rr := httptest.NewRecorder()
-		mockValidator := &mocks.Validator{}
+		mockValidator := &slack.Validator{}
 		mockSender := &mocks.Sender{}
 
 		mockValidator.On("GetToken").Return("test")
@@ -71,14 +73,14 @@ func TestWebhookHandler(t *testing.T) {
 		req := createRequest(t)
 		rr := httptest.NewRecorder()
 
-		mockValidator := &mocks.Validator{}
+		mockValidator := &slack.Validator{}
 		mockSender := &mocks.Sender{}
 		mockPayload, err := json.Marshal(toJSON{TestJSON: "test"})
 		require.NoError(t, err)
 
 		mockValidator.On("GetToken").Return("test")
 		mockValidator.On("ValidatePayload", req, []byte("test")).Return(mockPayload, nil)
-		mockValidator.On("ParseWebHook", "", mockPayload).Return(nil, apperrors.WrongInput("fail"))
+		mockValidator.On("ParseWebHook", mockPayload).Return(nil, apperrors.WrongInput("fail"))
 
 		wh := NewWebHookHandler(mockValidator, mockSender)
 
@@ -97,17 +99,17 @@ func TestWebhookHandler(t *testing.T) {
 		req := createRequest(t)
 		rr := httptest.NewRecorder()
 
-		mockValidator := &mocks.Validator{}
+		mockValidator := &slack.Validator{}
 		mockSender := &mocks.Sender{}
 		mockPayload, err := json.Marshal(toJSON{TestJSON: "test"})
 		require.NoError(t, err)
 		rawPayload := json.RawMessage(mockPayload)
-		mockSender.On("SendToKyma", "IssuesEvent", "v1", "", os.Getenv("SLACK_CONNECTOR_NAME")+"-app", rawPayload).Return(nil)
+		mockSender.On("SendToKyma", "member.joined.channel", "v1", "", os.Getenv("SLACK_CONNECTOR_NAME")+"-app", rawPayload).Return(nil)
 
 		mockValidator.On("GetToken").Return("test")
 		mockValidator.On("ValidatePayload", req, []byte("test")).Return(mockPayload, nil)
-		event := &github.IssuesEvent{}
-		mockValidator.On("ParseWebHook", "", mockPayload).Return(event, nil)
+		event := &slackevents.EventsAPIEvent{}
+		mockValidator.On("ParseWebHook", mockPayload).Return(event, nil)
 
 		wh := NewWebHookHandler(mockValidator, mockSender)
 
@@ -126,14 +128,14 @@ func TestWebhookHandler(t *testing.T) {
 		req := createRequest(t)
 		rr := httptest.NewRecorder()
 
-		mockValidator := &mocks.Validator{}
+		mockValidator := &slack.Validator{}
 		mockSender := &mocks.Sender{}
 
 		mockPayload, err := json.Marshal(toJSON{TestJSON: "test"})
 		require.NoError(t, err)
 		mockValidator.On("GetToken").Return("test")
 		mockValidator.On("ValidatePayload", req, []byte("test")).Return(mockPayload, nil)
-		mockValidator.On("ParseWebHook", "", mockPayload).Return(1, nil)
+		mockValidator.On("ParseWebHook", mockPayload).Return(1, nil)
 
 		wh := NewWebHookHandler(mockValidator, mockSender)
 
