@@ -71,7 +71,7 @@ func (k Sender) SendToKyma(eventType, eventTypeVersion, eventID, sourceID string
 	}
 
 	if response.StatusCode != http.StatusOK {
-		return apperrors.Internal("Error sending event: Wrong response status code %s", response.StatusCode)
+		return apperrors.Internal("Error sending event: Wrong response status code %d", response.StatusCode)
 	}
 
 	log.Info(response)

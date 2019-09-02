@@ -104,11 +104,11 @@ func TestWebhookHandler(t *testing.T) {
 		mockPayload, err := json.Marshal(toJSON{TestJSON: "test"})
 		require.NoError(t, err)
 		rawPayload := json.RawMessage(mockPayload)
-		mockSender.On("SendToKyma", "member.joined.channel", "v1", "", os.Getenv("SLACK_CONNECTOR_NAME")+"-app", rawPayload).Return(nil)
+		mockSender.On("SendToKyma", "", "v1", "", os.Getenv("SLACK_CONNECTOR_NAME")+"-app", rawPayload).Return(nil)
 
 		mockValidator.On("GetToken").Return("test")
 		mockValidator.On("ValidatePayload", req, []byte("test")).Return(mockPayload, nil)
-		event := &slackevents.EventsAPIEvent{}
+		event := slackevents.EventsAPIEvent{}
 		mockValidator.On("ParseWebHook", mockPayload).Return(event, nil)
 
 		wh := NewWebHookHandler(mockValidator, mockSender)
@@ -135,7 +135,7 @@ func TestWebhookHandler(t *testing.T) {
 		require.NoError(t, err)
 		mockValidator.On("GetToken").Return("test")
 		mockValidator.On("ValidatePayload", req, []byte("test")).Return(mockPayload, nil)
-		mockValidator.On("ParseWebHook", mockPayload).Return(1, nil)
+		mockValidator.On("ParseWebHook", mockPayload).Return(nil, apperrors.NotFound("Unknown event"))
 
 		wh := NewWebHookHandler(mockValidator, mockSender)
 
