@@ -46,7 +46,6 @@ func (wh *WebHookHandler) HandleWebhook(w http.ResponseWriter, r *http.Request) 
 	}
 	event, apperr := wh.validator.ParseWebHook(payload)
 
-	log.Info(event)
 	if apperr != nil {
 		apperr = apperr.Append("While handling '/webhook' endpoint")
 
@@ -57,13 +56,10 @@ func (wh *WebHookHandler) HandleWebhook(w http.ResponseWriter, r *http.Request) 
 	var replacer = strings.NewReplacer("_", ".")
 	eventType := event.(slackevents.EventsAPIEvent).InnerEvent.Type //e.g.: "member_joined_channel"
 	withDots := replacer.Replace(eventType)
-	log.Info(withDots)
-	// member_joined_channel -> (	slack.events.member.joined.channel) => sendToKyma()
 
-	log.Info(eventType)
+	log.Info(fmt.Sprintf("Event type '%s' received.", withDots))
 	if event.(slackevents.EventsAPIEvent).Type == slackevents.URLVerification {
 		var r *slackevents.ChallengeResponse
-		log.Info(payload)
 		err := json.Unmarshal(payload, &r)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
@@ -73,7 +69,6 @@ func (wh *WebHookHandler) HandleWebhook(w http.ResponseWriter, r *http.Request) 
 	}
 
 	sourceID := fmt.Sprintf("%s-app", os.Getenv("SLACK_CONNECTOR_NAME"))
-	log.Info(eventType)
 	apperr = wh.sender.SendToKyma(withDots, "v1", "", sourceID, payload)
 
 	if apperr != nil {
