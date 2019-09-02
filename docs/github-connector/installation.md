@@ -18,10 +18,11 @@
 2. Go to the `chart/githubconnector` directory. Run this command to install the GitHub Connector:
 
     ``` shell
-    helm install --set container.image={DOCKER_IMAGE} --set kymaAddress={KYMA_ADDRESS} -n {RELEASE_NAME} . --tls
+    helm install --set container.image={DOCKER_IMAGE} --set kymaAddress={KYMA_ADDRESS} --set githubURL={GITHUB_REPO_URL} --set githubToken={GITHUB_TOKEN} -n {RELEASE_NAME} . --tls
     ```
 
     >**CAUTION:** Make sure the Kyma address is in the correct format. It consists of the domain name and cannot begin with the dot. For example, `35.187.32.214.xip.io`.
 
-    >**NOTE:** To define the Namespace in which to install chart, add the flag `--namespace`.
+    >**NOTE:** To define the Namespace in which to install chart, add the flag `--namespace`. To define the GitHub URL, add the flag `--set githubURL`. If you want to crate webhook on one repository use construction `/repos/:owner/:repo/hooks`. if you want create webhook on whole organization you have to use `/orgs/:org/hooks`. To provide security token use flag `--set githubToken`.
+
 3. For further steps see [configuration page](/docs/github-connector/configuration.md)

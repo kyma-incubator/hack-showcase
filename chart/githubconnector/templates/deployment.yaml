@@ -31,4 +31,10 @@ spec:
           value: {{ quote .Values.container.containerPort }}
         - name: GITHUB_CONNECTOR_NAME
           value: {{ .Release.Name }}
+        - name: GITHUB_REPO_URL
+          value: https://api.github.com/{{ .Values.githubURL }}/hooks
+        - name: GITHUB_TOKEN
+          value: {{ .Values.githubToken }}        
+        - name: KYMA_ADDRESS
+          value: {{ .Release.Name }}.{{ .Values.kymaAddress }}
 
