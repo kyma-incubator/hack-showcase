@@ -1,7 +1,6 @@
 replicaCount: 1
 
 container:
-  image: kymaflyingseals/github-connector:0.2.2
   containerPort: 8080
   limits:
     memory: "128Mi"
