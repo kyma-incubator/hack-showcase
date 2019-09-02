@@ -2,6 +2,6 @@
 
 ## Overview
 The chart creates the GitHub Connector Deployment and a Namespace in Kyma.
-Additionally, it creates a service, binds it to the newly created Namespace and exposes its API. Apart from that, it creates an Application.
+Additionaly it creates an Application, registers a service, binds it to the newly created Namespace and exposes its API.
 
 See the [GitHub Connector documentation](/docs/github-connector) for more information.
