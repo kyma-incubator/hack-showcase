@@ -36,7 +36,7 @@ func TestSendToKyma(t *testing.T) {
 		payload := toJSON{TestJSON: "test"}
 		toSend, err := json.Marshal(payload)
 		require.NoError(t, err)
-		assert.Equal(t, nil, k.SendToKyma("issuesevent.opened", "v1", "", "github-connector-app", json.RawMessage(toSend)))
+		assert.Equal(t, nil, k.SendToKyma("message", "v1", "", "slack-connector-app", json.RawMessage(toSend)))
 	})
 
 	t.Run("should return an internal error when wrong arguments", func(t *testing.T) {
@@ -49,14 +49,14 @@ func TestSendToKyma(t *testing.T) {
 			"v1",
 			"",
 			time.Now().Format(time.RFC3339),
-			"github-connector-app",
+			"slack-connector-app",
 			json.RawMessage(toSend)}).Return(apperrors.Internal("test"))
 
 		k := events.NewSender(&ClientMock{}, mockValidator, "http://event-bus-publish.kyma-system:8080/v1/events")
 		expected := apperrors.Internal("test")
 
 		//when
-		actual := k.SendToKyma("", "v1", "", "github-connector-app", json.RawMessage(toSend))
+		actual := k.SendToKyma("", "v1", "", "slack-connector-app", json.RawMessage(toSend))
 
 		//then
 		assert.Equal(t, expected.Code(), actual.Code())
@@ -72,14 +72,14 @@ func TestSendToKyma(t *testing.T) {
 			"v1",
 			"",
 			time.Now().Format(time.RFC3339),
-			"github-connector-app",
+			"slack-connector-app",
 			json.RawMessage(toSend)}).Return(apperrors.Internal("test"))
 
 		k := events.NewSender(&ClientMock{}, mockValidator, "test")
 		expected := apperrors.Internal("test")
 
 		//when
-		actual := k.SendToKyma("", "v1", "", "github-connector-app", json.RawMessage(toSend))
+		actual := k.SendToKyma("", "v1", "", "slack-connector-app", json.RawMessage(toSend))
 
 		//then
 		assert.Equal(t, expected.Code(), actual.Code())
@@ -97,11 +97,11 @@ func TestSendToKyma(t *testing.T) {
 		toSend, err := json.Marshal(payload)
 		require.NoError(t, err)
 
-		validatorMock.On("Validate", events.EventRequestPayload{"issuesevent.opened", "v1", "", time.Now().Format(time.RFC3339), "github-connector-app", json.RawMessage(toSend)}).Return(nil)
+		validatorMock.On("Validate", events.EventRequestPayload{"message", "v1", "", time.Now().Format(time.RFC3339), "slack-connector-app", json.RawMessage(toSend)}).Return(nil)
 		sender := events.NewSender(&http.Client{}, events.NewValidator(), ts.URL)
 
 		// when
-		apperr := sender.SendToKyma("issuesevent.opened", "v1", "", "github-connector-app", json.RawMessage(toSend))
+		apperr := sender.SendToKyma("message", "v1", "", "slack-connector-app", json.RawMessage(toSend))
 
 		// then
 		require.NoError(t, apperr)
@@ -122,11 +122,11 @@ func TestSendToKyma(t *testing.T) {
 		toSend, err := json.Marshal(payload)
 		require.NoError(t, err)
 
-		validatorMock.On("Validate", events.EventRequestPayload{"", "", "", time.Now().Format(time.RFC3339), "github-connector-app", json.RawMessage(toSend)}).Return(nil)
+		validatorMock.On("Validate", events.EventRequestPayload{"", "", "", time.Now().Format(time.RFC3339), "slack-connector-app", json.RawMessage(toSend)}).Return(nil)
 		sender := events.NewSender(&http.Client{}, events.NewValidator(), ts.URL)
 
 		// when
-		apperr := sender.SendToKyma("", "", "", "github-connector-app", json.RawMessage(toSend))
+		apperr := sender.SendToKyma("", "", "", "slack-connector-app", json.RawMessage(toSend))
 
 		// then
 		require.Error(t, apperr)
@@ -142,7 +142,7 @@ func checkEventRequest(t *testing.T, r *http.Request) {
 	err := decoder.Decode(&testStruct)
 	require.NoError(t, err)
 
-	assert.Equal(t, "issuesevent.opened", testStruct.EventType)
+	assert.Equal(t, "message", testStruct.EventType)
 	assert.Equal(t, "v1", testStruct.EventTypeVersion)
-	assert.Equal(t, "github-connector-app", testStruct.SourceID)
+	assert.Equal(t, "slack-connector-app", testStruct.SourceID)
 }
