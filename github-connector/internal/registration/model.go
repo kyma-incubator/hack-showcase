@@ -25,11 +25,12 @@ type ErrorResponse struct {
 }
 
 type API struct {
-	TargetURL        string          `json:"targetUrl"`
-	Credentials      *Credentials    `json:"credentials,omitempty"`
-	Spec             json.RawMessage `json:"spec,omitempty"`
-	SpecificationURL string          `json:"specificationUrl,omitempty"`
-	ApiType          string          `json:"apiType"`
+	TargetURL         string             `json:"targetUrl"`
+	Credentials       *Credentials       `json:"credentials,omitempty"`
+	Spec              json.RawMessage    `json:"spec,omitempty"`
+	SpecificationURL  string             `json:"specificationUrl,omitempty"`
+	ApiType           string             `json:"apiType"`
+	RequestParameters *RequestParameters `json:"requestParameters,omitempty"`
 }
 
 type Credentials struct {
@@ -77,4 +78,17 @@ type DocsObject struct {
 	Title  string `json:"title"`
 	Type   string `json:"type"`
 	Source string `json:"source"`
+}
+
+type RequestParameters struct {
+	Headers         *Headers         `json:"headers,omitempty"`
+	QueryParameters *QueryParameters `json:"queryParameters,omitempty"`
+}
+
+type Headers struct {
+	CustomHeader []string `json:"Authorization,omitempty"`
+}
+
+type QueryParameters struct {
+	Param []string `json:"param,omitempty"`
 }

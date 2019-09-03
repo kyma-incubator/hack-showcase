@@ -17,7 +17,7 @@ import (
 func main() {
 	log.Info("server started")
 
-	builder := registration.NewPayloadBuilder(registration.NewFileReader(), os.Getenv("GITHUB_CONNECTOR_NAME"))
+	builder := registration.NewPayloadBuilder(registration.NewFileReader(), os.Getenv("GITHUB_CONNECTOR_NAME"), os.Getenv("GITHUB_TOKEN"))
 	id, err := registration.NewApplicationRegistryClient(builder, 5, 10).RegisterService()
 
 	if err != nil {

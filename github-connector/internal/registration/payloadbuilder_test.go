@@ -17,7 +17,7 @@ func TestBuild(t *testing.T) {
 		fileBody := []byte(`{"json":"value"}`)
 		jsonBody := json.RawMessage(`{"json":"value"}`)
 		mockFileReader.On("Read", "githubasyncapi.json").Return(fileBody, nil)
-		builder := registration.NewPayloadBuilder(mockFileReader, "github-connector")
+		builder := registration.NewPayloadBuilder(mockFileReader, "github-connector", "token")
 		url := "https://raw.githubusercontent.com/kyma-incubator/hack-showcase/master/github-connector/internal/registration/configs/githubopenAPI.json"
 
 		//when
@@ -35,7 +35,7 @@ func TestBuild(t *testing.T) {
 	t.Run("should return error and empty ServiceDetails{}", func(t *testing.T) {
 		mockFileReader := &mocks.FileReader{}
 		mockFileReader.On("Read", "githubasyncapi.json").Return(nil, apperrors.Internal("error"))
-		builder := registration.NewPayloadBuilder(mockFileReader, "github-connector")
+		builder := registration.NewPayloadBuilder(mockFileReader, "github-connector", "token")
 
 		//when
 		details, err := builder.Build()
@@ -51,7 +51,7 @@ func TestGetApplicationRegistryURL(t *testing.T) {
 		//given
 		mockFileReader := &mocks.FileReader{}
 		targetURL := "http://application-registry-external-api.kyma-integration.svc.cluster.local:8081/github-connector-app/v1/metadata/services"
-		builder := registration.NewPayloadBuilder(mockFileReader, "github-connector")
+		builder := registration.NewPayloadBuilder(mockFileReader, "github-connector", "token")
 
 		//when
 		path := builder.GetApplicationRegistryURL()
