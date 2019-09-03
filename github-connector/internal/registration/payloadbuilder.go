@@ -40,7 +40,7 @@ func (r payloadBuilder) Build() (ServiceDetails, error) {
 		Description: "GitHub Connector, which can be used for communication and handling events from GitHub",
 		API: &API{
 			TargetURL:         "https://api.github.com",
-			RequestParameters: &RequestParameters{Headers: &Headers{CustomHeader: []string{"Bearer " + r.githubToken}}},
+			RequestParameters: &RequestParameters{Headers: &Headers{CustomHeader: []string{"token " + r.githubToken}}},
 		},
 	}
 	file, err := r.fileReader.Read("githubasyncapi.json")
