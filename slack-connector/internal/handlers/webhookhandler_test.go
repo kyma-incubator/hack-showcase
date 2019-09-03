@@ -32,7 +32,6 @@ func createRequest(t *testing.T) *http.Request {
 
 	req := httptest.NewRequest(http.MethodPost, "/webhook", bytes.NewBuffer(toSend))
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("X-Hub-Signature", "test")
 
 	return req
 }

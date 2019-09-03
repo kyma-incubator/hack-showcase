@@ -59,7 +59,7 @@ func (wh receivingEventsWrapper) ValidatePayload(r *http.Request, secret []byte)
 func (wh receivingEventsWrapper) ParseWebHook(b []byte) (interface{}, apperrors.AppError) {
 	webhook, err := slackevents.ParseEvent(b, slackevents.OptionNoVerifyToken())
 	if err != nil {
-		return slackevents.EventsAPIEvent{}, apperrors.WrongInput("Failed to parse incomming slack payload into struct: %s", err)
+		return slackevents.EventsAPIEvent{}, apperrors.WrongInput("Failed to parse incoming slack payload into struct: %s", err)
 	}
 	return webhook, nil
 }

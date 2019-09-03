@@ -25,7 +25,7 @@ func TestValidatePayload(t *testing.T) {
 			"v1",
 			"sampleEventID",
 			"time",
-			"github-connector-app",
+			"slack-connector-app",
 			sampleData,
 		}
 
@@ -47,7 +47,7 @@ func TestValidatePayload(t *testing.T) {
 			"",
 			"sampleEventID",
 			"time",
-			"github-connector-app",
+			"slack-connector-app",
 			sampleData,
 		}
 
@@ -68,7 +68,7 @@ func TestValidatePayload(t *testing.T) {
 			"v1",
 			"sampleEventID",
 			"time",
-			"github-connector-app",
+			"slack-connector-app",
 			[]byte(``),
 		}
 
