@@ -1,6 +1,5 @@
 {
-    "asyncapi": "1.2.0",
-    "baseTopic": "slack.events",
+    "asyncapi": "1.0.0",
     "components": {
         "schemas": {
             "GenericEventWrapper": {
@@ -169,28 +168,6 @@
         "title": "Slack Events API",
         "version": "1.0.0"
     },
-    "servers": [
-        {
-            "description": "A pre-registered Request URL on servers you control where subscriptions will be delivered.",
-            "scheme": "https",
-            "url": "{request_url}",
-            "variables": {
-                "request_url": {
-                    "description": "Your chosen request URL where events will be delivered."
-                }
-            }
-        },
-        {
-            "description": "Your Slack app management console's event subscription configurator. Visit in a web browser and sign in to your workspace.",
-            "scheme": "https",
-            "url": "https://api.slack.com/apps/{slack_app_id}/event-subscriptions",
-            "variables": {
-                "slack_app_id": {
-                    "description": "Your Slack app's unique identifier, found in the URL when editing your app on api.slack.com."
-                }
-            }
-        }
-    ],
     "tags": [
         {
             "description": "Events less about a workspace and more about your app",
@@ -210,7 +187,7 @@
         }
     ],
     "topics": {
-        "app.mention": {
+        "app.mention.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for app_mention",
@@ -234,7 +211,7 @@
                 ]
             }
         },
-        "app.rate.limited": {
+        "app.rate.limited.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for app_rate_limited",
@@ -262,7 +239,7 @@
                 ]
             }
         },
-        "app.uninstalled": {
+        "app.uninstalled.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for app_uninstalled",
@@ -290,7 +267,7 @@
                 ]
             }
         },
-        "channel.archive": {
+        "channel.archive.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for channel_archive",
@@ -317,7 +294,7 @@
                 ]
             }
         },
-        "channel.created": {
+        "channel.created.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for channel_created",
@@ -344,7 +321,7 @@
                 ]
             }
         },
-        "channel.deleted": {
+        "channel.deleted.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for channel_deleted",
@@ -371,7 +348,7 @@
                 ]
             }
         },
-        "channel.history.changed": {
+        "channel.history.changed.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for channel_history_changed",
@@ -396,7 +373,7 @@
                 ]
             }
         },
-        "channel.left": {
+        "channel.left.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for channel_left",
@@ -423,7 +400,7 @@
                 ]
             }
         },
-        "channel.rename": {
+        "channel.rename.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for channel_rename",
@@ -450,7 +427,7 @@
                 ]
             }
         },
-        "channel.unarchive": {
+        "channel.unarchive.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for channel_unarchive",
@@ -477,7 +454,7 @@
                 ]
             }
         },
-        "dnd.updated": {
+        "dnd.updated.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for dnd_updated",
@@ -500,7 +477,7 @@
                 ]
             }
         },
-        "dnd.updated.user": {
+        "dnd.updated.user.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for dnd_updated_user",
@@ -523,7 +500,7 @@
                 ]
             }
         },
-        "email.domain.changed": {
+        "email.domain.changed.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for email_domain_changed",
@@ -550,7 +527,7 @@
                 ]
             }
         },
-        "emoji.changed": {
+        "emoji.changed.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for emoji_changed",
@@ -577,7 +554,7 @@
                 ]
             }
         },
-        "file.change": {
+        "file.change.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for file_change",
@@ -604,7 +581,7 @@
                 ]
             }
         },
-        "file.comment.added": {
+        "file.comment.added.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for file_comment_added",
@@ -631,7 +608,7 @@
                 ]
             }
         },
-        "file.comment.deleted": {
+        "file.comment.deleted.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for file_comment_deleted",
@@ -658,7 +635,7 @@
                 ]
             }
         },
-        "file.comment.edited": {
+        "file.comment.edited.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for file_comment_edited",
@@ -685,7 +662,7 @@
                 ]
             }
         },
-        "file.created": {
+        "file.created.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for file_created",
@@ -712,7 +689,7 @@
                 ]
             }
         },
-        "file.deleted": {
+        "file.deleted.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for file_deleted",
@@ -739,7 +716,7 @@
                 ]
             }
         },
-        "file.public": {
+        "file.public.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for file_public",
@@ -766,7 +743,7 @@
                 ]
             }
         },
-        "file.shared": {
+        "file.shared.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for file_shared",
@@ -793,7 +770,7 @@
                 ]
             }
         },
-        "file.unshared": {
+        "file.unshared.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for file_unshared",
@@ -820,7 +797,7 @@
                 ]
             }
         },
-        "grid.migration.finished": {
+        "grid.migration.finished.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for grid_migration_finished",
@@ -848,7 +825,7 @@
                 ]
             }
         },
-        "grid.migration.started": {
+        "grid.migration.started.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for grid_migration_started",
@@ -876,7 +853,7 @@
                 ]
             }
         },
-        "group.archive": {
+        "group.archive.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for group_archive",
@@ -903,7 +880,7 @@
                 ]
             }
         },
-        "group.close": {
+        "group.close.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for group_close",
@@ -930,7 +907,7 @@
                 ]
             }
         },
-        "group.history.changed": {
+        "group.history.changed.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for group_history_changed",
@@ -953,7 +930,7 @@
                 ]
             }
         },
-        "group.left": {
+        "group.left.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for group_left",
@@ -980,7 +957,7 @@
                 ]
             }
         },
-        "group.open": {
+        "group.open.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for group_open",
@@ -1007,7 +984,7 @@
                 ]
             }
         },
-        "group.rename": {
+        "group.rename.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for group_rename",
@@ -1034,7 +1011,7 @@
                 ]
             }
         },
-        "group.unarchive": {
+        "group.unarchive.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for group_unarchive",
@@ -1061,7 +1038,7 @@
                 ]
             }
         },
-        "im.close": {
+        "im.close.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for im_close",
@@ -1088,7 +1065,7 @@
                 ]
             }
         },
-        "im.created": {
+        "im.created.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for im_created",
@@ -1115,7 +1092,7 @@
                 ]
             }
         },
-        "im.history.changed": {
+        "im.history.changed.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for im_history_changed",
@@ -1138,7 +1115,7 @@
                 ]
             }
         },
-        "im.open": {
+        "im.open.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for im_open",
@@ -1165,7 +1142,7 @@
                 ]
             }
         },
-        "link.shared": {
+        "link.shared.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for link_shared",
@@ -1192,7 +1169,7 @@
                 ]
             }
         },
-        "member.joined.channel": {
+        "member.joined.channel.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for member_joined_channel",
@@ -1220,7 +1197,7 @@
                 ]
             }
         },
-        "member.left.channel": {
+        "member.left.channel.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for member_left_channel",
@@ -1248,7 +1225,7 @@
                 ]
             }
         },
-        "message": {
+        "message.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for message",
@@ -1527,7 +1504,7 @@
                 ]
             }
         },
-        "message.app.home": {
+        "message.app.home.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for message.app_home",
@@ -1548,7 +1525,7 @@
                 ]
             }
         },
-        "message.channels": {
+        "message.channels.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for message.channels",
@@ -1575,7 +1552,7 @@
                 ]
             }
         },
-        "message.groups": {
+        "message.groups.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for message.groups",
@@ -1602,7 +1579,7 @@
                 ]
             }
         },
-        "message.im": {
+        "message.im.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for message.im",
@@ -1629,7 +1606,7 @@
                 ]
             }
         },
-        "message.mpim": {
+        "message.mpim.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for message.mpim",
@@ -1656,7 +1633,7 @@
                 ]
             }
         },
-        "pin.added": {
+        "pin.added.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for pin_added",
@@ -1683,7 +1660,7 @@
                 ]
             }
         },
-        "pin.removed": {
+        "pin.removed.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for pin_removed",
@@ -1710,7 +1687,7 @@
                 ]
             }
         },
-        "reaction.added": {
+        "reaction.added.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for reaction_added",
@@ -1737,7 +1714,7 @@
                 ]
             }
         },
-        "reaction.removed": {
+        "reaction.removed.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for reaction_removed",
@@ -1764,7 +1741,7 @@
                 ]
             }
         },
-        "resources.added": {
+        "resources.added.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for resources_added",
@@ -1785,7 +1762,7 @@
                 ]
             }
         },
-        "resources.removed": {
+        "resources.removed.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for resources_removed",
@@ -1806,7 +1783,7 @@
                 ]
             }
         },
-        "scope.denied": {
+        "scope.denied.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for scope_denied",
@@ -1827,7 +1804,7 @@
                 ]
             }
         },
-        "scope.granted": {
+        "scope.granted.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for scope_granted",
@@ -1848,7 +1825,7 @@
                 ]
             }
         },
-        "star.added": {
+        "star.added.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for star_added",
@@ -1871,7 +1848,7 @@
                 ]
             }
         },
-        "star.removed": {
+        "star.removed.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for star_removed",
@@ -1894,7 +1871,7 @@
                 ]
             }
         },
-        "subteam.created": {
+        "subteam.created.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for subteam_created",
@@ -1921,7 +1898,7 @@
                 ]
             }
         },
-        "subteam.members.changed": {
+        "subteam.members.changed.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for subteam_members_changed",
@@ -1948,7 +1925,7 @@
                 ]
             }
         },
-        "subteam.self.added": {
+        "subteam.self.added.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for subteam_self_added",
@@ -1971,7 +1948,7 @@
                 ]
             }
         },
-        "subteam.self.removed": {
+        "subteam.self.removed.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for subteam_self_removed",
@@ -1994,7 +1971,7 @@
                 ]
             }
         },
-        "subteam.updated": {
+        "subteam.updated.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for subteam_updated",
@@ -2021,7 +1998,7 @@
                 ]
             }
         },
-        "team.domain.change": {
+        "team.domain.change.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for team_domain_change",
@@ -2048,7 +2025,7 @@
                 ]
             }
         },
-        "team.join": {
+        "team.join.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for team_join",
@@ -2075,7 +2052,7 @@
                 ]
             }
         },
-        "team.rename": {
+        "team.rename.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for team_rename",
@@ -2102,7 +2079,7 @@
                 ]
             }
         },
-        "tokens.revoked": {
+        "tokens.revoked.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for tokens_revoked",
@@ -2130,7 +2107,7 @@
                 ]
             }
         },
-        "url.verification": {
+        "url.verification.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for url_verification",
@@ -2158,7 +2135,7 @@
                 ]
             }
         },
-        "user.change": {
+        "user.change.v1": {
             "subscribe": {
                 "externalDocs": {
                     "description": "Event documentation for user_change",

@@ -3,7 +3,6 @@ package registration
 import (
 	"fmt"
 	"io/ioutil"
-	"os"
 
 	"github.com/kyma-incubator/hack-showcase/slack-connector/internal/apperrors"
 )
@@ -45,7 +44,6 @@ func (r payloadBuilder) Build() (ServiceDetails, error) {
 			RequestParameters: &RequestParameters{Headers: &Headers{CustomHeader: []string{"Bearer " + r.slackBotToken}}},
 		},
 	}
-	fmt.Println("Bearer " + os.Getenv("SLACK_BOT_TOKEN"))
 	file, err := r.fileReader.Read("slackasyncapi.json")
 	if err != nil {
 		return ServiceDetails{}, apperrors.Internal("While reading 'slackopenapi.json' spec: %s", err)

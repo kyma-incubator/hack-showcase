@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/kyma-incubator/hack-showcase/github-connector/internal/apperrors"
+	"github.com/kyma-incubator/hack-showcase/slack-connector/internal/apperrors"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -71,7 +71,7 @@ func (k Sender) SendToKyma(eventType, eventTypeVersion, eventID, sourceID string
 	}
 
 	if response.StatusCode != http.StatusOK {
-		return apperrors.Internal("Error sending event: %d", response.StatusCode)
+		return apperrors.Internal("Error sending event: Wrong response status code %d", response.StatusCode)
 	}
 
 	log.Info(response)

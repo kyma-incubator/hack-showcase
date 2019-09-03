@@ -1,10 +1,13 @@
 package main
 
 import (
+	"net/http"
 	"os"
-	"sync"
 
+	"github.com/kyma-incubator/hack-showcase/slack-connector/internal/events"
+	"github.com/kyma-incubator/hack-showcase/slack-connector/internal/handlers"
 	"github.com/kyma-incubator/hack-showcase/slack-connector/internal/registration"
+	"github.com/kyma-incubator/hack-showcase/slack-connector/internal/slack"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -20,7 +23,12 @@ func main() {
 		"id": id,
 	}).Info("Service registered.")
 
-	var wg sync.WaitGroup
-	wg.Add(1)
-	wg.Wait()
+	kyma := events.NewSender(&http.Client{}, events.NewValidator(), "http://event-publish-service.kyma-system:8080/v1/events")
+	webhook := handlers.NewWebHookHandler(
+		slack.NewReceivingEventsWrapper(os.Getenv("SLACK_SECRET")),
+		kyma,
+	)
+
+	http.HandleFunc("/webhook", webhook.HandleWebhook)
+	log.Info(http.ListenAndServe(":"+os.Getenv("PORT"), nil))
 }
