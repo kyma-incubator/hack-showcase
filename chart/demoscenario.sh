@@ -1,8 +1,46 @@
 set -o errexit
 
+usage="$(basename "$0 {NAME} {NAMESPACE}") [-h]
+
+This script installs demonstration scernario for Kyma's GitHub Connector.
+
+where:
+	NAME 		- release name, under which scenario will be deployed
+	NAMESPACE 	- namespace in which scenario will be deployed
+
+options:
+	-h  		shows this help prompt"
+
+if getopts 'h' option; then
+	case $option in
+		h) echo "$usage"
+	   		exit 0
+	  ;;
+   	*) echo "Please try '$0 -h' for help." >&2
+	   		exit 1
+	  ;;
+  	esac
+fi
+
+case $# in
+	0) echo "ERROR: No arguments supplied. Please specify {NAME} and {NAMESPACE}."
+		  echo "$usage"
+		  exit 1
+	;;
+	1) echo "ERROR: Please specify {NAMESPACE}."
+		  echo "$usage"
+		  exit 1
+	;;
+	*)
+esac
+
 NAME=$1
 NAMESPACE=$2
-echo $EXTERNALNAME
+
+if [ -z `kubectl get application | grep "${NAME}-app"` ];then
+  echo "ERROR: Application '${NAME}-app' does not exist. Check specified {NAME}: '${NAME}' or check if GitHub Connector has been correctly deployed."
+  exit 1
+fi
 
 cat <<EOF_ | kubectl create -f -
 apiVersion: applicationconnector.kyma-project.io/v1alpha1
@@ -94,3 +132,4 @@ spec:
 EOF
 
 echo "Happy GitHub Connecting!"
+exit 0

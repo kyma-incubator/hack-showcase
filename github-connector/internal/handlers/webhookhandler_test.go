@@ -9,9 +9,9 @@ import (
 	"testing"
 
 	"github.com/google/go-github/github"
-	"github.com/kyma-incubator/hack-showcase/github-connector/internal/handlers/mocks"
-
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/apperrors"
+	gitmocks "github.com/kyma-incubator/hack-showcase/github-connector/internal/github/mocks"
+	"github.com/kyma-incubator/hack-showcase/github-connector/internal/handlers/mocks"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -47,7 +47,7 @@ func TestWebhookHandler(t *testing.T) {
 		req.Header.Set("Content-Type", "application/json")
 
 		rr := httptest.NewRecorder()
-		mockValidator := &mocks.Validator{}
+		mockValidator := &gitmocks.Validator{}
 		mockSender := &mocks.Sender{}
 
 		mockValidator.On("GetToken").Return("test")
@@ -71,7 +71,7 @@ func TestWebhookHandler(t *testing.T) {
 		req := createRequest(t)
 		rr := httptest.NewRecorder()
 
-		mockValidator := &mocks.Validator{}
+		mockValidator := &gitmocks.Validator{}
 		mockSender := &mocks.Sender{}
 		mockPayload, err := json.Marshal(toJSON{TestJSON: "test"})
 		require.NoError(t, err)
@@ -97,7 +97,7 @@ func TestWebhookHandler(t *testing.T) {
 		req := createRequest(t)
 		rr := httptest.NewRecorder()
 
-		mockValidator := &mocks.Validator{}
+		mockValidator := &gitmocks.Validator{}
 		mockSender := &mocks.Sender{}
 		mockPayload, err := json.Marshal(toJSON{TestJSON: "test"})
 		require.NoError(t, err)
@@ -126,7 +126,7 @@ func TestWebhookHandler(t *testing.T) {
 		req := createRequest(t)
 		rr := httptest.NewRecorder()
 
-		mockValidator := &mocks.Validator{}
+		mockValidator := &gitmocks.Validator{}
 		mockSender := &mocks.Sender{}
 
 		mockPayload, err := json.Marshal(toJSON{TestJSON: "test"})
