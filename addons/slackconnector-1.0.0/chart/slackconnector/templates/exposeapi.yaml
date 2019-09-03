@@ -1,0 +1,14 @@
+apiVersion: gateway.kyma-project.io/v1alpha2
+kind: Api
+metadata:
+  name: {{ include "slack-connector-chart.release.name" . }}
+  labels:
+    app: {{ include "slack-connector-chart.name" . }}
+    chart: {{ include "slack-connector-chart.chart" . }}
+    release: {{ include "slack-connector-chart.release.name" . }}
+    heritage: {{ include "slack-connector-chart.release.service" . }}
+spec:
+    service:
+      name: {{ include "slack-connector-chart.release.name" . }}
+      port: {{ .Values.service.port }}
+    hostname: {{ include "slack-connector-chart.release.name" . }}

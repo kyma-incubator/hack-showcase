@@ -16,7 +16,12 @@
         "type":"string",
         "title":"Docker image",
         "description": "Specify the Slack Connector image you want to use."
+      },
+      "slackSecret": {
+        "type":"string",
+        "title":"Slack Signed Secret",
+        "description": "The Slack app's signing secret used for validating requests coming from Slack by verifying its unique signature. You can find it in app's Basic Information."
       }
     },
-    "required":["slackBotToken", "workspaceName"] 
+    "required":["slackBotToken", "workspaceName", "slackSecret"] 
   }
