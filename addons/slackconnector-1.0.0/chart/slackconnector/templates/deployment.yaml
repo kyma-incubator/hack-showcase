@@ -35,4 +35,6 @@ spec:
           value: {{ include "slack-connector-chart.release.name" . }}
         - name: SLACK_BOT_TOKEN
           value: {{ .Values.slackBotToken }}
+        - name: SLACK_SECRET
+          value: {{ .Values.slackSecret }}
           
