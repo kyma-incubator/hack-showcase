@@ -29,14 +29,6 @@
   version = "v1.3.0"
 
 [[projects]]
-  branch = "master"
-  digest = "1:1ba1d79f2810270045c328ae5d674321db34e3aae468eb4233883b473c5c0467"
-  name = "github.com/golang/glog"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "23def4e6c14b4da8ac2ed8007337bc5eb5007998"
-
-[[projects]]
   digest = "1:f5ce1529abc1204444ec73779f44f94e2fa8fcdb7aca3c355b0c95947e4005c6"
   name = "github.com/golang/protobuf"
   packages = [
@@ -87,7 +79,7 @@
   version = "v1.1.7"
 
 [[projects]]
-  digest = "1:deee5b73bbd9d3f28cf828997897a927683344c9c6c2ed2dfcf5f559dbc66d25"
+  digest = "1:ebbf98a0c4a989fd600eabfbe3d16b7a1dddb7e77f39e9589010a85cb6e1d524"
   name = "github.com/kyma-project/kyma"
   packages = [
     "components/api-controller/pkg/apis/gateway.kyma-project.io/meta/v1",
@@ -97,8 +89,7 @@
     "components/api-controller/pkg/clients/gateway.kyma-project.io/clientset/versioned/typed/gateway.kyma-project.io/v1alpha2",
   ]
   pruneopts = "UT"
-  revision = "8a1b035d7ba034fdbd50f65100e3b037107155ab"
-  version = "1.4.1"
+  revision = "2ce13ea6b2a25bfca48e3678f58eb21dffbbd95c"
 
 [[projects]]
   digest = "1:33422d238f147d247752996a26574ac48dcf472976eda7f5134015f06bf16563"
@@ -249,8 +240,7 @@
   version = "v2.2.2"
 
 [[projects]]
-  branch = "master"
-  digest = "1:9b0bb706b10f4e6221ebe3a0039e3536ceba3889135f6f109cba26f6ec14711b"
+  digest = "1:d89afbf3588e87d2c9e6efdd5528d249b32d23a12fbd7ec324f3cb373c6fb76c"
   name = "k8s.io/api"
   packages = [
     "admissionregistration/v1beta1",
@@ -291,11 +281,10 @@
     "storage/v1beta1",
   ]
   pruneopts = "UT"
-  revision = "7364b6bdad650bc7021680ddc83411457542101a"
+  revision = "kubernetes-1.15.3"
 
 [[projects]]
-  branch = "master"
-  digest = "1:3671c45043c607e0409aeb9ef123e76c37f1526298758f769cf2d64cbb4936c3"
+  digest = "1:8733f07672df473e76966afde4e65ca7abdb0f61108f7be56bfe90909cc7158c"
   name = "k8s.io/apimachinery"
   packages = [
     "pkg/api/errors",
@@ -334,10 +323,11 @@
     "third_party/forked/golang/reflect",
   ]
   pruneopts = "UT"
-  revision = "461753078381c979582f217a28eb759ebee5295d"
+  revision = "f2f3a405f61d6c2cdc0d00687c1b5d90de91e9f0"
+  version = "kubernetes-1.15.3"
 
 [[projects]]
-  digest = "1:948e95847a7039ef59bd27457da5a3a5c235e7ad9936921386e7322dbce6b0a6"
+  digest = "1:9e9819153e3a294e6034eb1fb12e21b10fffb475a4e2538828fb2b266b3c4a5f"
   name = "k8s.io/client-go"
   packages = [
     "discovery",
@@ -404,8 +394,8 @@
     "util/keyutil",
   ]
   pruneopts = "UT"
-  revision = "78d2af792babf2dd937ba2e2a8d99c753a5eda89"
-  version = "v12.0.0"
+  revision = "e14f31a72a77f7aa82a95eaf542d1194fb027d04"
+  version = "kubernetes-1.15.3"
 
 [[projects]]
   digest = "1:ccb9be4c583b6ec848eb98aa395a4e8c8f8ad9ebb823642c0dd1c1c45939a5bb"
