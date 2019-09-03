@@ -1,0 +1,16 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: pracaprecla
+spec:
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "false"
+    spec:
+      containers:
+      - name: pracaprecla
+        image: pprecel/azure-comments-analytics:0.0.1
+      serviceAccountName: precel
+      restartPolicy: Never
+  backoffLimit: 4
