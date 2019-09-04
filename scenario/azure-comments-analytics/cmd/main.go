@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
 
 	svcCatalog "github.com/google/kf/pkg/client/servicecatalog/clientset/versioned/typed/servicecatalog/v1beta1"
 	v1beta1svc "github.com/poy/service-catalog/pkg/apis/servicecatalog/v1beta1"
@@ -19,16 +20,18 @@ type Config struct {
 }
 
 func main() {
+	githubRepo := os.Getenv("GITHUB_REPO")
+	slackWorkspace := os.Getenv("SLACK_WORKSPACE")
+
+	fmt.Printf("Nazwa repo: %s\n", githubRepo)
+	fmt.Printf("Nazwa workspace: %s\n", slackWorkspace)
+
 	var cfg Config
 	err := envconfig.InitWithPrefix(&cfg, "APP")
 	fatalOnError(err)
 
 	// general k8s config
 	k8sConfig, err := newRestClientConfig(cfg.Kubeconfig)
-	fatalOnError(err)
-
-	// k8s Clientset
-	//k8sCli, err := k8sClientset.NewForConfig(k8sConfig)
 	fatalOnError(err)
 
 	app := make(map[string]string)
@@ -40,30 +43,46 @@ func main() {
 	svcList, err := svcClient.ServiceClasses("default").List(v1.ListOptions{})
 	fatalOnError(err)
 
-	var name string
+	//create Service Instance
 	for _, s := range svcList.Items {
 		fmt.Println(s.Name)
 		chars := []rune(s.Spec.ExternalName)
 		str := string(chars[0 : len(chars)-6])
-		if str == "github-colunira-podejmijtest" {
-			fmt.Println("działa")
-			name = s.Spec.ExternalName
+		if str == githubRepo {
+			fmt.Println("działa git")
+			svc, err := svcClient.ServiceInstances("default").Create(&v1beta1svc.ServiceInstance{
+				ObjectMeta: v1.ObjectMeta{
+					Name:      githubRepo + "g",
+					Namespace: "default",
+				},
+				Spec: v1beta1svc.ServiceInstanceSpec{
+					PlanReference: v1beta1svc.PlanReference{
+						ServiceClassExternalName: s.Spec.ExternalName,
+						ServicePlanExternalName:  "default",
+					},
+				},
+			})
+			fatalOnError(err)
+			fmt.Printf("Service Instance: %s, %s\n", svc.Name, svc.Status.ProvisionStatus)
+		}
+		if str == slackWorkspace {
+			fmt.Println("działa slack")
+			svc, err := svcClient.ServiceInstances("default").Create(&v1beta1svc.ServiceInstance{
+				ObjectMeta: v1.ObjectMeta{
+					Name:      slackWorkspace + "g",
+					Namespace: "default",
+				},
+				Spec: v1beta1svc.ServiceInstanceSpec{
+					PlanReference: v1beta1svc.PlanReference{
+						ServiceClassExternalName: s.Spec.ExternalName,
+						ServicePlanExternalName:  "default",
+					},
+				},
+			})
+			fatalOnError(err)
+			fmt.Printf("Service Instance: %s, %s\n", svc.Name, svc.Status.ProvisionStatus)
 		}
 	}
-
-	svc, err := svcClient.ServiceInstances("default").Create(&v1beta1svc.ServiceInstance{
-		ObjectMeta: v1.ObjectMeta{
-			Name:      "service-julia",
-			Namespace: "default",
-		},
-		Spec: v1beta1svc.ServiceInstanceSpec{
-			PlanReference: v1beta1svc.PlanReference{
-				ServiceClassExternalName: name,
-			},
-		},
-	})
-	fatalOnError(err)
-	fmt.Println("Service Instance: %", svc)
 
 }
 
