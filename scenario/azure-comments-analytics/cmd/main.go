@@ -5,6 +5,15 @@ import (
 	"log"
 	"os"
 
+	//kubeless "github.com/kubeless/kubeless/pkg/utils"
+	v1beta1kubeless "github.com/kubeless/kubeless/pkg/apis/kubeless/v1beta1"
+	kubeless "github.com/kubeless/kubeless/pkg/client/clientset/versioned"
+	autoscaling "k8s.io/api/autoscaling/v2beta1"
+	core "k8s.io/api/core/v1"
+	pts "k8s.io/api/core/v1"
+	deplo "k8s.io/api/extensions/v1beta1"
+	ios "k8s.io/apimachinery/pkg/util/intstr"
+
 	svcCatalog "github.com/google/kf/pkg/client/servicecatalog/clientset/versioned/typed/servicecatalog/v1beta1"
 	v1beta1svc "github.com/poy/service-catalog/pkg/apis/servicecatalog/v1beta1"
 	"github.com/vrischmann/envconfig"
@@ -83,6 +92,52 @@ func main() {
 			fmt.Printf("Service Instance: %s, %s\n", svc.Name, svc.Status.ProvisionStatus)
 		}
 	}
+
+	c, err := kubeless.NewForConfig(k8sConfig)
+	c.Kubeless().Functions("default").Create(&v1beta1kubeless.Function{
+		ObjectMeta: v1.ObjectMeta{
+			Name:      "julia-the-lambda",
+			Namespace: "default",
+			Labels:    map[string]string{"app": "no-jakas-apka"},
+		},
+		Spec: v1beta1kubeless.FunctionSpec{
+			Deps:                "console.log(deps)",
+			Function:            "console.log(Function)",
+			FunctionContentType: "text",
+			Handler:             "handler.main",
+			Timeout:             "",
+			HorizontalPodAutoscaler: autoscaling.HorizontalPodAutoscaler{
+				Spec: autoscaling.HorizontalPodAutoscalerSpec{
+					MaxReplicas: 0,
+				},
+			},
+			Runtime: "nodejs8",
+			ServiceSpec: core.ServiceSpec{
+				Ports: []core.ServicePort{core.ServicePort{
+					Name:       "http-function-port",
+					Port:       8080,
+					Protocol:   "TCP",
+					TargetPort: ios.FromInt(8080),
+				}},
+				Selector: map[string]string{
+					"created-by": "kubeless",
+					"function":   "julia-the-lambda",
+				},
+			},
+			Deployment: deplo.Deployment{
+				Spec: deplo.DeploymentSpec{
+					Template: pts.PodTemplateSpec{
+						Spec: pts.PodSpec{
+							Containers: []pts.Container{pts.Container{
+								Name: "",
+								//Resources: {},
+							}},
+						},
+					},
+				},
+			},
+		},
+	})
 
 }
 

@@ -29,9 +29,23 @@
   version = "v1.3.0"
 
 [[projects]]
-  digest = "1:573ca21d3669500ff845bdebee890eb7fc7f0f50c59f2132f2a0c6b03d85086a"
+  branch = "master"
+  digest = "1:1ba1d79f2810270045c328ae5d674321db34e3aae468eb4233883b473c5c0467"
+  name = "github.com/golang/glog"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "23def4e6c14b4da8ac2ed8007337bc5eb5007998"
+
+[[projects]]
+  digest = "1:f5ce1529abc1204444ec73779f44f94e2fa8fcdb7aca3c355b0c95947e4005c6"
   name = "github.com/golang/protobuf"
-  packages = ["proto"]
+  packages = [
+    "proto",
+    "ptypes",
+    "ptypes/any",
+    "ptypes/duration",
+    "ptypes/timestamp",
+  ]
   pruneopts = "UT"
   revision = "6c65a5562fc06764971b7c5d05c76c75e84bdbf7"
   version = "v1.3.2"
@@ -56,6 +70,18 @@
   revision = "8545afe57a7893fa61f289314998085045b994ef"
 
 [[projects]]
+  digest = "1:ca4524b4855ded427c7003ec903a5c854f37e7b1e8e2a93277243462c5b753a8"
+  name = "github.com/googleapis/gnostic"
+  packages = [
+    "OpenAPIv2",
+    "compiler",
+    "extensions",
+  ]
+  pruneopts = "UT"
+  revision = "ab0dd09aa10e2952b28e12ecd35681b20463ebab"
+  version = "v0.3.1"
+
+[[projects]]
   digest = "1:a0cefd27d12712af4b5018dc7046f245e1e3b5760e2e848c30b171b570708f9b"
   name = "github.com/imdario/mergo"
   packages = ["."]
@@ -70,6 +96,20 @@
   pruneopts = "UT"
   revision = "27518f6661eba504be5a7a9a9f6d9460d892ade3"
   version = "v1.1.7"
+
+[[projects]]
+  digest = "1:2388149c340b81dd7c6a8e97cd4c268174cfa184769acd1a25f9c0495d344819"
+  name = "github.com/kubeless/kubeless"
+  packages = [
+    "pkg/apis/kubeless",
+    "pkg/apis/kubeless/v1beta1",
+    "pkg/client/clientset/versioned",
+    "pkg/client/clientset/versioned/scheme",
+    "pkg/client/clientset/versioned/typed/kubeless/v1beta1",
+  ]
+  pruneopts = "UT"
+  revision = "e668da7f4dc8cfc2027a08b36278aa5498ba4da6"
+  version = "v1.0.4"
 
 [[projects]]
   digest = "1:33422d238f147d247752996a26574ac48dcf472976eda7f5134015f06bf16563"
@@ -232,6 +272,50 @@
   version = "v2.2.2"
 
 [[projects]]
+  digest = "1:d89afbf3588e87d2c9e6efdd5528d249b32d23a12fbd7ec324f3cb373c6fb76c"
+  name = "k8s.io/api"
+  packages = [
+    "admissionregistration/v1beta1",
+    "apps/v1",
+    "apps/v1beta1",
+    "apps/v1beta2",
+    "auditregistration/v1alpha1",
+    "authentication/v1",
+    "authentication/v1beta1",
+    "authorization/v1",
+    "authorization/v1beta1",
+    "autoscaling/v1",
+    "autoscaling/v2beta1",
+    "autoscaling/v2beta2",
+    "batch/v1",
+    "batch/v1beta1",
+    "batch/v2alpha1",
+    "certificates/v1beta1",
+    "coordination/v1",
+    "coordination/v1beta1",
+    "core/v1",
+    "events/v1beta1",
+    "extensions/v1beta1",
+    "networking/v1",
+    "networking/v1beta1",
+    "node/v1alpha1",
+    "node/v1beta1",
+    "policy/v1beta1",
+    "rbac/v1",
+    "rbac/v1alpha1",
+    "rbac/v1beta1",
+    "scheduling/v1",
+    "scheduling/v1alpha1",
+    "scheduling/v1beta1",
+    "settings/v1alpha1",
+    "storage/v1",
+    "storage/v1alpha1",
+    "storage/v1beta1",
+  ]
+  pruneopts = "UT"
+  revision = "kubernetes-1.15.3"
+
+[[projects]]
   digest = "1:879c8b5833b79cf1275fa39cac189330133e536e7d20444c64ad1c2fbb24b685"
   name = "k8s.io/apimachinery"
   packages = [
@@ -274,9 +358,11 @@
   version = "kubernetes-1.15.3"
 
 [[projects]]
-  digest = "1:d0752cc844b9b209eec203736da13a931e580c814033e7480154a0f58a1855c3"
+  digest = "1:6d1204da7b804659a1ca803416c278d391464df9d0631635c32536d43f64ddb0"
   name = "k8s.io/client-go"
   packages = [
+    "discovery",
+    "kubernetes/scheme",
     "pkg/apis/clientauthentication",
     "pkg/apis/clientauthentication/v1alpha1",
     "pkg/apis/clientauthentication/v1beta1",
@@ -333,6 +419,8 @@
   analyzer-version = 1
   input-imports = [
     "github.com/google/kf/pkg/client/servicecatalog/clientset/versioned/typed/servicecatalog/v1beta1",
+    "github.com/kubeless/kubeless/pkg/apis/kubeless/v1beta1",
+    "github.com/kubeless/kubeless/pkg/client/clientset/versioned",
     "github.com/poy/service-catalog/pkg/apis/servicecatalog/v1beta1",
     "github.com/vrischmann/envconfig",
     "k8s.io/apimachinery/pkg/apis/meta/v1",
