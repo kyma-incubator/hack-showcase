@@ -4,11 +4,10 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/kyma-project/kyma/components/api-controller/pkg/apis/gateway.kyma-project.io/v1alpha2"
-	gatewayClientset "github.com/kyma-project/kyma/components/api-controller/pkg/clients/gateway.kyma-project.io/clientset/versioned"
+	svcCatalog "github.com/google/kf/pkg/client/servicecatalog/clientset/versioned/typed/servicecatalog/v1beta1"
+	v1beta1svc "github.com/poy/service-catalog/pkg/apis/servicecatalog/v1beta1"
 	"github.com/vrischmann/envconfig"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	k8sClientset "k8s.io/client-go/kubernetes"
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
 	restclient "k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
@@ -29,35 +28,43 @@ func main() {
 	fatalOnError(err)
 
 	// k8s Clientset
-	k8sCli, err := k8sClientset.NewForConfig(k8sConfig)
+	//k8sCli, err := k8sClientset.NewForConfig(k8sConfig)
 	fatalOnError(err)
 
-	// Kyma API kind Client
-	kymaGatewayClient, err := gatewayClientset.NewForConfig(k8sConfig)
+	app := make(map[string]string)
+	app["connected-app"] = "github-colunira-podejmijtest"
+
+	svcClient, err := svcCatalog.NewForConfig(k8sConfig)
 	fatalOnError(err)
 
-	// usage
-	svc, err := k8sCli.CoreV1().Services("default").Get("kubernetes", v1.GetOptions{})
+	svcList, err := svcClient.ServiceClasses("default").List(v1.ListOptions{})
 	fatalOnError(err)
-	fmt.Printf("Succesfuuly fetched Service: %s\n", svc.Name)
 
-	createAPI, err := kymaGatewayClient.GatewayV1alpha2().Apis("default").Create(&v1alpha2.Api{
+	var name string
+	for _, s := range svcList.Items {
+		fmt.Println(s.Name)
+		chars := []rune(s.Spec.ExternalName)
+		str := string(chars[0 : len(chars)-6])
+		if str == "github-colunira-podejmijtest" {
+			fmt.Println("działa")
+			name = s.Spec.ExternalName
+		}
+	}
+
+	svc, err := svcClient.ServiceInstances("default").Create(&v1beta1svc.ServiceInstance{
 		ObjectMeta: v1.ObjectMeta{
-			Name:      "test-api",
+			Name:      "service-julia",
 			Namespace: "default",
 		},
-		Spec: v1alpha2.ApiSpec{
-			Authentication: []v1alpha2.AuthenticationRule{},
-			Hostname:       "http://please-change-me.com",
-			Service: v1alpha2.Service{
-				Name: "please-change-me",
-				Port: 8443,
+		Spec: v1beta1svc.ServiceInstanceSpec{
+			PlanReference: v1beta1svc.PlanReference{
+				ServiceClassExternalName: name,
 			},
 		},
 	})
 	fatalOnError(err)
+	fmt.Println("Service Instance: %", svc)
 
-	fmt.Printf("Created API successfully: %\n", createAPI)
 }
 
 func fatalOnError(err error) {

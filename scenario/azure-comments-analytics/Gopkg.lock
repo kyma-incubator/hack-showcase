@@ -29,15 +29,9 @@
   version = "v1.3.0"
 
 [[projects]]
-  digest = "1:f5ce1529abc1204444ec73779f44f94e2fa8fcdb7aca3c355b0c95947e4005c6"
+  digest = "1:573ca21d3669500ff845bdebee890eb7fc7f0f50c59f2132f2a0c6b03d85086a"
   name = "github.com/golang/protobuf"
-  packages = [
-    "proto",
-    "ptypes",
-    "ptypes/any",
-    "ptypes/duration",
-    "ptypes/timestamp",
-  ]
+  packages = ["proto"]
   pruneopts = "UT"
   revision = "6c65a5562fc06764971b7c5d05c76c75e84bdbf7"
   version = "v1.3.2"
@@ -51,16 +45,15 @@
   version = "v1.0.0"
 
 [[projects]]
-  digest = "1:ca4524b4855ded427c7003ec903a5c854f37e7b1e8e2a93277243462c5b753a8"
-  name = "github.com/googleapis/gnostic"
+  branch = "master"
+  digest = "1:b5881d349e49ba7cbbaa650155402ab7c5fc83bf617f125847140f2976888c9c"
+  name = "github.com/google/kf"
   packages = [
-    "OpenAPIv2",
-    "compiler",
-    "extensions",
+    "pkg/client/servicecatalog/clientset/versioned/scheme",
+    "pkg/client/servicecatalog/clientset/versioned/typed/servicecatalog/v1beta1",
   ]
   pruneopts = "UT"
-  revision = "ab0dd09aa10e2952b28e12ecd35681b20463ebab"
-  version = "v0.3.1"
+  revision = "8545afe57a7893fa61f289314998085045b994ef"
 
 [[projects]]
   digest = "1:a0cefd27d12712af4b5018dc7046f245e1e3b5760e2e848c30b171b570708f9b"
@@ -79,19 +72,6 @@
   version = "v1.1.7"
 
 [[projects]]
-  digest = "1:ebbf98a0c4a989fd600eabfbe3d16b7a1dddb7e77f39e9589010a85cb6e1d524"
-  name = "github.com/kyma-project/kyma"
-  packages = [
-    "components/api-controller/pkg/apis/gateway.kyma-project.io/meta/v1",
-    "components/api-controller/pkg/apis/gateway.kyma-project.io/v1alpha2",
-    "components/api-controller/pkg/clients/gateway.kyma-project.io/clientset/versioned",
-    "components/api-controller/pkg/clients/gateway.kyma-project.io/clientset/versioned/scheme",
-    "components/api-controller/pkg/clients/gateway.kyma-project.io/clientset/versioned/typed/gateway.kyma-project.io/v1alpha2",
-  ]
-  pruneopts = "UT"
-  revision = "2ce13ea6b2a25bfca48e3678f58eb21dffbbd95c"
-
-[[projects]]
   digest = "1:33422d238f147d247752996a26574ac48dcf472976eda7f5134015f06bf16563"
   name = "github.com/modern-go/concurrent"
   packages = ["."]
@@ -106,6 +86,18 @@
   pruneopts = "UT"
   revision = "4b7aa43c6742a2c18fdef89dd197aaae7dac7ccd"
   version = "1.0.1"
+
+[[projects]]
+  digest = "1:d3990476343c1c6ab2c2d03ca7a1b42d5760a6257722de0f486f7d5c8d7d74b3"
+  name = "github.com/poy/service-catalog"
+  packages = [
+    "pkg/apis/servicecatalog",
+    "pkg/apis/servicecatalog/v1beta1",
+    "pkg/filter",
+  ]
+  pruneopts = "UT"
+  revision = "db385b1d332c7d8aedef1e8036edcd66da1a6a85"
+  version = "v2.0.1"
 
 [[projects]]
   digest = "1:c1b1102241e7f645bc8e0c22ae352e8f0dc6484b6cb4d132fa9f24174e0119e2"
@@ -240,55 +232,10 @@
   version = "v2.2.2"
 
 [[projects]]
-  digest = "1:d89afbf3588e87d2c9e6efdd5528d249b32d23a12fbd7ec324f3cb373c6fb76c"
-  name = "k8s.io/api"
-  packages = [
-    "admissionregistration/v1beta1",
-    "apps/v1",
-    "apps/v1beta1",
-    "apps/v1beta2",
-    "auditregistration/v1alpha1",
-    "authentication/v1",
-    "authentication/v1beta1",
-    "authorization/v1",
-    "authorization/v1beta1",
-    "autoscaling/v1",
-    "autoscaling/v2beta1",
-    "autoscaling/v2beta2",
-    "batch/v1",
-    "batch/v1beta1",
-    "batch/v2alpha1",
-    "certificates/v1beta1",
-    "coordination/v1",
-    "coordination/v1beta1",
-    "core/v1",
-    "events/v1beta1",
-    "extensions/v1beta1",
-    "networking/v1",
-    "networking/v1beta1",
-    "node/v1alpha1",
-    "node/v1beta1",
-    "policy/v1beta1",
-    "rbac/v1",
-    "rbac/v1alpha1",
-    "rbac/v1beta1",
-    "scheduling/v1",
-    "scheduling/v1alpha1",
-    "scheduling/v1beta1",
-    "settings/v1alpha1",
-    "storage/v1",
-    "storage/v1alpha1",
-    "storage/v1beta1",
-  ]
-  pruneopts = "UT"
-  revision = "kubernetes-1.15.3"
-
-[[projects]]
-  digest = "1:8733f07672df473e76966afde4e65ca7abdb0f61108f7be56bfe90909cc7158c"
+  digest = "1:879c8b5833b79cf1275fa39cac189330133e536e7d20444c64ad1c2fbb24b685"
   name = "k8s.io/apimachinery"
   packages = [
     "pkg/api/errors",
-    "pkg/api/meta",
     "pkg/api/resource",
     "pkg/apis/meta/v1",
     "pkg/apis/meta/v1/unstructured",
@@ -327,48 +274,9 @@
   version = "kubernetes-1.15.3"
 
 [[projects]]
-  digest = "1:9e9819153e3a294e6034eb1fb12e21b10fffb475a4e2538828fb2b266b3c4a5f"
+  digest = "1:d0752cc844b9b209eec203736da13a931e580c814033e7480154a0f58a1855c3"
   name = "k8s.io/client-go"
   packages = [
-    "discovery",
-    "kubernetes",
-    "kubernetes/scheme",
-    "kubernetes/typed/admissionregistration/v1beta1",
-    "kubernetes/typed/apps/v1",
-    "kubernetes/typed/apps/v1beta1",
-    "kubernetes/typed/apps/v1beta2",
-    "kubernetes/typed/auditregistration/v1alpha1",
-    "kubernetes/typed/authentication/v1",
-    "kubernetes/typed/authentication/v1beta1",
-    "kubernetes/typed/authorization/v1",
-    "kubernetes/typed/authorization/v1beta1",
-    "kubernetes/typed/autoscaling/v1",
-    "kubernetes/typed/autoscaling/v2beta1",
-    "kubernetes/typed/autoscaling/v2beta2",
-    "kubernetes/typed/batch/v1",
-    "kubernetes/typed/batch/v1beta1",
-    "kubernetes/typed/batch/v2alpha1",
-    "kubernetes/typed/certificates/v1beta1",
-    "kubernetes/typed/coordination/v1",
-    "kubernetes/typed/coordination/v1beta1",
-    "kubernetes/typed/core/v1",
-    "kubernetes/typed/events/v1beta1",
-    "kubernetes/typed/extensions/v1beta1",
-    "kubernetes/typed/networking/v1",
-    "kubernetes/typed/networking/v1beta1",
-    "kubernetes/typed/node/v1alpha1",
-    "kubernetes/typed/node/v1beta1",
-    "kubernetes/typed/policy/v1beta1",
-    "kubernetes/typed/rbac/v1",
-    "kubernetes/typed/rbac/v1alpha1",
-    "kubernetes/typed/rbac/v1beta1",
-    "kubernetes/typed/scheduling/v1",
-    "kubernetes/typed/scheduling/v1alpha1",
-    "kubernetes/typed/scheduling/v1beta1",
-    "kubernetes/typed/settings/v1alpha1",
-    "kubernetes/typed/storage/v1",
-    "kubernetes/typed/storage/v1alpha1",
-    "kubernetes/typed/storage/v1beta1",
     "pkg/apis/clientauthentication",
     "pkg/apis/clientauthentication/v1alpha1",
     "pkg/apis/clientauthentication/v1beta1",
@@ -384,7 +292,6 @@
     "tools/clientcmd/api/latest",
     "tools/clientcmd/api/v1",
     "tools/metrics",
-    "tools/reference",
     "transport",
     "util/cert",
     "util/connrotation",
@@ -425,11 +332,10 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
-    "github.com/kyma-project/kyma/components/api-controller/pkg/apis/gateway.kyma-project.io/v1alpha2",
-    "github.com/kyma-project/kyma/components/api-controller/pkg/clients/gateway.kyma-project.io/clientset/versioned",
+    "github.com/google/kf/pkg/client/servicecatalog/clientset/versioned/typed/servicecatalog/v1beta1",
+    "github.com/poy/service-catalog/pkg/apis/servicecatalog/v1beta1",
     "github.com/vrischmann/envconfig",
     "k8s.io/apimachinery/pkg/apis/meta/v1",
-    "k8s.io/client-go/kubernetes",
     "k8s.io/client-go/plugin/pkg/client/auth/gcp",
     "k8s.io/client-go/rest",
     "k8s.io/client-go/tools/clientcmd",
