@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: main
-        image: {{ .Values.container.image }}
+        image: {{ .Values.image }}
         resources:
           limits:
             memory: {{ .Values.container.limits.memory }}
