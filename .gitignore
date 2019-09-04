@@ -15,6 +15,6 @@
 # Directories
 .*
 !.gitignore
-vendor
+*vendor/
 *.REST
 *.HTTP
