@@ -4,15 +4,16 @@ Our scenario consists of two main components: GitHub Connector and Slack Connect
 
 ---
 ### Github Connector
-* [ ] Connector as a Kyma Add-On 
+* [x] Connector as a Kyma Add-On 
 * [ ] Convert all Github webhooks' payloads to AsyncAPI specification standard
 * [ ] Improve security
-* [ ] Setting up the GitHub webhooks from Kyma
+* [x] Setting up the GitHub webhooks from Kyma
 
 ### Kyma's Lambda Usage
-* [ ] Connect to Azure Text Analytics to measure the attitude of comments on connected GitHub repository
-* [ ] Communicate with Slack Connector
+* [x] Connect to Azure Text Analytics to measure the attitude of comments on connected GitHub repository
+* [x] Communicate with Slack Connector
 
 ### Slack Connector
-* [ ] Connector as a Kyma Add-On 
-* [ ] Send notifications to corresponding channels on Slack
+* [x] Connector as a Kyma Add-On 
+* [x] Send notifications to corresponding channels on Slack
+* [x] Handle all of the Slack events 
