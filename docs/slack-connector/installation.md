@@ -1,13 +1,56 @@
 # Slack Connector Installation<!-- omit in toc -->
 
 - [Overview](#overview)
-- [Installation in Kyma with Helm](#installation-in-kyma-with-helm)
+- [Installation in Kyma as Add-On](#installation-in-kyma-as-add-on)
   - [Prerequisites](#prerequisites)
   - [Steps](#steps)
+  - [Verification](#verification)
+  - [Removal](#removal)
+- [Installation in Kyma with Helm](#installation-in-kyma-with-helm)
+  - [Prerequisites](#prerequisites-1)
+  - [Steps](#steps-1)
 
 ## Overview
 
-The Slack Connector is a component which allows contact from inside of Kyma environment to the Slack API.
+The Slack Connector is a component which allows interaction with Slack API from inside of Kyma environment. The simplest way to install Slack Connector in Kyma is to install it as Add-On.
+
+## Installation in Kyma as Add-On
+
+### Prerequisites
+
+- Slack Application with desired privileges installed to destination workspace. Tutorial provided by Slack on how to setup an application can be found [here](https://api.slack.com/bot-users).
+- Access to Kyma cluster console.
+
+### Steps
+
+1. In Kyma console access the **`Add-Ons Config`** menu.
+2. Click **`+ Add New Configuration`** and specify the URL of the repository with Slack Connector Add-On.
+
+   ```url
+   github.com/kyma-incubator/hack-showcase//addons
+   ```
+
+3. Go to namespace in which you want to install the Connector.
+4. Find the Add-On in Service Catalog and click it.
+5. Click **`Add`** and select the installation plan. Fill in all required fields and click **`Create Instance`**.
+6. Go to **Services** tab of Service Catalog. After provisioning and automatic registration of application's resources the Service Class of Slack Connector can be found here.
+7. Click it to enter its specification screen and click **`Add once`** and then **`Create Instance`**.
+
+After the service is created it can be easily bound to Lambda Function to allow use of Slack Events and Web API.
+
+### Verification
+
+To verify if everything is configured correctly check if Add-Ons and Service instances in **Instances** area of Service Catalog have status RUNNING.
+
+### Removal
+
+Basically, to correctly remove all resources of Slack Connector you need to delete them in order reverse to installation steps.
+> **NOTE:** Wait until deprovisioning and removing of all elements is completed before moving to next step.
+
+1. Delete all service bindings from Lambda Functions and other bindings connected with your Slack Connector Service Instance.
+2. Delete Slack Connector Service Instance found under **Services** tab in **Instances** area.
+3. Delete Slack Connector Add-On Instance found in **Add-Ons** tab.
+4. If you want to remove add-on configuration, you can remove Add-Ons Configuration from global **Add-Ons Config** Catalog, but this removes *GitHub Connector* alongside.
 
 ## Installation in Kyma with Helm
 
