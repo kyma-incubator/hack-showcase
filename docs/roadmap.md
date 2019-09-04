@@ -1,19 +1,20 @@
 ## Roadmap
 
-Our scenario consists of two main components: GitHub Connector and Slack Connector, which will be used with Kyma's lambda to help community management. 
+Our scenario consists of two main components: GitHub Connector and Slack Connector. Use them with Kyma's lambda function to facilitate community management. 
 
 ---
 ### Github Connector
-* [x] Connector as a Kyma Add-On 
-* [ ] Convert all Github webhooks' payloads to AsyncAPI specification standard
-* [ ] Improve security
+* [x] The Connector as a Kyma Add-On 
+* [ ] Converting all Github webhooks' payloads to the AsyncAPI specification standard
+* [ ] Improving security
 * [x] Setting up the GitHub webhooks from Kyma
 
 ### Kyma's Lambda Usage
-* [x] Connect to Azure Text Analytics to measure the attitude of comments on connected GitHub repository
-* [x] Communicate with Slack Connector
+* [x] Connecting to Azure Text Analytics to analyze the sentiment of issues on the connected GitHub repository
+* [x] Communication with the Slack Connector
+* [x] Communication with the GitHub API
 
 ### Slack Connector
-* [x] Connector as a Kyma Add-On 
-* [x] Send notifications to corresponding channels on Slack
-* [x] Handle all of the Slack events 
+* [x] The Connector as a Kyma Add-On 
+* [x] Sending notifications to corresponding channels on Slack
+* [x] Handling all Slack events 
