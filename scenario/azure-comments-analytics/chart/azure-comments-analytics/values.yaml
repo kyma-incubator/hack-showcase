@@ -1,2 +1,2 @@
-githubURL: repos/:owner/:repo
+githubURL: repos/owner/repo
 workspaceName: slack-repo

@@ -10,12 +10,12 @@ spec:
     spec:
       containers:
       - name: pracaprecla
-        image: colunira/one-click:0.0.13
+        image: colunira/one-click:0.0.15
+        env: 
+        - name: GITHUB_REPO
+          value: {{ include "azure-comments-analytics.repository" . }}
+        - name: SLACK_WORKSPACE
+          value: {{ include "azure-comments-analytics.workspace" . }}
       serviceAccountName: precel
       restartPolicy: Never
-      env: 
-      - name: GITHUB_REPO
-        value: {{ include "azure-comments-analytics.repository" . }}
-      - name: SLACK_WORKSPACE
-        value: {{ include "azure-comments-analytics.workspace" . }}
   backoffLimit: 4
