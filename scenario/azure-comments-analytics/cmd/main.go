@@ -101,8 +101,16 @@ func main() {
 			Labels:    map[string]string{"app": "no-jakas-apka"},
 		},
 		Spec: v1beta1kubeless.FunctionSpec{
-			Deps:                "console.log(deps)",
-			Function:            "console.log(Function)",
+			Deps: `{
+				"name": "example-1",
+				"version": "0.0.1",
+				"dependencies": {
+				  "request": "^2.85.0"
+				}
+			}`,
+			Function: `module.exports = { main: function (event, context) {
+				console.log("Issue opened")
+			} }`,
 			FunctionContentType: "text",
 			Handler:             "handler.main",
 			Timeout:             "",
