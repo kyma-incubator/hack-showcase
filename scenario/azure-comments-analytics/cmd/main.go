@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 
 	//kubeless "github.com/kubeless/kubeless/pkg/utils"
 	v1beta1kubeless "github.com/kubeless/kubeless/pkg/apis/kubeless/v1beta1"
@@ -15,6 +16,10 @@ import (
 	ios "k8s.io/apimachinery/pkg/util/intstr"
 
 	svcCatalog "github.com/google/kf/pkg/client/servicecatalog/clientset/versioned/typed/servicecatalog/v1beta1"
+	"github.com/kyma-project/kyma/components/service-binding-usage-controller/pkg/apis/servicecatalog/v1alpha1"
+	v1alpha1svc "github.com/kyma-project/kyma/components/service-binding-usage-controller/pkg/apis/servicecatalog/v1alpha1"
+	svcBind "github.com/kyma-project/kyma/components/service-binding-usage-controller/pkg/client/clientset/versioned/typed/servicecatalog/v1alpha1"
+	"github.com/poy/service-catalog/pkg/apis/servicecatalog/v1beta1"
 	v1beta1svc "github.com/poy/service-catalog/pkg/apis/servicecatalog/v1beta1"
 	"github.com/vrischmann/envconfig"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -43,9 +48,11 @@ func main() {
 	k8sConfig, err := newRestClientConfig(cfg.Kubeconfig)
 	fatalOnError(err)
 
-	app := make(map[string]string)
-	app["connected-app"] = "github-colunira-podejmijtest"
+	//ServiceBindingUsage Client
+	svcBindClient, err := svcBind.NewForConfig(k8sConfig)
+	fatalOnError(err)
 
+	//ServiceCatalog Client
 	svcClient, err := svcCatalog.NewForConfig(k8sConfig)
 	fatalOnError(err)
 
@@ -61,7 +68,7 @@ func main() {
 			fmt.Println("działa git")
 			svc, err := svcClient.ServiceInstances("default").Create(&v1beta1svc.ServiceInstance{
 				ObjectMeta: v1.ObjectMeta{
-					Name:      githubRepo + "g",
+					Name:      githubRepo + "inst",
 					Namespace: "default",
 				},
 				Spec: v1beta1svc.ServiceInstanceSpec{
@@ -78,7 +85,7 @@ func main() {
 			fmt.Println("działa slack")
 			svc, err := svcClient.ServiceInstances("default").Create(&v1beta1svc.ServiceInstance{
 				ObjectMeta: v1.ObjectMeta{
-					Name:      slackWorkspace + "g",
+					Name:      slackWorkspace + "inst",
 					Namespace: "default",
 				},
 				Spec: v1beta1svc.ServiceInstanceSpec{
@@ -147,6 +154,108 @@ func main() {
 		},
 	})
 
+	time.Sleep(5 * time.Second)
+
+	//ServiceBinding
+
+	fmt.Println("Building svcBinding...")
+	svcBinding, err := svcClient.ServiceBindings("default").Create(&v1beta1.ServiceBinding{
+		ObjectMeta: v1.ObjectMeta{
+			Name:      githubRepo + "bind",
+			Namespace: "default",
+			Labels: map[string]string{
+				"Function": "julia-the-lambda",
+			},
+		},
+		Spec: v1beta1svc.ServiceBindingSpec{
+			InstanceRef: v1beta1svc.LocalObjectReference{
+				Name: githubRepo + "inst",
+			},
+		},
+	})
+	fatalOnError(err)
+	fmt.Printf("SvcBinding: %s\n", svcBinding.Name)
+
+	svcBinding2, err := svcClient.ServiceBindings("default").Create(&v1beta1.ServiceBinding{
+		ObjectMeta: v1.ObjectMeta{
+			Name:      slackWorkspace + "bind",
+			Namespace: "default",
+			Labels: map[string]string{
+				"Function": "julia-the-lambda",
+			},
+		},
+		Spec: v1beta1svc.ServiceBindingSpec{
+			InstanceRef: v1beta1svc.LocalObjectReference{
+				Name: githubRepo + "inst",
+			},
+		},
+	})
+	fatalOnError(err)
+	fmt.Printf("SvcBinding2: %s\n", svcBinding2.Name)
+
+	//Service Binding Usage
+	fmt.Println("Building svcBindingUsage...")
+	svcBindingUsage, err := svcBindClient.ServiceBindingUsages("default").Create(&v1alpha1.ServiceBindingUsage{
+		TypeMeta: v1.TypeMeta{
+			Kind:       "ServiceBindingUsage",
+			APIVersion: "servicecatalog.kyma-project.io/v1alpha1",
+		},
+		ObjectMeta: v1.ObjectMeta{
+			Name:      githubRepo + "bu",
+			Namespace: "default",
+			Labels: map[string]string{
+				"Function":       "julia-the-lambda",
+				"ServiceBinding": githubRepo + "bind",
+			},
+		},
+		Spec: v1alpha1svc.ServiceBindingUsageSpec{
+			ServiceBindingRef: v1alpha1svc.LocalReferenceByName{
+				Name: githubRepo + "bind",
+			},
+			UsedBy: v1alpha1svc.LocalReferenceByKindAndName{
+				Kind: "function",
+				Name: "julia-the-lambda",
+			},
+			Parameters: &v1alpha1svc.Parameters{
+				EnvPrefix: &v1alpha1svc.EnvPrefix{
+					Name: "GITHUB_",
+				},
+			},
+		},
+	})
+	fatalOnError(err)
+	fmt.Printf("SvcBindingUsage: %s\n", svcBindingUsage.Name)
+
+	svcBindingUsage2, err := svcBindClient.ServiceBindingUsages("default").Create(&v1alpha1.ServiceBindingUsage{
+		TypeMeta: v1.TypeMeta{
+			Kind:       "ServiceBindingUsage",
+			APIVersion: "servicecatalog.kyma-project.io/v1alpha1",
+		},
+		ObjectMeta: v1.ObjectMeta{
+			Name:      slackWorkspace + "bu",
+			Namespace: "default",
+			Labels: map[string]string{
+				"Function":       "julia-the-lambda",
+				"ServiceBinding": slackWorkspace + "bind",
+			},
+		},
+		Spec: v1alpha1svc.ServiceBindingUsageSpec{
+			ServiceBindingRef: v1alpha1svc.LocalReferenceByName{
+				Name: slackWorkspace + "bind",
+			},
+			UsedBy: v1alpha1svc.LocalReferenceByKindAndName{
+				Name: "julia-the-lambda",
+				Kind: "function",
+			},
+			Parameters: &v1alpha1svc.Parameters{
+				EnvPrefix: &v1alpha1svc.EnvPrefix{
+					Name: "",
+				},
+			},
+		},
+	})
+	fatalOnError(err)
+	fmt.Printf("SvcBindingUsage2: %s\n", svcBindingUsage2.Name)
 }
 
 func fatalOnError(err error) {

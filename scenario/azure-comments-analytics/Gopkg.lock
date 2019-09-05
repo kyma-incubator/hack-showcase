@@ -112,6 +112,20 @@
   version = "v1.0.4"
 
 [[projects]]
+  digest = "1:44aac4d504ec2363aefdb5827949b47804861698cfec5013c00ada61752c9cd4"
+  name = "github.com/kyma-project/kyma"
+  packages = [
+    "components/service-binding-usage-controller/pkg/apis/servicecatalog/v1alpha1",
+    "components/service-binding-usage-controller/pkg/apis/settings/v1alpha1",
+    "components/service-binding-usage-controller/pkg/client/clientset/versioned",
+    "components/service-binding-usage-controller/pkg/client/clientset/versioned/scheme",
+    "components/service-binding-usage-controller/pkg/client/clientset/versioned/typed/servicecatalog/v1alpha1",
+    "components/service-binding-usage-controller/pkg/client/clientset/versioned/typed/settings/v1alpha1",
+  ]
+  pruneopts = "UT"
+  revision = "2ce13ea6b2a25bfca48e3678f58eb21dffbbd95c"
+
+[[projects]]
   digest = "1:33422d238f147d247752996a26574ac48dcf472976eda7f5134015f06bf16563"
   name = "github.com/modern-go/concurrent"
   packages = ["."]
@@ -421,6 +435,8 @@
     "github.com/google/kf/pkg/client/servicecatalog/clientset/versioned/typed/servicecatalog/v1beta1",
     "github.com/kubeless/kubeless/pkg/apis/kubeless/v1beta1",
     "github.com/kubeless/kubeless/pkg/client/clientset/versioned",
+    "github.com/kyma-project/kyma/components/service-binding-usage-controller/pkg/client/clientset/versioned",
+    "github.com/kyma-project/kyma/components/service-binding-usage-controller/pkg/client/clientset/versioned/typed/servicecatalog/v1alpha1",
     "github.com/poy/service-catalog/pkg/apis/servicecatalog/v1beta1",
     "github.com/vrischmann/envconfig",
     "k8s.io/api/autoscaling/v2beta1",
