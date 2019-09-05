@@ -16,6 +16,7 @@ import (
 	ios "k8s.io/apimachinery/pkg/util/intstr"
 
 	svcCatalog "github.com/google/kf/pkg/client/servicecatalog/clientset/versioned/typed/servicecatalog/v1beta1"
+	subscription "github.com/kyma-project/kyma/components/event-bus/api/push/eventing.kyma-project.io/v1alpha1"
 	"github.com/kyma-project/kyma/components/service-binding-usage-controller/pkg/apis/servicecatalog/v1alpha1"
 	v1alpha1svc "github.com/kyma-project/kyma/components/service-binding-usage-controller/pkg/apis/servicecatalog/v1alpha1"
 	svcBind "github.com/kyma-project/kyma/components/service-binding-usage-controller/pkg/client/clientset/versioned/typed/servicecatalog/v1alpha1"
@@ -101,7 +102,8 @@ func main() {
 	}
 
 	c, err := kubeless.NewForConfig(k8sConfig)
-	c.Kubeless().Functions("default").Create(&v1beta1kubeless.Function{
+	fatalOnError(err)
+	fun, err := c.Kubeless().Functions("default").Create(&v1beta1kubeless.Function{
 		ObjectMeta: v1.ObjectMeta{
 			Name:      "julia-the-lambda",
 			Namespace: "default",
@@ -144,8 +146,8 @@ func main() {
 					Template: pts.PodTemplateSpec{
 						Spec: pts.PodSpec{
 							Containers: []pts.Container{pts.Container{
-								Name: "",
-								//Resources: {},
+								Name:      "",
+								Resources: pts.ResourceRequirements{},
 							}},
 						},
 					},
@@ -153,6 +155,8 @@ func main() {
 			},
 		},
 	})
+	fatalOnError(err)
+	fmt.Printf("Function: %s", fun.Name)
 
 	time.Sleep(5 * time.Second)
 
@@ -256,6 +260,25 @@ func main() {
 	})
 	fatalOnError(err)
 	fmt.Printf("SvcBindingUsage2: %s\n", svcBindingUsage2.Name)
+
+	eb, err := eventbus.NewForConfig(k8sConfig)
+	fatalOnError(err)
+	sub, err = eb.Eventing().Subscriptions("default").Create(&subscription.Subscription{
+		ObjectMeta: v1.ObjectMeta{
+			Name:      "julia-the-lambda-lambda-issuesevent-opened-v1sub",
+			Namespace: "default",
+			Labels:    map[string]string{"Function": "julia-the-lambda-lambda"},
+		},
+		SubscriptionSpec: subscription.SubscriptionSpec{
+			Endpoint:                      "http://julia-the-lambda-lambda.default:8080/",
+			EventType:                     "issuesevent.opened",
+			EventTypeVersion:              "v1",
+			IncludeSubscriptionNameHeader: true,
+			SourceID:                      "julia-the-lambda-app",
+		},
+	})
+	fatalOnError(err)
+	fmt.Printf("Subscription: %s", sub.Name)
 }
 
 func fatalOnError(err error) {
