@@ -9,6 +9,7 @@ import (
 	//kubeless "github.com/kubeless/kubeless/pkg/utils"
 	v1beta1kubeless "github.com/kubeless/kubeless/pkg/apis/kubeless/v1beta1"
 	kubeless "github.com/kubeless/kubeless/pkg/client/clientset/versioned"
+	eventbus "github.com/kyma-project/kyma/components/event-bus/generated/push/clientset/versioned"
 	autoscaling "k8s.io/api/autoscaling/v2beta1"
 	core "k8s.io/api/core/v1"
 	pts "k8s.io/api/core/v1"
