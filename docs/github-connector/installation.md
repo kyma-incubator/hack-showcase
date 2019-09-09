@@ -61,7 +61,7 @@ Basically, to correctly remove all resources of GitHub Connector you must delete
 2. Delete GitHub Connector Service Instance found under **Services** tab in **Instances** area.
 3. Delete GitHub Connector Add-On Instance found in **Add-Ons** tab.
 4. To remove the Add-On Configuration, find it in the global **Add-Ons Config** catalog and remove it.
-   > **WARNING**: This step also removes the Slack Connector template.
+   > **CAUTION**: This step also removes the Slack Connector template.
 
 ## Installation in Kyma with Helm
 
