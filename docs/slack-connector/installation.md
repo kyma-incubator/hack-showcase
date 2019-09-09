@@ -30,7 +30,7 @@ The Slack Connector is a component which allows interaction with Slack API from 
 ### Steps
 
 1. In Kyma console access the **Add-Ons Config** menu.
-2. Click **Add New Configuration** and specify the URL of the repository with Slack Connector Add-On.
+2. Click **Add New Configuration** and in the **Urls\*** field paste this URL:
 
    ```http
    github.com/kyma-incubator/hack-showcase//addons

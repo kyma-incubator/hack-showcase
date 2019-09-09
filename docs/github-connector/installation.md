@@ -19,7 +19,7 @@ The GitHub Connector is a component which allows interaction with GitHub API fro
 
 ### Prerequisites
 
-- GitHub App with desired privileges installed to destination repository or organization. To create a new application, go [here](https://github.com/settings/apps) or access *Github Apps* in the account through *Settings* in *Developer settings*.
+- GitHub App with desired privileges installed to destination repository or organization. To create a new application, go [here](https://github.com/settings/apps) or access **Github Apps** in the account through **Settings** in **Developer settings**.
 - Access to Kyma Console
 
 > **NOTE**: It is best to create or use additional service account (e.g. Your-Project-Name-Github-Connector) since any actions performed by this application are signed with the name of the user that the token belongs to.
@@ -33,7 +33,7 @@ The GitHub Connector is a component which allows interaction with GitHub API fro
 ### Steps
 
 1. In Kyma console access the **Add-Ons Config** menu.
-2. Click **Add New Configuration** and specify the URL of the repository with GitHub Connector Add-On.
+2. Click **Add New Configuration** and in the **Urls\*** field paste this URL:
 
    ```http
    github.com/kyma-incubator/hack-showcase//addons
