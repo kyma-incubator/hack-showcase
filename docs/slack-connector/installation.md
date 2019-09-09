@@ -1,7 +1,7 @@
 # Slack Connector Installation<!-- omit in toc -->
 
 - [Overview](#overview)
-- [Installation in Kyma as Add-On](#installation-in-kyma-as-add-on)
+- [Installation in Kyma as an Add-On](#installation-in-kyma-as-an-add-on)
   - [Prerequisites](#prerequisites)
   - [Steps](#steps)
   - [Verification](#verification)
@@ -12,22 +12,20 @@
 
 ## Overview
 
-The Slack Connector is a component which allows interaction with Slack API from inside of Kyma environment. The simplest way to install Slack Connector in Kyma is to install it as Add-On.
+The Slack Connector is a component which allows interaction with Slack API from inside of Kyma environment. The simplest way to install Slack Connector in Kyma is to install it as an Add-On.
 
-## Installation in Kyma as Add-On
+## Installation in Kyma as an Add-On
 
 ### Prerequisites
 
 - Slack Bot with desired privileges installed to destination workspace. Tutorial provided by Slack on how to setup an application can be found [here](https://api.slack.com/bot-users#getting-started).
-  - Slack Bot Token (only if you want to send messages to Slack Web API).
-  - Slack Signed Secret (only if you want to receive events to Slack Event API).
 - Access to Kyma Console.
 
-> **OPTIONAL:** If you want to install default application proceed these steps, but pay attention to the fact that provided application has **full permissions** in workspace.
+> **OPTIONAL:** Install default application following these steps, but pay attention to the fact that it has **full permissions** in workspace.
 >
-> 1. Go to the [authentication page](https://auth-slack.herokuapp.com/). Click **Add to Slack** what will redirect you to another page. Select your desired workspace and click **Allow**.
+> 1. Go to the [authentication page](https://auth-slack.herokuapp.com/). Click **Add to Slack** button which redirects you to another page. Select your desired workspace and click **Allow**.
 >       - **NOTE:** If the link does not work see [this tutorial](https://api.slack.com/docs/oauth#flow) in the Slack API documentation to create your own application.
-> 2. Copy the authentication token and/or slack signed secret. You will need it later in the installation process.
+> 2. Copy the Bot Authentication Token and/or Slack Signing Secret. You will need it later in the installation process.
 
 ### Steps
 
@@ -52,13 +50,14 @@ To verify if everything is configured correctly check if Add-Ons and Service ins
 
 ### Removal
 
-Basically, to correctly remove all resources of Slack Connector you need to delete them in order reverse to installation steps.
-> **NOTE:** Wait until deprovisioning and removing of all elements is complete before proceeding to next step, because e.g. after removing ServiceClass removing of ServiceInstance is impossible.
+Basically, to correctly remove all resources of Slack Connector you must delete them in order reverse to installation steps.
+> **NOTE:** Wait until deprovisioning and removing of all elements is complete before proceeding to next step, because e.g. after removing ServiceClass removal of ServiceInstance is impossible.
 
 1. Delete all service bindings from Lambda Functions and other bindings connected with your Slack Connector Service Instance.
 2. Delete Slack Connector Service Instance found under **Services** tab in **Instances** area.
 3. Delete Slack Connector Add-On Instance found in **Add-Ons** tab.
-4. If you want to remove add-on configuration, you can remove Add-Ons Configuration from global **Add-Ons Config** Catalog, but this removes *GitHub Connector* alongside.
+4. To remove the Add-On Configuration, find it in the global **Add-Ons Config** catalog and remove it.
+   > **WARNING**: This step also removes the GitHub Connector template.
 
 ## Installation in Kyma with Helm
 

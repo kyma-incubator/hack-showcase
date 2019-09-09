@@ -2,7 +2,7 @@
 
 - [GitHub Connector Installation](#github-connector-installation)
   - [Overview](#overview)
-  - [Installation in Kyma as Add-On](#installation-in-kyma-as-add-on)
+  - [Installation in Kyma as an Add-On](#installation-in-kyma-as-an-add-on)
     - [Prerequisites](#prerequisites)
     - [Steps](#steps)
     - [Verification](#verification)
@@ -13,23 +13,22 @@
 
 ## Overview
 
-The GitHub Connector is a component which allows interaction with GitHub API from inside of Kyma environment. The simplest way to install GitHub Connector in Kyma is to install it as Add-On.
+The GitHub Connector is a component which allows interaction with GitHub API from inside of Kyma environment. The simplest way to install GitHub Connector in Kyma is to install it as an Add-On.
 
-## Installation in Kyma as Add-On
+## Installation in Kyma as an Add-On
 
 ### Prerequisites
 
-- GitHub App with desired privileges installed to destination repository or organization. You can create new application [here](https://github.com/settings/apps) (or in account's *Settings/Developer settings/GitHub Apps*).
-  - GitHub Repository Token.
-- Access to Kyma Console.
+- GitHub App with desired privileges installed to destination repository or organization. To create a new application, go [here](https://github.com/settings/apps) (or in account's *Settings/Developer settings/GitHub Apps*).
+- Access to Kyma Console
 
-> **NOTE**: It is recommended to create or use additional service account (e.g. Your-Project-Name-Github-Connector) since any actions performed by this application will be signed as user that the token belongs to.
+> **NOTE**: It is best to create or use additional service account (e.g. Your-Project-Name-Github-Connector) since any actions performed by this application are signed with name of user that the token belongs to.
 
-> **OPTIONAL:** If you want to install default application proceed these steps, but pay attention to the fact that provided application has **full permissions** in repository/organization.
+> **OPTIONAL:** Install default application following these steps, but pay attention to the fact that it has **full permissions** in repository/organization.
 >
-> 1. Go to the [authentication page](https://auth-github-connector.herokuapp.com/). Click **GitHub** button what will redirect you to another page. Select repositories or organizations you want to install the application and click **Install**.
+> 1. Go to the [authentication page](https://auth-github-connector.herokuapp.com/). Click **GitHub** button which redirects you to another page. Select repositories or organizations you want to install the application to and click **Install**.
 >       - **NOTE:** If the link does not work, see [this tutorial](https://developer.github.com/apps/quickstart-guides/setting-up-your-development-environment/#step-2-register-a-new-github-app) in the GitHub documentation to create your own application.
-> 2. Copy the authentication token. You will need it later in the installation process.
+> 2. Copy the Authentication Token. You will need it later in the installation process.
 
 ### Steps
 
@@ -55,13 +54,14 @@ After the service is created it can be easily bound to Lambda Function to allow 
 
 ### Removal
 
-Basically, to correctly remove all resources of GitHub Connector you need to delete them in order reverse to installation steps.
-> **NOTE:** Wait until deprovisioning and removing of all elements is complete before proceeding to next step, because e.g. after removing ServiceClass removing of ServiceInstance is impossible.
+Basically, to correctly remove all resources of GitHub Connector you must delete them in order reverse to installation steps.
+> **NOTE:** Wait until deprovisioning and removing of all elements is complete before proceeding to next step, because e.g. after removing ServiceClass removal of ServiceInstance is impossible.
 
 1. Delete all service bindings from Lambda Functions and other bindings connected with your GitHub Connector Service Instance.
 2. Delete GitHub Connector Service Instance found under **Services** tab in **Instances** area.
 3. Delete GitHub Connector Add-On Instance found in **Add-Ons** tab.
-4. If you want to remove add-on configuration, you can remove Add-Ons Configuration from global **Add-Ons Config** Catalog, but this removes *GitHub Connector* alongside.
+4. To remove the Add-On Configuration, find it in the global **Add-Ons Config** catalog and remove it.
+   > **WARNING**: This step also removes the Slack Connector template.
 
 ## Installation in Kyma with Helm
 
