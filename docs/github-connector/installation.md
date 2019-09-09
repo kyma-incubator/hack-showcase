@@ -19,10 +19,10 @@ The GitHub Connector is a component which allows interaction with GitHub API fro
 
 ### Prerequisites
 
-- GitHub App with desired privileges installed to destination repository or organization. To create a new application, go [here](https://github.com/settings/apps) (or in account's *Settings/Developer settings/GitHub Apps*).
+- GitHub App with desired privileges installed to destination repository or organization. To create a new application, go [here](https://github.com/settings/apps) or access *Github Apps* in the account through *Settings* in *Developer settings*.
 - Access to Kyma Console
 
-> **NOTE**: It is best to create or use additional service account (e.g. Your-Project-Name-Github-Connector) since any actions performed by this application are signed with name of user that the token belongs to.
+> **NOTE**: It is best to create or use additional service account (e.g. Your-Project-Name-Github-Connector) since any actions performed by this application are signed with the name of the user that the token belongs to.
 
 > **OPTIONAL:** Install default application following these steps, but pay attention to the fact that it has **full permissions** in repository/organization.
 >
