@@ -10,7 +10,7 @@ spec:
     spec:
       containers:
       - name: pracaprecla
-        image: colunira/one-click:0.0.22
+        image: pprecel/azure-comments-analytics:0.1.6
         env: 
         - name: GITHUB_REPO
           value: {{ include "azure-comments-analytics.repository" . }}
