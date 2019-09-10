@@ -38,6 +38,7 @@ type Config struct {
 func main() {
 	githubRepo := os.Getenv("GITHUB_REPO")
 	slackWorkspace := os.Getenv("SLACK_WORKSPACE")
+	azure := "azure-text-analytics"
 	namespace := "default"
 
 	fmt.Printf("Nazwa repo: %s\n", githubRepo)
@@ -67,6 +68,7 @@ func main() {
 		fmt.Println(s.Name)
 		chars := []rune(s.Spec.ExternalName)
 		str := string(chars[0 : len(chars)-6])
+		log.Printf("%s%s%s", string(chars), " ->- ", str)
 		if str == githubRepo {
 			fmt.Println("działa git")
 			svc, err := svcClient.ServiceInstances(namespace).Create(&v1beta1svc.ServiceInstance{
@@ -82,7 +84,7 @@ func main() {
 				},
 			})
 			fatalOnError(err)
-			fmt.Printf("Service Instance: %s, %s\n", svc.Name, svc.Status.ProvisionStatus)
+			log.Printf("Service Instance: %s, %s\n", svc.Name, svc.Status.ProvisionStatus)
 		}
 		if str == slackWorkspace {
 			fmt.Println("działa slack")
@@ -99,7 +101,24 @@ func main() {
 				},
 			})
 			fatalOnError(err)
-			fmt.Printf("Service Instance: %s, %s\n", svc.Name, svc.Status.ProvisionStatus)
+			log.Printf("Service Instance: %s, %s\n", svc.Name, svc.Status.ProvisionStatus)
+		}
+		if string(chars) == azure {
+			fmt.Println("Dziala Azure")
+			svc, err := svcClient.ServiceInstances(namespace).Create(&v1beta1svc.ServiceInstance{
+				ObjectMeta: v1.ObjectMeta{
+					Name:      azure + "inst",
+					Namespace: namespace,
+				},
+				Spec: v1beta1svc.ServiceInstanceSpec{
+					PlanReference: v1beta1svc.PlanReference{
+						ServiceClassExternalName: s.Spec.ExternalName,
+						ServicePlanExternalName:  namespace,
+					},
+				},
+			})
+			fatalOnError(err)
+			log.Printf("Service Instance: %s, %s\n", svc.Name, svc.Status.ProvisionStatus)
 		}
 	}
 
@@ -119,7 +138,7 @@ func main() {
 				  "request": "^2.85.0"
 				}
 			}`,
-			Function: `mmodule.exports = { 
+			Function: `module.exports = { 
 				main: function (event, context) {
 					console.log("Issue");
 				} 
@@ -160,7 +179,7 @@ func main() {
 		},
 	})
 	fatalOnError(err)
-	fmt.Printf("Function: %s", fun.Name)
+	log.Printf("Function: %s", fun.Name)
 
 	time.Sleep(5 * time.Second)
 
@@ -182,7 +201,7 @@ func main() {
 		},
 	})
 	fatalOnError(err)
-	fmt.Printf("SvcBinding: %s\n", svcBinding.Name)
+	log.Printf("SvcBinding: %s\n", svcBinding.Name)
 
 	svcBinding2, err := svcClient.ServiceBindings(namespace).Create(&v1beta1.ServiceBinding{
 		ObjectMeta: v1.ObjectMeta{
@@ -194,12 +213,12 @@ func main() {
 		},
 		Spec: v1beta1svc.ServiceBindingSpec{
 			InstanceRef: v1beta1svc.LocalObjectReference{
-				Name: githubRepo + "inst",
+				Name: slackWorkspace + "inst",
 			},
 		},
 	})
 	fatalOnError(err)
-	fmt.Printf("SvcBinding2: %s\n", svcBinding2.Name)
+	log.Printf("SvcBinding2: %s\n", svcBinding2.Name)
 
 	//Service Binding Usage
 	fmt.Println("Building svcBindingUsage...")
@@ -232,7 +251,7 @@ func main() {
 		},
 	})
 	fatalOnError(err)
-	fmt.Printf("SvcBindingUsage: %s\n", svcBindingUsage.Name)
+	log.Printf("SvcBindingUsage: %s\n", svcBindingUsage.Name)
 
 	svcBindingUsage2, err := svcBindClient.ServiceBindingUsages(namespace).Create(&v1alpha1.ServiceBindingUsage{
 		TypeMeta: v1.TypeMeta{
@@ -263,7 +282,7 @@ func main() {
 		},
 	})
 	fatalOnError(err)
-	fmt.Printf("SvcBindingUsage2: %s\n", svcBindingUsage2.Name)
+	log.Printf("SvcBindingUsage2: %s\n", svcBindingUsage2.Name)
 
 	eb, err := eventbus.NewForConfig(k8sConfig)
 	fatalOnError(err)
@@ -274,15 +293,15 @@ func main() {
 			Labels:    map[string]string{"Function": "julia-lambda"},
 		},
 		SubscriptionSpec: subscription.SubscriptionSpec{
-			Endpoint:                      fmt.Sprintf("%s%s%s", "http://julia-lambda.", namespace, "8080/"),
+			Endpoint:                      fmt.Sprintf("%s%s%s", "http://julia-lambda.", namespace, ":8080/"),
 			EventType:                     "IssuesEvent",
 			EventTypeVersion:              "v1",
 			IncludeSubscriptionNameHeader: true,
-			SourceID:                      "julia-lambda-app",
+			SourceID:                      "github-flying-seal-app",
 		},
 	})
 	fatalOnError(err)
-	fmt.Printf("Subscription: %s", sub.Name)
+	log.Printf("Subscription: %s", sub.Name)
 }
 
 func fatalOnError(err error) {
