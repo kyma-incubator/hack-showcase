@@ -15,5 +15,5 @@
 {{- end -}}
 
 {{- define "github-connector-chart.repository" -}}
-{{- .Values.githubURL | trimAll "repos/" | trimAll "orgs/" | replace "/" "-" | trunc 47 | trimSuffix "-" | printf "github-%s" -}}
+{{- .Values.githubURL | trimAll "repos/" | trimAll "orgs/" | replace "/" "-" | trunc 47 | trimSuffix "-" | lower | printf "github-%s" -}}
 {{- end -}}
