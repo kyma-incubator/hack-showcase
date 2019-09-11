@@ -1,4 +1,4 @@
-# Slack Connector Installation<!-- omit in toc -->
+# Slack Connector Installation <!-- omit in toc -->
 
 - [Overview](#overview)
 - [Installation in Kyma as an Add-On](#installation-in-kyma-as-an-add-on)

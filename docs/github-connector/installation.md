@@ -1,15 +1,15 @@
-# GitHub Connector Installation
+# GitHub Connector Installation <!-- omit in toc -->
 
-- [GitHub Connector Installation](#github-connector-installation)
-  - [Overview](#overview)
-  - [Installation in Kyma as an Add-On](#installation-in-kyma-as-an-add-on)
-    - [Prerequisites](#prerequisites)
-    - [Steps](#steps)
-    - [Verification](#verification)
-    - [Removal](#removal)
-  - [Installation in Kyma with Helm](#installation-in-kyma-with-helm)
-    - [Prerequisites](#prerequisites-1)
-    - [Steps](#steps-1)
+
+- [Overview](#overview)
+- [Installation in Kyma as an Add-On](#installation-in-kyma-as-an-add-on)
+  - [Prerequisites](#prerequisites)
+  - [Steps](#steps)
+  - [Verification](#verification)
+  - [Removal](#removal)
+- [Installation in Kyma with Helm](#installation-in-kyma-with-helm)
+  - [Prerequisites](#prerequisites-1)
+  - [Steps](#steps-1)
 
 ## Overview
 
