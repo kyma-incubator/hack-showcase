@@ -72,7 +72,7 @@ To correctly remove all GitHub Connector resources, you must delete them in orde
 
 ### Steps
 
-1. Go to [Kyma repository](https://github.com/kyma-project/kyma) and run script `/installation/scripts/tiller-tls.sh` to get certificates needed for using Helm commands. By default they are stored in `~/.helm` directory. After that add the `--tls` flag to every Helm command to authorize and authenticate a user.
+1. Go to the [Kyma repository](https://github.com/kyma-project/kyma) and run script `/installation/scripts/tiller-tls.sh` to get certificates needed to use Helm commands. By default, they are stored in the `~/.helm` directory. After that, add the `--tls` flag to every Helm command to authorize and authenticate a user.
 2. Go to the `chart/githubconnector` directory. Run this command to install the GitHub Connector:
 
     ``` shell
