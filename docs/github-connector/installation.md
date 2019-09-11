@@ -33,7 +33,7 @@ The GitHub Connector is a component which allows interaction with GitHub API fro
 ### Steps
 
 1. In Kyma console, access the **Add-Ons Config** menu.
-2. Click **Add New Configuration** and in fill in the **Urls\*** field with this URL:
+2. Click **Add New Configuration** and in fill in the **Urls** field with this URL:
 
    ```http
    github.com/kyma-incubator/hack-showcase//addons
@@ -72,7 +72,7 @@ To correctly remove all GitHub Connector resources, you must delete them in orde
 
 ### Steps
 
-1. Go to the [Kyma repository](https://github.com/kyma-project/kyma) and run script `/installation/scripts/tiller-tls.sh` to get certificates needed to use Helm commands. By default, they are stored in the `~/.helm` directory. After that, add the `--tls` flag to every Helm command to authorize and authenticate a user.
+1. Go to the [Kyma repository](https://github.com/kyma-project/kyma) and run the script `/installation/scripts/tiller-tls.sh` to get the certificates needed to use Helm commands. By default, they are stored in the `~/.helm` directory. After that, add the `--tls` flag to every Helm command to authorize and authenticate the user.
 2. Go to the `chart/githubconnector` directory. Run this command to install the GitHub Connector:
 
     ``` shell
@@ -81,6 +81,6 @@ To correctly remove all GitHub Connector resources, you must delete them in orde
 
     >**CAUTION:** Make sure the Kyma address is in the correct format. It consists of the domain name and cannot begin with the dot. For example, `35.187.32.214.xip.io`.
 
-    >**NOTE:** To define the Namespace in which to install chart, add the flag `--namespace`. To define the GitHub URL, add the flag `--set githubURL`. If you want to crate webhook on one repository use construction `repos/:owner/:repo`. if you want create webhook on whole organization you have to use `orgs/:org`. To provide security token use flag `--set githubToken`.
+    >**NOTE:** To define the Namespace in which to install chart, add the `--namespace` flag to the command. To define the GitHub URL, add the `--set githubURL` flag. If you want to crate a webhook on one repository, use the construction `repos/:owner/:repo`. If you want create a webhook on the whole organization you have to use `orgs/:org`. To provide the security token use the `--set githubToken` flag.
 
-3. For further steps see [configuration page](/docs/github-connector/configuration.md)
+3. For further steps, see [configuration page](/docs/github-connector/configuration.md).

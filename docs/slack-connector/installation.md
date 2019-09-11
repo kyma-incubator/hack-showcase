@@ -30,7 +30,7 @@ The Slack Connector is a component which allows interaction with Slack API from 
 ### Steps
 
 1. In Kyma console, access the **Add-Ons Config** menu.
-2. Click **Add New Configuration** and fill in the **Urls\*** field with this URL:
+2. Click **Add New Configuration** and fill in the **Urls** field with this URL:
 
    ```http
    github.com/kyma-incubator/hack-showcase//addons
@@ -72,7 +72,7 @@ To correctly remove all Slack Connector resources, you must delete them in order
     >**NOTE:** If the link does not work, it means that the application that authenticates the connector in your workspace does not exist and you have to create it yourself. To create such an application, see [this tutorial](https://api.slack.com/docs/oauth#flow) in the Slack API documentation.
 
 2. Copy the authentication token. You will need it later in the Helm command.
-3. Go to the [Kyma repository](https://github.com/kyma-project/kyma) and run the script `/installation/scripts/tiller-tls.sh` to get certificates needed to use Helm commands. By default, they are stored in the `~/.helm` directory. After that, add the `--tls` flag to every Helm command to authorize and authenticate the user.
+3. Go to the [Kyma repository](https://github.com/kyma-project/kyma) and run the script `/installation/scripts/tiller-tls.sh` to get the certificates needed to use Helm commands. By default, they are stored in the `~/.helm` directory. After that, add the `--tls` flag to every Helm command to authorize and authenticate the user.
 4. Go to the `chart/slackconnector` directory. Run this command to install the Slack Connector:
 
     ``` shell
@@ -80,4 +80,4 @@ To correctly remove all Slack Connector resources, you must delete them in order
     ```
 
     >**CAUTION:** Make sure that the Kyma address is in the correct format. It consists of the domain name and omits the dot at the beginning. For example, `35.187.32.214.xip.io`.
-    >**NOTE:** To define Namespace in which chart should be installed add flag `--namespace`.
+    >**NOTE:** To define Namespace in which to install chart, add the `--namespace` flag.
