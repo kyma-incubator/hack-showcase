@@ -21,7 +21,7 @@ The Slack Connector is a component which allows interaction with Slack API from 
 - Slack Bot with desired privileges installed to the destination workspace. See the tutorial provided by Slack on how to setup an application [here](https://api.slack.com/bot-users#getting-started). After you have created the Signing Secret, it appears in the application's **Settings** in the **Basic Information** section.
 - Access to Kyma Console
 
-> **OPTIONAL:** Follow these steps to install the default application. Be aware that it has **full permissions** in the in the workspace.
+> **OPTIONAL:** Follow these steps to install the default application. Be aware that it has **full permissions** in the workspace.
 >
 > 1. Go to the [authentication page](https://auth-slack.herokuapp.com/). Click the **Add to Slack** button, which redirects you to another page. Select the desired workspace and click **Allow**.
 >       - **NOTE:** If the link does not work, see [this](https://api.slack.com/docs/oauth#flow) tutorial in the Slack API documentation to create your own application.
@@ -36,7 +36,7 @@ The Slack Connector is a component which allows interaction with Slack API from 
    github.com/kyma-incubator/hack-showcase//addons
    ```
 
-3. Go to the Namespace in which you install the Connector.
+3. Go to the Namespace in which to install the Connector.
 4. Find the Add-On in the Service Catalog and click it.
 5. Click **Add** and select the installation plan. Fill in all required fields and click **Create Instance**.
 6. Go to the **Services** tab in the Service Catalog. After provisioning and automatic registration of application's resources, the Service Class of Slack Connector appears here.
@@ -51,7 +51,7 @@ To verify correct configuration, check if Add-Ons and Service instances in the *
 ### Removal
 
 To correctly remove all Slack Connector resources, you must delete them in order reverse to the installation steps.
-> **NOTE:** Wait until deprovisioning and removing of all elements is complete before proceeding to next step to avoid possible errors. For example, after removing ServiceClass, the removal of ServiceInstance is impossible.
+> **NOTE:** Wait until deprovisioning and removing of all elements is complete before proceeding to the next step to avoid possible errors. For example, after removing ServiceClass, the removal of ServiceInstance is impossible.
 
 1. Delete all service bindings from Lambda Functions and other bindings connected with your Slack Connector Service Instance.
 2. Delete the Slack Connector Service Instance found under the **Services** tab in the **Instances** area.
@@ -72,7 +72,7 @@ To correctly remove all Slack Connector resources, you must delete them in order
     >**NOTE:** If the link does not work, it means that the application that authenticates the connector in your workspace does not exist and you have to create it yourself. To create such an application, see [this tutorial](https://api.slack.com/docs/oauth#flow) in the Slack API documentation.
 
 2. Copy the authentication token. You will need it later in the Helm command.
-3. Go to [Kyma repository](https://github.com/kyma-project/kyma) and run the script `/installation/scripts/tiller-tls.sh` to get certificates needed for using Helm commands. By default they are stored in `~/.helm` directory. After that add `--tls` flag to every Helm command to authorize and authenticate the user.
+3. Go to the [Kyma repository](https://github.com/kyma-project/kyma) and run the script `/installation/scripts/tiller-tls.sh` to get certificates needed to use Helm commands. By default, they are stored in the `~/.helm` directory. After that, add the `--tls` flag to every Helm command to authorize and authenticate the user.
 4. Go to the `chart/slackconnector` directory. Run this command to install the Slack Connector:
 
     ``` shell

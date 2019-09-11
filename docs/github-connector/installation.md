@@ -19,7 +19,7 @@ The GitHub Connector is a component which allows interaction with GitHub API fro
 
 ### Prerequisites
 
-- GitHub App with desired privileges installed to destination repository or organization. To create a new application, go [here](https://github.com/settings/apps) or access **Github Apps** in the account through **Settings** in **Developer settings**.
+- GitHub App with desired privileges installed to the destination repository or organization. To create a new application, go [here](https://github.com/settings/apps) or access **Github Apps** in the account through **Settings** in **Developer settings**.
 - Access to Kyma Console
 
 > **NOTE**: It is best to create or use an additional service account (e.g. Your-Project-Name-Github-Connector) since any actions that the application performs are signed with the name of the user that the token belongs to.
@@ -39,7 +39,7 @@ The GitHub Connector is a component which allows interaction with GitHub API fro
    github.com/kyma-incubator/hack-showcase//addons
    ```
 
-3. Go to the Namespace in which you install the Connector.
+3. Go to the Namespace in which to install the Connector.
 4. Find the Add-On in the Service Catalog and click it.
 5. Click **Add** and select the installation plan. Fill in all required fields and click **Create Instance**.
 6. Go to the **Services** tab in the Service Catalog. After provisioning and automatic registration of application's resources, the Service Class of GitHub Connector appears here.
@@ -55,7 +55,7 @@ After you have created the service, you can easily bind it to the Lambda Functio
 ### Removal
 
 To correctly remove all GitHub Connector resources, you must delete them in order reverse to the installation steps.
-> **CAUTION:** Wait until deprovisioning and removing of all elements is complete before proceeding to next step to avoid possible errors. For example, after removing ServiceClass, the removal of ServiceInstance is impossible.
+> **CAUTION:** Wait until deprovisioning and removing of all elements is complete before proceeding to the next step to avoid possible errors. For example, after removing ServiceClass, the removal of ServiceInstance is impossible.
 
 1. Delete all service bindings from Lambda Functions and other bindings connected with your GitHub Connector Service Instance.
 2. Delete the GitHub Connector Service Instance found under the **Services** tab in the **Instances** area.
