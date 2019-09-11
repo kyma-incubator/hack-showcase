@@ -16,6 +16,8 @@ import (
 	deplo "k8s.io/api/extensions/v1beta1"
 	ios "k8s.io/apimachinery/pkg/util/intstr"
 
+	runtime "k8s.io/apimachinery/pkg/runtime"
+
 	svcCatalog "github.com/google/kf/pkg/client/servicecatalog/clientset/versioned/typed/servicecatalog/v1beta1"
 	subscription "github.com/kyma-project/kyma/components/event-bus/api/push/eventing.kyma-project.io/v1alpha1"
 	"github.com/kyma-project/kyma/components/service-binding-usage-controller/pkg/apis/servicecatalog/v1alpha1"
@@ -76,15 +78,17 @@ func main() {
 					Name:      githubRepo + "inst",
 					Namespace: namespace,
 				},
+
 				Spec: v1beta1svc.ServiceInstanceSpec{
+
 					PlanReference: v1beta1svc.PlanReference{
 						ServiceClassExternalName: s.Spec.ExternalName,
-						ServicePlanExternalName:  namespace,
+						ServicePlanExternalName:  "default",
 					},
 				},
 			})
 			fatalOnError(err)
-			log.Printf("Service Instance: %s, %s\n", svc.Name, svc.Status.ProvisionStatus)
+			log.Printf("Service Instance: %s, %s\n -----< Plan Name: %s    \n --- %v", svc.Name, svc.Status.ProvisionStatus, s.Spec.ExternalName, svc)
 		}
 		if str == slackWorkspace {
 			fmt.Println("działa slack")
@@ -96,14 +100,16 @@ func main() {
 				Spec: v1beta1svc.ServiceInstanceSpec{
 					PlanReference: v1beta1svc.PlanReference{
 						ServiceClassExternalName: s.Spec.ExternalName,
-						ServicePlanExternalName:  namespace,
+						ServicePlanExternalName:  "default",
 					},
 				},
 			})
 			fatalOnError(err)
-			log.Printf("Service Instance: %s, %s\n", svc.Name, svc.Status.ProvisionStatus)
+			log.Printf("Service Instance: %s, %s\n -----< Plan Name: %s    \n --- %v", svc.Name, svc.Status.ProvisionStatus, s.Spec.ExternalName, svc)
 		}
 		if string(chars) == azure {
+			raw := runtime.RawExtension{}
+			raw.UnmarshalJSON([]byte(`{"location": "westeurope","resourceGroup": "flying-seals-tmp"}`))
 			fmt.Println("Dziala Azure")
 			svc, err := svcClient.ServiceInstances(namespace).Create(&v1beta1svc.ServiceInstance{
 				ObjectMeta: v1.ObjectMeta{
@@ -111,14 +117,15 @@ func main() {
 					Namespace: namespace,
 				},
 				Spec: v1beta1svc.ServiceInstanceSpec{
+					Parameters: &raw,
 					PlanReference: v1beta1svc.PlanReference{
 						ServiceClassExternalName: s.Spec.ExternalName,
-						ServicePlanExternalName:  namespace,
+						ServicePlanExternalName:  "standard-s0",
 					},
 				},
 			})
 			fatalOnError(err)
-			log.Printf("Service Instance: %s, %s\n", svc.Name, svc.Status.ProvisionStatus)
+			log.Printf("Service Instance: %s, %s\n -----< Plan Name: %s    \n --- %v", svc.Name, svc.Status.ProvisionStatus, s.Spec.ExternalName, svc)
 		}
 	}
 
@@ -132,17 +139,12 @@ func main() {
 		},
 		Spec: v1beta1kubeless.FunctionSpec{
 			Deps: `{
-				"name": "example-1",
-				"version": "0.0.1",
 				"dependencies": {
-				  "request": "^2.85.0"
-				}
-			}`,
-			Function: `module.exports = { 
-				main: function (event, context) {
-					console.log("Issue");
-				} 
-			};`,
+			  "axios": "^0.19.0",
+			  "slackify-markdown": "^1.1.1"
+			}
+		  }`,
+			Function:            funcCode,
 			FunctionContentType: "text",
 			Handler:             "handler.main",
 			Timeout:             "",
@@ -220,6 +222,23 @@ func main() {
 	fatalOnError(err)
 	log.Printf("SvcBinding2: %s\n", svcBinding2.Name)
 
+	svcBinding3, err := svcClient.ServiceBindings(namespace).Create(&v1beta1.ServiceBinding{
+		ObjectMeta: v1.ObjectMeta{
+			Name:      azure + "bind",
+			Namespace: namespace,
+			Labels: map[string]string{
+				"Function": "julia-lambda",
+			},
+		},
+		Spec: v1beta1svc.ServiceBindingSpec{
+			InstanceRef: v1beta1svc.LocalObjectReference{
+				Name: azure + "inst",
+			},
+		},
+	})
+	fatalOnError(err)
+	log.Printf("SvcBinding3: %s\n", svcBinding3.Name)
+
 	//Service Binding Usage
 	fmt.Println("Building svcBindingUsage...")
 	svcBindingUsage, err := svcBindClient.ServiceBindingUsages(namespace).Create(&v1alpha1.ServiceBindingUsage{
@@ -284,6 +303,37 @@ func main() {
 	fatalOnError(err)
 	log.Printf("SvcBindingUsage2: %s\n", svcBindingUsage2.Name)
 
+	svcBindingUsage3, err := svcBindClient.ServiceBindingUsages(namespace).Create(&v1alpha1.ServiceBindingUsage{
+		TypeMeta: v1.TypeMeta{
+			Kind:       "ServiceBindingUsage",
+			APIVersion: "servicecatalog.kyma-project.io/v1alpha1",
+		},
+		ObjectMeta: v1.ObjectMeta{
+			Name:      azure + "bu",
+			Namespace: namespace,
+			Labels: map[string]string{
+				"Function":       "julia-lambda",
+				"ServiceBinding": azure + "bind",
+			},
+		},
+		Spec: v1alpha1svc.ServiceBindingUsageSpec{
+			ServiceBindingRef: v1alpha1svc.LocalReferenceByName{
+				Name: azure + "bind",
+			},
+			UsedBy: v1alpha1svc.LocalReferenceByKindAndName{
+				Name: "julia-lambda",
+				Kind: "function",
+			},
+			Parameters: &v1alpha1svc.Parameters{
+				EnvPrefix: &v1alpha1svc.EnvPrefix{
+					Name: "",
+				},
+			},
+		},
+	})
+	fatalOnError(err)
+	log.Printf("SvcBindingUsage3: %s\n", svcBindingUsage3.Name)
+
 	eb, err := eventbus.NewForConfig(k8sConfig)
 	fatalOnError(err)
 	sub, err := eb.Eventing().Subscriptions(namespace).Create(&subscription.Subscription{
@@ -317,3 +367,113 @@ func newRestClientConfig(kubeConfigPath string) (*restclient.Config, error) {
 
 	return restclient.InClusterConfig()
 }
+
+const funcCode = `const axios = require("axios");
+const md = require("slackify-markdown");
+const slackURL = process.env.GATEWAY_URL || "https://slack.com/api";
+const githubURL = process.env.GITHUB_GATEWAY_URL 
+const channelID = process.env.channelID || "node-best";
+
+module.exports = {
+    main: async function (event, context) {
+        const githubPayload = event.data;
+        if (githubPayload.action == "opened" || githubPayload.action == "edited") {
+
+            let payload = await createPayload(githubPayload);
+
+                try {
+                    let issueURL = githubURL + '/repos/'+githubPayload.repository.full_name+'/issues/'+ githubPayload.issue.number 
+                    console.log(issueURL)
+                    let result = await setLabel(issueURL, payload);
+                    console.log(result)
+                } catch (error) {
+                    console.error(error);
+                }
+            
+        }
+    }
+};
+
+async function checkIfBad(issueBody, issueTitle) {
+    let result = await axios.post(process.env.textAnalyticsEndpoint + 'text/analytics/v2.1/sentiment',
+    {documents: [{id: '1', text: issueBody}, {id: '2', text: issueTitle}]}, {headers: {...{'Ocp-Apim-Subscription-Key': process.env.textAnalyticsKey}}})
+    return ((result.data.documents[0].score < 0.5) || (result.data.documents[1].score < 0.5))
+}
+
+function getLabels(labelsArray) {
+    let labels = []
+    labelsArray.map(label => labels.push(label.name))
+    return labels
+}
+
+function createMessage(payload) {
+  const blocks = [
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: "Hello @here!"
+      }
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: 'User *'+payload.issue.user.login+'* created an issue that might need a review: <$'+payload.issue.html_url+'|*#'+payload.issue.number+ payload.issue.title+'*>'
+      }
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: '*Issue* \n' + md(payload.issue.body)
+      }
+    }
+  ];
+  return blocks;
+}
+
+async function sendToSlack(payload){
+    let msg = createMessage(payload)
+     const config = {
+    headers: {
+      "Content-Type": "application/json;charset=UTF-8"
+    }
+  };
+  const data = {
+    channel: channelID,
+    text: "New issue needs a review.",
+    blocks: msg,
+    link_names: true
+  };
+  let sendMsg = await axios.post(slackURL + "/chat.postMessage", data, config);
+  return sendMsg;
+}
+
+async function createPayload(githubPayload) {
+    let labels = getLabels(githubPayload.issue.labels)
+    let sentiment = await checkIfBad(githubPayload.issue.body, githubPayload.issue.title)
+    if (!sentiment)
+    {
+    labels = labels.filter(word => word != ':thinking: Review needed')    }
+    else
+    {
+        labels.push(":thinking: Review needed")
+        await sendToSlack(githubPayload)
+        
+    }
+    const pld = {
+        labels: labels
+    }
+    return pld;
+}
+
+async function setLabel(url, msg) {
+    const config = {
+        headers: {
+            "Content-Type": "application/json;charset=UTF-8"
+        }
+    };
+    let sendMsg = await axios.patch(url, msg, config);
+    return sendMsg;
+}`
