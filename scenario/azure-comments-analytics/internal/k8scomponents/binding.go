@@ -25,10 +25,10 @@ type binding struct {
 
 //NewBinding create and return new binding struct
 func NewBinding(client BindingInterface, nspace string) Binding {
-	return binding{bindingInterface: client, namespace: nspace}
+	return &binding{bindingInterface: client, namespace: nspace}
 }
 
-func (s binding) Create(body *v1beta1.ServiceBinding) (*v1beta1.ServiceBinding, apperrors.AppError) {
+func (s *binding) Create(body *v1beta1.ServiceBinding) (*v1beta1.ServiceBinding, apperrors.AppError) {
 	data, err := s.bindingInterface.Create(body)
 	if err != nil {
 		return nil, apperrors.Internal("Can not create ServiceBinding: %s", err)
@@ -36,7 +36,7 @@ func (s binding) Create(body *v1beta1.ServiceBinding) (*v1beta1.ServiceBinding, 
 	return data, nil
 }
 
-func (s binding) GetEventBody(name string) *v1beta1.ServiceBinding {
+func (s *binding) GetEventBody(name string) *v1beta1.ServiceBinding {
 	return &v1beta1.ServiceBinding{
 		ObjectMeta: v1.ObjectMeta{
 			Name:      name + "bind",

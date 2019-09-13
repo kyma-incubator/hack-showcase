@@ -25,10 +25,10 @@ type bindingUsage struct {
 
 //NewBindingUsage create and return new bindingUsage
 func NewBindingUsage(scatalog BindingUsageInterface, nspace string) BindingUsage {
-	return bindingUsage{catalog: scatalog, namespace: nspace}
+	return &bindingUsage{catalog: scatalog, namespace: nspace}
 }
 
-func (s bindingUsage) Create(body *v1alpha1.ServiceBindingUsage) (*v1alpha1.ServiceBindingUsage, apperrors.AppError) {
+func (s *bindingUsage) Create(body *v1alpha1.ServiceBindingUsage) (*v1alpha1.ServiceBindingUsage, apperrors.AppError) {
 	data, err := s.catalog.Create(body)
 	if err != nil {
 		return nil, apperrors.WrongInput("Can not create ServiceBindingUsage: %s", err)
@@ -36,7 +36,7 @@ func (s bindingUsage) Create(body *v1alpha1.ServiceBindingUsage) (*v1alpha1.Serv
 	return data, nil
 }
 
-func (s bindingUsage) GetEventBody(name string, envPrefix string) *v1alpha1.ServiceBindingUsage {
+func (s *bindingUsage) GetEventBody(name string, envPrefix string) *v1alpha1.ServiceBindingUsage {
 	return &v1alpha1.ServiceBindingUsage{
 		TypeMeta: v1.TypeMeta{
 			Kind:       "ServiceBindingUsage",

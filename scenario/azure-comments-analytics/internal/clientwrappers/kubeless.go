@@ -18,9 +18,9 @@ type kubelessWrapper struct {
 }
 
 func NewKubelessWrapper(client KubelessClient) KubelessWrapper {
-	return kubelessWrapper{client: client}
+	return &kubelessWrapper{client: client}
 }
 
-func (s kubelessWrapper) Function(namespace string) k8scomponents.Function {
+func (s *kubelessWrapper) Function(namespace string) k8scomponents.Function {
 	return k8scomponents.NewFunction(s.client.Functions(namespace), namespace)
 }

@@ -17,9 +17,9 @@ type eventbusWrapper struct {
 }
 
 func NewSubscriptionManager(bus EventbusClient) EventbusWrapper {
-	return eventbusWrapper{client: bus}
+	return &eventbusWrapper{client: bus}
 }
 
-func (s eventbusWrapper) Subscription(namespace string) k8scomponents.Subscription {
+func (s *eventbusWrapper) Subscription(namespace string) k8scomponents.Subscription {
 	return k8scomponents.NewSubscription(s.client.Subscriptions(namespace), namespace)
 }

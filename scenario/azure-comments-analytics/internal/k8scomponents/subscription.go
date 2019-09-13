@@ -26,13 +26,13 @@ type subscription struct {
 
 //NewSubscription create new instance of subscription structure
 func NewSubscription(sub SubscriptionInterface, nspace string) Subscription {
-	return subscription{
+	return &subscription{
 		subscriptionInterface: sub,
 		namespace:             nspace,
 	}
 }
 
-func (s subscription) Create(body *v1alpha1.Subscription) (*v1alpha1.Subscription, apperrors.AppError) {
+func (s *subscription) Create(body *v1alpha1.Subscription) (*v1alpha1.Subscription, apperrors.AppError) {
 	data, err := s.subscriptionInterface.Create(body)
 	if err != nil {
 		return nil, apperrors.WrongInput("Can not create subscription: %s", err)
@@ -40,7 +40,7 @@ func (s subscription) Create(body *v1alpha1.Subscription) (*v1alpha1.Subscriptio
 	return data, nil
 }
 
-func (s subscription) GetEventBody(id string) *v1alpha1.Subscription {
+func (s *subscription) GetEventBody(id string) *v1alpha1.Subscription {
 	return &v1alpha1.Subscription{
 		ObjectMeta: v1.ObjectMeta{
 			Name:      "lambda-julia-lambda-issuesevent-v1",

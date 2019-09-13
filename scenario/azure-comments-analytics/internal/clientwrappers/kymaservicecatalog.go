@@ -18,9 +18,9 @@ type kymaServiceCatalogWrapper struct {
 }
 
 func NewKymaServiceCatalogWrapper(client KymaServiceCatalogClient) KymaServiceCatalogWrapper {
-	return kymaServiceCatalogWrapper{client: client}
+	return &kymaServiceCatalogWrapper{client: client}
 }
 
-func (s kymaServiceCatalogWrapper) BindingUsage(namespace string) k8scomponents.BindingUsage {
+func (s *kymaServiceCatalogWrapper) BindingUsage(namespace string) k8scomponents.BindingUsage {
 	return k8scomponents.NewBindingUsage(s.client.ServiceBindingUsages(namespace), namespace)
 }

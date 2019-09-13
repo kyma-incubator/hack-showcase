@@ -20,13 +20,13 @@ type serviceCatalogWrapper struct {
 }
 
 func NewServiceCatalogClient(client ServiceCatalogClient) ServiceCatalogWrapper {
-	return serviceCatalogWrapper{client: client}
+	return &serviceCatalogWrapper{client: client}
 }
 
-func (s serviceCatalogWrapper) Binding(namespace string) k8scomponents.Binding {
+func (s *serviceCatalogWrapper) Binding(namespace string) k8scomponents.Binding {
 	return k8scomponents.NewBinding(s.client.ServiceBindings(namespace), namespace)
 }
 
-func (s serviceCatalogWrapper) Instance(namespace string) k8scomponents.ServiceInstance {
+func (s *serviceCatalogWrapper) Instance(namespace string) k8scomponents.ServiceInstance {
 	return k8scomponents.NewServiceInstance(s.client.ServiceInstances(namespace), namespace)
 }

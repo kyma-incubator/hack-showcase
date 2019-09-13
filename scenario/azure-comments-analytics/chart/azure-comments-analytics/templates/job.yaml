@@ -10,14 +10,14 @@ spec:
     spec:
       containers:
       - name: pracaprecla
-        image: pprecel/azure-comments-analytics:0.4.4
+        image: pprecel/azure-comments-analytics:0.5.1
         env: 
         - name: GITHUB_REPO
           value: {{ include "azure-comments-analytics.repository" . }}
         - name: SLACK_WORKSPACE
           value: {{ include "azure-comments-analytics.workspace" . }}
         - name: NAMESPACE
-          value: {{ .Values.kymaNamespace}}
+          value: {{ .Values.jobsNamespace }}
       serviceAccountName: precel
       restartPolicy: Never
   backoffLimit: 4

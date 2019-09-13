@@ -30,10 +30,10 @@ type function struct {
 
 //NewFunction returns new function struck
 func NewFunction(functionInterface FunctionInterface, nspace string) Function {
-	return function{functionInterface: functionInterface, namespace: nspace}
+	return &function{functionInterface: functionInterface, namespace: nspace}
 }
 
-func (s function) Create(body *v1beta1kubeless.Function) (*v1beta1kubeless.Function, apperrors.AppError) {
+func (s *function) Create(body *v1beta1kubeless.Function) (*v1beta1kubeless.Function, apperrors.AppError) {
 	data, err := s.functionInterface.Create(body)
 	if err != nil {
 		return nil, apperrors.WrongInput("Can not create Function: %s", err)
@@ -41,7 +41,7 @@ func (s function) Create(body *v1beta1kubeless.Function) (*v1beta1kubeless.Funct
 	return data, nil
 }
 
-func (s function) GetEventBody() *v1beta1kubeless.Function {
+func (s *function) GetEventBody() *v1beta1kubeless.Function {
 	return &v1beta1kubeless.Function{
 		ObjectMeta: v1.ObjectMeta{
 			Name:      "julia-lambda",

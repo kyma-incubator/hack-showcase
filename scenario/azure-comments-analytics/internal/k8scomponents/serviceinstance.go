@@ -25,10 +25,10 @@ type serviceInstance struct {
 
 //NewServiceInstance returns new serviceInstance struct
 func NewServiceInstance(instance ServiceInstanceInterface, namespace string) ServiceInstance {
-	return serviceInstance{instance: instance, namespace: namespace}
+	return &serviceInstance{instance: instance, namespace: namespace}
 }
 
-func (s serviceInstance) Create(body *v1beta1svc.ServiceInstance) (*v1beta1svc.ServiceInstance, apperrors.AppError) {
+func (s *serviceInstance) Create(body *v1beta1svc.ServiceInstance) (*v1beta1svc.ServiceInstance, apperrors.AppError) {
 	data, err := s.instance.Create(body)
 	if err != nil {
 		return nil, apperrors.WrongInput("Can not create Function: %s", err)
@@ -36,7 +36,7 @@ func (s serviceInstance) Create(body *v1beta1svc.ServiceInstance) (*v1beta1svc.S
 	return data, nil
 }
 
-func (s serviceInstance) GetEventBody(name string, serviceClassExternalName string, plan string, parameters *runtime.RawExtension) *v1beta1svc.ServiceInstance {
+func (s *serviceInstance) GetEventBody(name string, serviceClassExternalName string, plan string, parameters *runtime.RawExtension) *v1beta1svc.ServiceInstance {
 	return &v1beta1svc.ServiceInstance{
 		ObjectMeta: v1.ObjectMeta{
 			Name:      name + "inst",
