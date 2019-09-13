@@ -7,10 +7,12 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 )
 
+//ServiceInstanceInterface describe constructors argument and include important methods of ServiceInstances
 type ServiceInstanceInterface interface {
 	Create(*v1beta1svc.ServiceInstance) (*v1beta1svc.ServiceInstance, error)
 }
 
+//ServiceInstance describe serviceInstance struct
 type ServiceInstance interface {
 	GetEventBody(name string, serviceClassExternalName string, plan string, parameters *runtime.RawExtension) *v1beta1svc.ServiceInstance
 	Create(body *v1beta1svc.ServiceInstance) (*v1beta1svc.ServiceInstance, apperrors.AppError)
@@ -21,15 +23,12 @@ type serviceInstance struct {
 	namespace string
 }
 
+//NewServiceInstance returns new serviceInstance struct
 func NewServiceInstance(instance ServiceInstanceInterface, namespace string) ServiceInstance {
 	return serviceInstance{instance: instance, namespace: namespace}
 }
 
 func (s serviceInstance) Create(body *v1beta1svc.ServiceInstance) (*v1beta1svc.ServiceInstance, apperrors.AppError) {
-	// client, err := svcCatalog.NewForConfig(s.config)
-	// if err != nil {
-	// 	return nil, apperrors.Internal("Can not create Kubeless client: %s", err)
-	// }
 	data, err := s.instance.Create(body)
 	if err != nil {
 		return nil, apperrors.WrongInput("Can not create Function: %s", err)

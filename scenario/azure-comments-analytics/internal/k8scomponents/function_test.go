@@ -1,96 +1,112 @@
-package k8scomponents
+package k8scomponents_test
 
 import (
+	"errors"
+	"testing"
+
 	v1beta1kubeless "github.com/kubeless/kubeless/pkg/apis/kubeless/v1beta1"
-	//"github.com/kubeless/kubeless/pkg/client/clientset/versioned"
-	"github.com/kyma-incubator/hack-showcase/scenario/azure-comments-analytics/internal/apperrors"
-	autoscaling "k8s.io/api/autoscaling/v2beta1"
-	core "k8s.io/api/core/v1"
-	pts "k8s.io/api/core/v1"
-	deplo "k8s.io/api/extensions/v1beta1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	ios "k8s.io/apimachinery/pkg/util/intstr"
+	"github.com/kyma-incubator/hack-showcase/scenario/azure-comments-analytics/internal/k8scomponents"
+	"github.com/kyma-incubator/hack-showcase/scenario/azure-comments-analytics/internal/k8scomponents/mocks"
+	"github.com/stretchr/testify/assert"
 )
 
-//FunctionInterface describe constructors argument and include important methods of Functions
-type FunctionInterface interface {
-	Create(*v1beta1kubeless.Function) (*v1beta1kubeless.Function, error)
+func functionNiller() *v1beta1kubeless.Function {
+	return nil
 }
 
-//Function describe function struct
-type Function interface {
-	Create(body *v1beta1kubeless.Function) (*v1beta1kubeless.Function, apperrors.AppError)
-	GetEventBody() *v1beta1kubeless.Function
+func TestCreateFunction(t *testing.T) {
+	t.Run("should create Function, return new function and nil", func(t *testing.T) {
+		//given
+		function := &v1beta1kubeless.Function{}
+		mockClient := &mocks.FunctionInterface{}
+		mockClient.On("Create", function).Return(function, nil)
+
+		//when
+		data, err := k8scomponents.NewFunction(mockClient, "default").Create(function)
+
+		//then
+		assert.NoError(t, err)
+		assert.Equal(t, function, data)
+	})
+
+	t.Run("should return nil and error when cannot create Function", func(t *testing.T) {
+		//given
+		function := &v1beta1kubeless.Function{}
+		mockClient := &mocks.FunctionInterface{}
+		mockClient.On("Create", function).Return(nil, errors.New("error text"))
+
+		//when
+		data, err := k8scomponents.NewFunction(mockClient, "default").Create(function)
+
+		//then
+		assert.Error(t, err)
+		assert.Equal(t, functionNiller(), data)
+	})
 }
 
-type function struct {
-	functionInterface FunctionInterface
-	namespace         string
-}
+func TestGetEventBodyFunction(t *testing.T) {
+	// TODO
+	// t.Run("should return Function", func(t *testing.T) {
+	// 	//given
+	// 	namespace := "namespace"
+	// 	body := &v1beta1kubeless.Function{
+	// 		ObjectMeta: v1.ObjectMeta{
+	// 			Name:      "julia-lambda",
+	// 			Namespace: namespace,
+	// 			Labels:    map[string]string{"app": "julia"},
+	// 		},
+	// 		Spec: v1beta1kubeless.FunctionSpec{
+	// 			Deps: `{
+	// 				"dependencies": {
+	// 			  "axios": "^0.19.0",
+	// 			  "slackify-markdown": "^1.1.1"
+	// 			}
+	// 		  }`,
+	// 			Function:            funcCode,
+	// 			FunctionContentType: "text",
+	// 			Handler:             "handler.main",
+	// 			Timeout:             "",
+	// 			HorizontalPodAutoscaler: autoscaling.HorizontalPodAutoscaler{
+	// 				Spec: autoscaling.HorizontalPodAutoscalerSpec{
+	// 					MaxReplicas: 0,
+	// 				},
+	// 			},
+	// 			Runtime: "nodejs8",
+	// 			ServiceSpec: core.ServiceSpec{
+	// 				Ports: []core.ServicePort{core.ServicePort{
+	// 					Name:       "http-function-port",
+	// 					Port:       8080,
+	// 					Protocol:   "TCP",
+	// 					TargetPort: ios.FromInt(8080),
+	// 				}},
+	// 				Selector: map[string]string{
+	// 					"created-by": "kubeless",
+	// 					"function":   "julia-lambda",
+	// 				},
+	// 			},
+	// 			Deployment: deplo.Deployment{
+	// 				Spec: deplo.DeploymentSpec{
+	// 					Template: pts.PodTemplateSpec{
+	// 						Spec: pts.PodSpec{
+	// 							Containers: []pts.Container{pts.Container{
+	// 								Name:      "",
+	// 								Resources: pts.ResourceRequirements{},
+	// 							}},
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	}
+	// 	mockClient := &mocks.FunctionInterface{}
 
-//NewFunction returns new function struck
-func NewFunction(functionInterface FunctionInterface, nspace string) Function {
-	return function{functionInterface: functionInterface, namespace: nspace}
-}
+	// 	//when
+	// 	function := k8scomponents.NewFunction(mockClient, namespace).GetEventBody()
 
-func (s function) Create(body *v1beta1kubeless.Function) (*v1beta1kubeless.Function, apperrors.AppError) {
-	data, err := s.functionInterface.Create(body)
-	if err != nil {
-		return nil, apperrors.WrongInput("Can not create Function: %s", err)
-	}
-	return data, nil
-}
+	// 	//then
+	// 	assert.Equal(t, body, function)
 
-func (s function) GetEventBody() *v1beta1kubeless.Function {
-	return &v1beta1kubeless.Function{
-		ObjectMeta: v1.ObjectMeta{
-			Name:      "julia-lambda",
-			Namespace: s.namespace,
-			Labels:    map[string]string{"app": "julia"},
-		},
-		Spec: v1beta1kubeless.FunctionSpec{
-			Deps: `{
-				"dependencies": {
-			  "axios": "^0.19.0",
-			  "slackify-markdown": "^1.1.1"
-			}
-		  }`,
-			Function:            funcCode,
-			FunctionContentType: "text",
-			Handler:             "handler.main",
-			Timeout:             "",
-			HorizontalPodAutoscaler: autoscaling.HorizontalPodAutoscaler{
-				Spec: autoscaling.HorizontalPodAutoscalerSpec{
-					MaxReplicas: 0,
-				},
-			},
-			Runtime: "nodejs8",
-			ServiceSpec: core.ServiceSpec{
-				Ports: []core.ServicePort{core.ServicePort{
-					Name:       "http-function-port",
-					Port:       8080,
-					Protocol:   "TCP",
-					TargetPort: ios.FromInt(8080),
-				}},
-				Selector: map[string]string{
-					"created-by": "kubeless",
-					"function":   "julia-lambda",
-				},
-			},
-			Deployment: deplo.Deployment{
-				Spec: deplo.DeploymentSpec{
-					Template: pts.PodTemplateSpec{
-						Spec: pts.PodSpec{
-							Containers: []pts.Container{pts.Container{
-								Name:      "",
-								Resources: pts.ResourceRequirements{},
-							}},
-						},
-					},
-				},
-			},
-		},
-	}
+	// })
 }
 
 const funcCode = `const axios = require("axios");

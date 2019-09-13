@@ -13,15 +13,15 @@ import (
 	v1beta1svc "github.com/poy/service-catalog/pkg/apis/servicecatalog/v1beta1"
 )
 
-func niller() *v1beta1.ServiceBinding {
+func bindingNiller() *v1beta1.ServiceBinding {
 	return nil
 }
 
-func TestCreate(t *testing.T) {
-	t.Run("should create binding, return new binding and nil", func(t *testing.T) {
+func TestCreateBinding(t *testing.T) {
+	t.Run("should create Binding, return new binding and nil", func(t *testing.T) {
 		//given
 		binding := &v1beta1.ServiceBinding{}
-		mockClient := &mocks.ServiceBindingInterface{}
+		mockClient := &mocks.BindingInterface{}
 		mockClient.On("Create", binding).Return(binding, nil)
 
 		//when
@@ -32,10 +32,10 @@ func TestCreate(t *testing.T) {
 		assert.Equal(t, binding, bind)
 	})
 
-	t.Run("should return nil and error when cannot create ServiceBinding", func(t *testing.T) {
+	t.Run("should return nil and error when cannot create Binding", func(t *testing.T) {
 		//given
 		binding := &v1beta1.ServiceBinding{}
-		mockClient := &mocks.ServiceBindingInterface{}
+		mockClient := &mocks.BindingInterface{}
 		mockClient.On("Create", binding).Return(nil, errors.New("error text"))
 
 		//when
@@ -43,11 +43,11 @@ func TestCreate(t *testing.T) {
 
 		//then
 		assert.Error(t, err)
-		assert.Equal(t, niller(), bind)
+		assert.Equal(t, bindingNiller(), bind)
 	})
 }
 
-func TestGetEventBody(t *testing.T) {
+func TestGetEventBodyBinding(t *testing.T) {
 	t.Run("should return ServiceBinding", func(t *testing.T) {
 		//given
 		name := "name"
@@ -66,7 +66,7 @@ func TestGetEventBody(t *testing.T) {
 				},
 			},
 		}
-		mockClient := &mocks.ServiceBindingInterface{}
+		mockClient := &mocks.BindingInterface{}
 
 		//when
 		binding := k8scomponents.NewBinding(mockClient, namespace).GetEventBody(name)

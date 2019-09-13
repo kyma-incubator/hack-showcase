@@ -7,11 +7,13 @@ import (
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+//BindingUsage describe bindingUsage struct
 type BindingUsage interface {
 	Create(body *v1alpha1.ServiceBindingUsage) (*v1alpha1.ServiceBindingUsage, apperrors.AppError)
 	GetEventBody(name string, envPrefix string) *v1alpha1.ServiceBindingUsage
 }
 
+//BindingUsageInterface describe constructors argument and containe ServiceBindingUsages method
 type BindingUsageInterface interface {
 	Create(*v1alpha1.ServiceBindingUsage) (*v1alpha1.ServiceBindingUsage, error)
 }
@@ -21,6 +23,7 @@ type bindingUsage struct {
 	namespace string
 }
 
+//NewBindingUsage create and return new bindingUsage
 func NewBindingUsage(scatalog BindingUsageInterface, nspace string) BindingUsage {
 	return bindingUsage{catalog: scatalog, namespace: nspace}
 }

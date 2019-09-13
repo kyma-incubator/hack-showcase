@@ -7,11 +7,13 @@ import (
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+//Binding describe binding struct
 type Binding interface {
 	Create(body *v1beta1.ServiceBinding) (*v1beta1.ServiceBinding, apperrors.AppError)
 	GetEventBody(name string) *v1beta1.ServiceBinding
 }
 
+//BindingInterface describe constructors argument and containe ServiceBindings method
 type BindingInterface interface {
 	Create(*v1beta1.ServiceBinding) (*v1beta1.ServiceBinding, error)
 }
@@ -21,6 +23,7 @@ type binding struct {
 	namespace        string
 }
 
+//NewBinding create and return new binding struct
 func NewBinding(client BindingInterface, nspace string) Binding {
 	return binding{bindingInterface: client, namespace: nspace}
 }

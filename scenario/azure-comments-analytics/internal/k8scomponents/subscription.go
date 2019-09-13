@@ -8,11 +8,13 @@ import (
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+//Subscription define subscription struct
 type Subscription interface {
 	Create(body *v1alpha1.Subscription) (*v1alpha1.Subscription, apperrors.AppError)
-	GetSubscription(id string) *v1alpha1.Subscription
+	GetEventBody(id string) *v1alpha1.Subscription
 }
 
+//SubscriptionInterface describe constructors argument and containe Subscriptions method
 type SubscriptionInterface interface {
 	Create(*v1alpha1.Subscription) (*v1alpha1.Subscription, error)
 }
@@ -38,7 +40,7 @@ func (s subscription) Create(body *v1alpha1.Subscription) (*v1alpha1.Subscriptio
 	return data, nil
 }
 
-func (s subscription) GetSubscription(id string) *v1alpha1.Subscription {
+func (s subscription) GetEventBody(id string) *v1alpha1.Subscription {
 	return &v1alpha1.Subscription{
 		ObjectMeta: v1.ObjectMeta{
 			Name:      "lambda-julia-lambda-issuesevent-v1",

@@ -6,7 +6,7 @@ import (
 )
 
 type ServiceCatalogWrapper interface {
-	Binding(namespace string) k8scomponents.BindingInterface
+	Binding(namespace string) k8scomponents.Binding
 	Instance(namespace string) k8scomponents.ServiceInstance
 }
 
@@ -19,11 +19,11 @@ type serviceCatalogWrapper struct {
 	client ServiceCatalogClient
 }
 
-func NewServiceCatalogClient(scatalog ServiceCatalogClient) ServiceCatalogWrapper {
-	return serviceCatalogWrapper{client: scatalog}
+func NewServiceCatalogClient(client ServiceCatalogClient) ServiceCatalogWrapper {
+	return serviceCatalogWrapper{client: client}
 }
 
-func (s serviceCatalogWrapper) Binding(namespace string) k8scomponents.BindingInterface {
+func (s serviceCatalogWrapper) Binding(namespace string) k8scomponents.Binding {
 	return k8scomponents.NewBinding(s.client.ServiceBindings(namespace), namespace)
 }
 
