@@ -570,6 +570,7 @@
     "github.com/google/kf/pkg/client/servicecatalog/clientset/versioned/typed/servicecatalog/v1beta1",
     "github.com/kubeless/kubeless/pkg/apis/kubeless/v1beta1",
     "github.com/kubeless/kubeless/pkg/client/clientset/versioned",
+    "github.com/kubeless/kubeless/pkg/client/clientset/versioned/typed/kubeless/v1beta1",
     "github.com/kyma-project/kyma/components/event-bus/api/push/eventing.kyma-project.io/v1alpha1",
     "github.com/kyma-project/kyma/components/event-bus/generated/push/clientset/versioned",
     "github.com/kyma-project/kyma/components/event-bus/generated/push/clientset/versioned/typed/eventing.kyma-project.io/v1alpha1",
