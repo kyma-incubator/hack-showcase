@@ -1,2 +1,3 @@
 githubURL: repos/owner/repo
 workspaceName: slack-repo
+namespace: default
