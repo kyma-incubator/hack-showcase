@@ -12,10 +12,6 @@ import (
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-func bindingUsageNiller() *v1alpha1.ServiceBindingUsage {
-	return nil
-}
-
 func TestCreateBindingUsage(t *testing.T) {
 	t.Run("should create Binding, return new bindingUsage and nil", func(t *testing.T) {
 		//given
@@ -42,7 +38,7 @@ func TestCreateBindingUsage(t *testing.T) {
 
 		//then
 		assert.Error(t, err)
-		assert.Equal(t, bindingUsageNiller(), bind)
+		assert.Nil(t, bind)
 	})
 }
 

@@ -12,10 +12,6 @@ import (
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-func subscriptionNiller() *v1alpha1.Subscription {
-	return nil
-}
-
 func TestCreateSubscription(t *testing.T) {
 	t.Run("should create Binding, return new bindingUsage and nil", func(t *testing.T) {
 		//given

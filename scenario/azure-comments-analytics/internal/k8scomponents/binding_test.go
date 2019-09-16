@@ -13,10 +13,6 @@ import (
 	v1beta1svc "github.com/poy/service-catalog/pkg/apis/servicecatalog/v1beta1"
 )
 
-func bindingNiller() *v1beta1.ServiceBinding {
-	return nil
-}
-
 func TestCreateBinding(t *testing.T) {
 	t.Run("should create Binding, return new binding and nil", func(t *testing.T) {
 		//given
@@ -43,7 +39,7 @@ func TestCreateBinding(t *testing.T) {
 
 		//then
 		assert.Error(t, err)
-		assert.Equal(t, bindingNiller(), bind)
+		assert.Nil(t, bind)
 	})
 }
 

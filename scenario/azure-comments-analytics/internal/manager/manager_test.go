@@ -157,8 +157,8 @@ func TestCreateServiceInstances(t *testing.T) {
 		unmarshalerr := raw.UnmarshalJSON([]byte(`{"location": "westeurope","resourceGroup": "flying-seals-tmp"}`))
 		component.On("Create", serviceInstanceBody).Return(serviceInstanceBody, nil)
 		component.On("GetEventBody", "azureServiceName", "azureServiceName", "standard-s0", &raw).Return(serviceInstanceBody)
-		component.On("GetEventBody", "githubRepo", "githubRepo-12345", "default", RawExtensionNiller()).Return(serviceInstanceBody)
-		component.On("GetEventBody", "slackWorkspace", "slackWorkspace-12345", "default", RawExtensionNiller()).Return(serviceInstanceBody)
+		component.On("GetEventBody", "githubRepo", "githubRepo-12345", "default", (*runtime.RawExtension)(nil)).Return(serviceInstanceBody)
+		component.On("GetEventBody", "slackWorkspace", "slackWorkspace-12345", "default", (*runtime.RawExtension)(nil)).Return(serviceInstanceBody)
 		testedManager := manager.NewManager("namespace", "githubRepo", "slackWorkspace", "azureServiceName")
 		serviceInstanceList := serviceInstance.ServiceClassList{
 			Items: []serviceInstance.ServiceClass{
@@ -193,15 +193,14 @@ func TestCreateServiceInstances(t *testing.T) {
 
 	t.Run("should return error when Create method break up", func(t *testing.T) {
 		//given
-		//given
 		component := &componentsMocks.ServiceInstance{}
 		serviceInstanceBody := &serviceInstance.ServiceInstance{}
 		raw := runtime.RawExtension{}
 		unmarshalerr := raw.UnmarshalJSON([]byte(`{"location": "westeurope","resourceGroup": "flying-seals-tmp"}`))
 		component.On("Create", serviceInstanceBody).Return(serviceInstanceBody, apperrors.Internal("error"))
 		component.On("GetEventBody", "azureServiceName", "azureServiceName", "standard-s0", &raw).Return(serviceInstanceBody)
-		component.On("GetEventBody", "githubRepo", "githubRepo-12345", "default", RawExtensionNiller()).Return(serviceInstanceBody)
-		component.On("GetEventBody", "slackWorkspace", "slackWorkspace-12345", "default", RawExtensionNiller()).Return(serviceInstanceBody)
+		component.On("GetEventBody", "githubRepo", "githubRepo-12345", "default", (*runtime.RawExtension)(nil)).Return(serviceInstanceBody)
+		component.On("GetEventBody", "slackWorkspace", "slackWorkspace-12345", "default", (*runtime.RawExtension)(nil)).Return(serviceInstanceBody)
 		testedManager := manager.NewManager("namespace", "githubRepo", "slackWorkspace", "azureServiceName")
 		serviceInstanceList := serviceInstance.ServiceClassList{
 			Items: []serviceInstance.ServiceClass{

@@ -16,10 +16,6 @@ import (
 	ios "k8s.io/apimachinery/pkg/util/intstr"
 )
 
-func functionNiller() *v1beta1kubeless.Function {
-	return nil
-}
-
 func TestCreateFunction(t *testing.T) {
 	t.Run("should create Function, return new function and nil", func(t *testing.T) {
 		//given
@@ -46,7 +42,7 @@ func TestCreateFunction(t *testing.T) {
 
 		//then
 		assert.Error(t, err)
-		assert.Equal(t, functionNiller(), data)
+		assert.Nil(t, data)
 	})
 }
 
