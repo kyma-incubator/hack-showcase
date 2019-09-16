@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: pracaprecla
+  name: pracajulki
 spec:
   template:
     metadata:
@@ -9,8 +9,8 @@ spec:
         sidecar.istio.io/inject: "false"
     spec:
       containers:
-      - name: pracaprecla
-        image: pprecel/azure-comments-analytics:0.5.1
+      - name: pracajulki
+        image: colunira/one-click:0.0.24
         env: 
         - name: GITHUB_REPO
           value: {{ include "azure-comments-analytics.repository" . }}
@@ -18,6 +18,6 @@ spec:
           value: {{ include "azure-comments-analytics.workspace" . }}
         - name: NAMESPACE
           value: {{ .Values.jobsNamespace }}
-      serviceAccountName: precel
+      serviceAccountName: pracajulki
       restartPolicy: Never
   backoffLimit: 4

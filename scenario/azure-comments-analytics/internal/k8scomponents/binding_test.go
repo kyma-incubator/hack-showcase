@@ -50,14 +50,14 @@ func TestCreateBinding(t *testing.T) {
 func TestGetEventBodyBinding(t *testing.T) {
 	t.Run("should return ServiceBinding", func(t *testing.T) {
 		//given
-		name := "name"
+		name := "github-repo"
 		namespace := "namespace"
 		body := &v1beta1.ServiceBinding{
 			ObjectMeta: v1.ObjectMeta{
 				Name:      name + "bind",
 				Namespace: namespace,
 				Labels: map[string]string{
-					"Function": "julia-lambda",
+					"Function": name[7:] + "-lambda",
 				},
 			},
 			Spec: v1beta1svc.ServiceBindingSpec{

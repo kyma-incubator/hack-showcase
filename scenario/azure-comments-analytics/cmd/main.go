@@ -81,6 +81,7 @@ func main() {
 	err = manager.CreateServiceBindingUsages(bindingUsage)
 	fatalOnError(err)
 
+	time.Sleep(5 * time.Second)
 	//Subscription
 	bus, err := eventbus.NewForConfig(k8sConfig)
 	fatalOnError(err)

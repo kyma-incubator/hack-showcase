@@ -20,7 +20,7 @@ type FunctionInterface interface {
 //Function describe function struct
 type Function interface {
 	Create(body *v1beta1kubeless.Function) (*v1beta1kubeless.Function, apperrors.AppError)
-	GetEventBody() *v1beta1kubeless.Function
+	GetEventBody(name string) *v1beta1kubeless.Function
 }
 
 type function struct {
@@ -41,12 +41,12 @@ func (s *function) Create(body *v1beta1kubeless.Function) (*v1beta1kubeless.Func
 	return data, nil
 }
 
-func (s *function) GetEventBody() *v1beta1kubeless.Function {
+func (s *function) GetEventBody(name string) *v1beta1kubeless.Function {
 	return &v1beta1kubeless.Function{
 		ObjectMeta: v1.ObjectMeta{
-			Name:      "julia-lambda",
+			Name:      name[7:] + "-lambda",
 			Namespace: s.namespace,
-			Labels:    map[string]string{"app": "julia"},
+			Labels:    map[string]string{"app": name + "-app"},
 		},
 		Spec: v1beta1kubeless.FunctionSpec{
 			Deps: `{
@@ -74,7 +74,7 @@ func (s *function) GetEventBody() *v1beta1kubeless.Function {
 				}},
 				Selector: map[string]string{
 					"created-by": "kubeless",
-					"function":   "julia-lambda",
+					"function":   name[7:] + "-lambda",
 				},
 			},
 			Deployment: deplo.Deployment{

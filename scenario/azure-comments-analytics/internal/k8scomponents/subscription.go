@@ -35,7 +35,7 @@ func NewSubscription(sub SubscriptionInterface, nspace string) Subscription {
 func (s *subscription) Create(body *v1alpha1.Subscription) (*v1alpha1.Subscription, apperrors.AppError) {
 	data, err := s.subscriptionInterface.Create(body)
 	if err != nil {
-		return nil, apperrors.WrongInput("Can not create subscription: %s", err)
+		return nil, apperrors.WrongInput("Can not create Subscription: %s", err)
 	}
 	return data, nil
 }
@@ -43,12 +43,12 @@ func (s *subscription) Create(body *v1alpha1.Subscription) (*v1alpha1.Subscripti
 func (s *subscription) GetEventBody(id string) *v1alpha1.Subscription {
 	return &v1alpha1.Subscription{
 		ObjectMeta: v1.ObjectMeta{
-			Name:      "lambda-julia-lambda-issuesevent-v1",
+			Name:      "lambda-" + id[7:] + "-lambda-issuesevent-v1",
 			Namespace: s.namespace,
-			Labels:    map[string]string{"Function": "julia-lambda"},
+			Labels:    map[string]string{"Function": id[7:] + "-lambda"},
 		},
 		SubscriptionSpec: v1alpha1.SubscriptionSpec{
-			Endpoint:                      fmt.Sprintf("%s%s%s", "http://julia-lambda.", s.namespace, ":8080/"),
+			Endpoint:                      fmt.Sprintf("%s%s%s%s%s", "http://", id[7:], "-lambda.", s.namespace, ":8080/"),
 			EventType:                     "IssuesEvent",
 			EventTypeVersion:              "v1",
 			IncludeSubscriptionNameHeader: true,

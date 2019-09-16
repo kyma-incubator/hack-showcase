@@ -10,7 +10,7 @@ import (
 //Binding describe binding struct
 type Binding interface {
 	Create(body *v1beta1.ServiceBinding) (*v1beta1.ServiceBinding, apperrors.AppError)
-	GetEventBody(name string) *v1beta1.ServiceBinding
+	GetEventBody(name string, params ...string) *v1beta1.ServiceBinding
 }
 
 //BindingInterface describe constructors argument and containe ServiceBindings method
@@ -36,13 +36,17 @@ func (s *binding) Create(body *v1beta1.ServiceBinding) (*v1beta1.ServiceBinding,
 	return data, nil
 }
 
-func (s *binding) GetEventBody(name string) *v1beta1.ServiceBinding {
+func (s *binding) GetEventBody(name string, params ...string) *v1beta1.ServiceBinding {
+	lambda := name[7:]
+	if len(params) > 0 {
+		lambda = params[0][7:]
+	}
 	return &v1beta1.ServiceBinding{
 		ObjectMeta: v1.ObjectMeta{
 			Name:      name + "bind",
 			Namespace: s.namespace,
 			Labels: map[string]string{
-				"Function": "julia-lambda",
+				"Function": lambda + "-lambda",
 			},
 		},
 		Spec: v1beta1svc.ServiceBindingSpec{

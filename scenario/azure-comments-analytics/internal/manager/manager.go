@@ -45,13 +45,13 @@ func (s *manager) CreateServiceBindingUsages(bindingUsage k8scomponents.BindingU
 	}
 	log.Printf("SvcBindingUsage-1: %s\n", usage1.Name)
 
-	usage2, err := bindingUsage.Create(bindingUsage.GetEventBody(s.slackWorkspace, ""))
+	usage2, err := bindingUsage.Create(bindingUsage.GetEventBody(s.slackWorkspace, "", s.githubRepo))
 	if err != nil {
 		return err
 	}
 	log.Printf("SvcBindingUsage-2: %s\n", usage2.Name)
 
-	usage3, err := bindingUsage.Create(bindingUsage.GetEventBody(s.azureServiceName, ""))
+	usage3, err := bindingUsage.Create(bindingUsage.GetEventBody(s.azureServiceName, "", s.githubRepo))
 	if err != nil {
 		return err
 	}
@@ -62,12 +62,12 @@ func (s *manager) CreateServiceBindingUsages(bindingUsage k8scomponents.BindingU
 func (s *manager) CreateServiceBindings(binding k8scomponents.Binding) apperrors.AppError {
 	bind1, err := binding.Create(binding.GetEventBody(s.githubRepo))
 	log.Printf("SvcBinding-1: %s\n", bind1.Name)
-	bind2, err := binding.Create(binding.GetEventBody(s.slackWorkspace))
+	bind2, err := binding.Create(binding.GetEventBody(s.slackWorkspace, s.githubRepo))
 	if err != nil {
 		return err
 	}
 	log.Printf("SvcBinding-2: %s\n", bind2.Name)
-	bind3, err := binding.Create(binding.GetEventBody(s.azureServiceName))
+	bind3, err := binding.Create(binding.GetEventBody(s.azureServiceName, s.githubRepo))
 	if err != nil {
 		return err
 	}
@@ -76,7 +76,7 @@ func (s *manager) CreateServiceBindings(binding k8scomponents.Binding) apperrors
 }
 
 func (s *manager) CreateFunction(function k8scomponents.Function) apperrors.AppError {
-	funct, err := function.Create(function.GetEventBody())
+	funct, err := function.Create(function.GetEventBody(s.githubRepo))
 	if err != nil {
 		return err
 	}

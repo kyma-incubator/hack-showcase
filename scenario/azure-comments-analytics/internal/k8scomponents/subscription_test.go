@@ -50,15 +50,15 @@ func TestGetEventBodySubscription(t *testing.T) {
 	t.Run("should return ServiceBindingUsage", func(t *testing.T) {
 		//given
 		namespace := "namespace"
-		id := "id"
+		id := "github-repo"
 		body := &v1alpha1.Subscription{
 			ObjectMeta: v1.ObjectMeta{
-				Name:      "lambda-julia-lambda-issuesevent-v1",
+				Name:      "lambda-repo-lambda-issuesevent-v1",
 				Namespace: namespace,
 				Labels:    map[string]string{"Function": "julia-lambda"},
 			},
 			SubscriptionSpec: v1alpha1.SubscriptionSpec{
-				Endpoint:                      fmt.Sprintf("%s%s%s", "http://julia-lambda.", namespace, ":8080/"),
+				Endpoint:                      fmt.Sprintf("%s%s%s", "http://repo-lambda.", namespace, ":8080/"),
 				EventType:                     "IssuesEvent",
 				EventTypeVersion:              "v1",
 				IncludeSubscriptionNameHeader: true,

@@ -31,7 +31,7 @@ func NewServiceInstance(instance ServiceInstanceInterface, namespace string) Ser
 func (s *serviceInstance) Create(body *v1beta1svc.ServiceInstance) (*v1beta1svc.ServiceInstance, apperrors.AppError) {
 	data, err := s.instance.Create(body)
 	if err != nil {
-		return nil, apperrors.WrongInput("Can not create Function: %s", err)
+		return nil, apperrors.WrongInput("Can not create ServiceInstance: %s", err)
 	}
 	return data, nil
 }

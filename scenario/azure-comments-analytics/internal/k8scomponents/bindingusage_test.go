@@ -49,7 +49,7 @@ func TestCreateBindingUsage(t *testing.T) {
 func TestGetEventBodyBindingUsage(t *testing.T) {
 	t.Run("should return ServiceBindingUsage", func(t *testing.T) {
 		//given
-		name := "name"
+		name := "github-repo"
 		namespace := "namespace"
 		envPrefix := "prefix"
 		body := &v1alpha1.ServiceBindingUsage{
@@ -61,7 +61,7 @@ func TestGetEventBodyBindingUsage(t *testing.T) {
 				Name:      name + "bu",
 				Namespace: namespace,
 				Labels: map[string]string{
-					"Function":       "julia-lambda",
+					"Function":       name[7:] + "-lambda",
 					"ServiceBinding": name + "bind",
 				},
 			},
@@ -70,7 +70,7 @@ func TestGetEventBodyBindingUsage(t *testing.T) {
 					Name: name + "bind",
 				},
 				UsedBy: v1alpha1svc.LocalReferenceByKindAndName{
-					Name: "julia-lambda",
+					Name: name[7:] + "-lambda",
 					Kind: "function",
 				},
 				Parameters: &v1alpha1svc.Parameters{

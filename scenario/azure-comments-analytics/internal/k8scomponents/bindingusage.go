@@ -10,7 +10,7 @@ import (
 //BindingUsage describe bindingUsage struct
 type BindingUsage interface {
 	Create(body *v1alpha1.ServiceBindingUsage) (*v1alpha1.ServiceBindingUsage, apperrors.AppError)
-	GetEventBody(name string, envPrefix string) *v1alpha1.ServiceBindingUsage
+	GetEventBody(name string, envPrefix string, params ...string) *v1alpha1.ServiceBindingUsage
 }
 
 //BindingUsageInterface describe constructors argument and containe ServiceBindingUsages method
@@ -36,7 +36,11 @@ func (s *bindingUsage) Create(body *v1alpha1.ServiceBindingUsage) (*v1alpha1.Ser
 	return data, nil
 }
 
-func (s *bindingUsage) GetEventBody(name string, envPrefix string) *v1alpha1.ServiceBindingUsage {
+func (s *bindingUsage) GetEventBody(name string, envPrefix string, params ...string) *v1alpha1.ServiceBindingUsage {
+	lambda := name[7:]
+	if len(params) > 0 {
+		lambda = params[0][7:]
+	}
 	return &v1alpha1.ServiceBindingUsage{
 		TypeMeta: v1.TypeMeta{
 			Kind:       "ServiceBindingUsage",
@@ -46,7 +50,7 @@ func (s *bindingUsage) GetEventBody(name string, envPrefix string) *v1alpha1.Ser
 			Name:      name + "bu",
 			Namespace: s.namespace,
 			Labels: map[string]string{
-				"Function":       "julia-lambda",
+				"Function":       lambda + "-lambda",
 				"ServiceBinding": name + "bind",
 			},
 		},
@@ -55,7 +59,7 @@ func (s *bindingUsage) GetEventBody(name string, envPrefix string) *v1alpha1.Ser
 				Name: name + "bind",
 			},
 			UsedBy: v1alpha1svc.LocalReferenceByKindAndName{
-				Name: "julia-lambda",
+				Name: lambda + "-lambda",
 				Kind: "function",
 			},
 			Parameters: &v1alpha1svc.Parameters{
