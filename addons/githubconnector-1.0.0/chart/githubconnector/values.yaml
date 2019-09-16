@@ -16,3 +16,5 @@ githubURL: repos/:owner/:repo
 githubToken: sampleToken
 
 kymaAddress: kyma.address.com
+receiving: true
+sending: true

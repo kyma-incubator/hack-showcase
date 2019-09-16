@@ -7,16 +7,11 @@
         "title": "GitHub repository",
         "description" : "Link to GitHub repository in proper format: repos/:owner/:repo or orgs/:org"
       },
-      "githubToken": {
-        "type":"string",
-        "title":"Token",
-        "description": "The GitHub repository token, which you can find on this site: https://auth-github-connector.herokuapp.com/"
-      },
       "kymaAddress": {
         "type":"string",
         "title":"Kyma address",
         "description": "Kyma domain address needed to create a webhook on GitHub."
       }
     },
-    "required":["githubToken","githubURL","kymaAddress"]
+    "required":["githubURL","kymaAddress"]
   }
