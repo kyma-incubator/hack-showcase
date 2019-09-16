@@ -37,13 +37,20 @@ func (_m *Binding) Create(body *v1beta1.ServiceBinding) (*v1beta1.ServiceBinding
 	return r0, r1
 }
 
-// GetEventBody provides a mock function with given fields: name
-func (_m *Binding) GetEventBody(name string) *v1beta1.ServiceBinding {
-	ret := _m.Called(name)
+// GetEventBody provides a mock function with given fields: name, params
+func (_m *Binding) GetEventBody(name string, params ...string) *v1beta1.ServiceBinding {
+	_va := make([]interface{}, len(params))
+	for _i := range params {
+		_va[_i] = params[_i]
+	}
+	var _ca []interface{}
+	_ca = append(_ca, name)
+	_ca = append(_ca, _va...)
+	ret := _m.Called(_ca...)
 
 	var r0 *v1beta1.ServiceBinding
-	if rf, ok := ret.Get(0).(func(string) *v1beta1.ServiceBinding); ok {
-		r0 = rf(name)
+	if rf, ok := ret.Get(0).(func(string, ...string) *v1beta1.ServiceBinding); ok {
+		r0 = rf(name, params...)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*v1beta1.ServiceBinding)

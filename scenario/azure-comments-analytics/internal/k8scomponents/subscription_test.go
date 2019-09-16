@@ -42,7 +42,7 @@ func TestCreateSubscription(t *testing.T) {
 
 		//then
 		assert.Error(t, err)
-		assert.Equal(t, subscriptionNiller(), data)
+		assert.Nil(t, data)
 	})
 }
 
@@ -53,12 +53,12 @@ func TestGetEventBodySubscription(t *testing.T) {
 		id := "github-repo"
 		body := &v1alpha1.Subscription{
 			ObjectMeta: v1.ObjectMeta{
-				Name:      "lambda-repo-lambda-issuesevent-v1",
+				Name:      "lambda-" + id[7:] + "-lambda-issuesevent-v1",
 				Namespace: namespace,
-				Labels:    map[string]string{"Function": "julia-lambda"},
+				Labels:    map[string]string{"Function": id[7:] + "-lambda"},
 			},
 			SubscriptionSpec: v1alpha1.SubscriptionSpec{
-				Endpoint:                      fmt.Sprintf("%s%s%s", "http://repo-lambda.", namespace, ":8080/"),
+				Endpoint:                      fmt.Sprintf("%s%s%s%s%s", "http://", id[7:], "-lambda.", namespace, ":8080/"),
 				EventType:                     "IssuesEvent",
 				EventTypeVersion:              "v1",
 				IncludeSubscriptionNameHeader: true,

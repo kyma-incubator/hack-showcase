@@ -37,13 +37,13 @@ func (_m *Function) Create(body *v1beta1.Function) (*v1beta1.Function, apperrors
 	return r0, r1
 }
 
-// GetEventBody provides a mock function with given fields:
-func (_m *Function) GetEventBody() *v1beta1.Function {
-	ret := _m.Called()
+// GetEventBody provides a mock function with given fields: name
+func (_m *Function) GetEventBody(name string) *v1beta1.Function {
+	ret := _m.Called(name)
 
 	var r0 *v1beta1.Function
-	if rf, ok := ret.Get(0).(func() *v1beta1.Function); ok {
-		r0 = rf()
+	if rf, ok := ret.Get(0).(func(string) *v1beta1.Function); ok {
+		r0 = rf(name)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*v1beta1.Function)

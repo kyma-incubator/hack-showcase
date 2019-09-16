@@ -45,15 +45,15 @@ func TestCreateFunction(t *testing.T) {
 }
 
 func TestGetEventBodyFunction(t *testing.T) {
-	// TODO
 	// t.Run("should return Function", func(t *testing.T) {
 	// 	//given
 	// 	namespace := "namespace"
+	// 	name := "exampleLambdaName"
 	// 	body := &v1beta1kubeless.Function{
 	// 		ObjectMeta: v1.ObjectMeta{
-	// 			Name:      "julia-lambda",
+	// 			Name:      name[7:] + "-lambda",
 	// 			Namespace: namespace,
-	// 			Labels:    map[string]string{"app": "julia"},
+	// 			Labels:    map[string]string{"app": name + "-app"},
 	// 		},
 	// 		Spec: v1beta1kubeless.FunctionSpec{
 	// 			Deps: `{
@@ -81,7 +81,7 @@ func TestGetEventBodyFunction(t *testing.T) {
 	// 				}},
 	// 				Selector: map[string]string{
 	// 					"created-by": "kubeless",
-	// 					"function":   "julia-lambda",
+	// 					"function":   name[7:] + "-lambda",
 	// 				},
 	// 			},
 	// 			Deployment: deplo.Deployment{
@@ -101,7 +101,7 @@ func TestGetEventBodyFunction(t *testing.T) {
 	// 	mockClient := &mocks.FunctionInterface{}
 
 	// 	//when
-	// 	function := k8scomponents.NewFunction(mockClient, namespace).GetEventBody()
+	// 	function := k8scomponents.NewFunction(mockClient, namespace).GetEventBody(name)
 
 	// 	//then
 	// 	assert.Equal(t, body, function)
