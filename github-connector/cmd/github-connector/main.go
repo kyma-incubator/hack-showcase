@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"net/http"
 	"os"
 
@@ -16,8 +17,13 @@ import (
 
 func main() {
 	log.Info("Registration started.")
+	receive := flag.Bool("receiving", true, "Specifies if Connector should subscribe events from GitHub")
+	send := flag.Bool("sending", true, "Specifies if Connector should send events to GitHub")
+	flag.Parse()
+	log.Infof("Events receiving: %t", *receive)
+	log.Infof("Events sending: %t", *send)
 
-	builder := registration.NewPayloadBuilder(registration.NewFileReader(), os.Getenv("GITHUB_CONNECTOR_NAME"), os.Getenv("GITHUB_TOKEN"))
+	builder := registration.NewPayloadBuilder(registration.NewFileReader(), os.Getenv("GITHUB_CONNECTOR_NAME"), os.Getenv("GITHUB_TOKEN"), *receive, *send)
 	id, err := registration.NewApplicationRegistryClient(builder, 5, 10).RegisterService()
 
 	if err != nil {
@@ -27,19 +33,21 @@ func main() {
 		"id": id,
 	}).Info("Service registered")
 
-	webHook := hook.NewHook(os.Getenv("KYMA_ADDRESS"))
-	hookSecret, err := webHook.Create(os.Getenv("GITHUB_TOKEN"), os.Getenv("GITHUB_REPO_URL"))
-	if err != nil {
-		log.Fatalf("Fatal error: %s", err.Error())
+	if *receive {
+		webHook := hook.NewHook(os.Getenv("KYMA_ADDRESS"))
+		hookSecret, err := webHook.Create(os.Getenv("GITHUB_TOKEN"), os.Getenv("GITHUB_REPO_URL"))
+		if err != nil {
+			log.Fatalf("Fatal error: %s", err.Error())
+		}
+		log.Info("Webhook created!")
+
+		kyma := events.NewSender(&http.Client{}, events.NewValidator(), "http://event-publish-service.kyma-system:8080/v1/events")
+		webhook := handlers.NewWebHookHandler(
+			github.NewReceivingEventsWrapper(hookSecret),
+			kyma,
+		)
+
+		http.HandleFunc("/webhook", webhook.HandleWebhook)
+		log.Info(http.ListenAndServe(":"+os.Getenv("PORT"), nil))
 	}
-	log.Info("Webhook created!")
-
-	kyma := events.NewSender(&http.Client{}, events.NewValidator(), "http://event-publish-service.kyma-system:8080/v1/events")
-	webhook := handlers.NewWebHookHandler(
-		github.NewReceivingEventsWrapper(hookSecret),
-		kyma,
-	)
-
-	http.HandleFunc("/webhook", webhook.HandleWebhook)
-	log.Info(http.ListenAndServe(":"+os.Getenv("PORT"), nil))
 }
