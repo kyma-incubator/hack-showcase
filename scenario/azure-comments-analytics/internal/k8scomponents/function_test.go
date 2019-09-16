@@ -8,6 +8,12 @@ import (
 	"github.com/kyma-incubator/hack-showcase/scenario/azure-comments-analytics/internal/k8scomponents"
 	"github.com/kyma-incubator/hack-showcase/scenario/azure-comments-analytics/internal/k8scomponents/mocks"
 	"github.com/stretchr/testify/assert"
+	autoscaling "k8s.io/api/autoscaling/v2beta1"
+	core "k8s.io/api/core/v1"
+	pts "k8s.io/api/core/v1"
+	deplo "k8s.io/api/extensions/v1beta1"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	ios "k8s.io/apimachinery/pkg/util/intstr"
 )
 
 func functionNiller() *v1beta1kubeless.Function {
@@ -45,68 +51,63 @@ func TestCreateFunction(t *testing.T) {
 }
 
 func TestGetEventBodyFunction(t *testing.T) {
-	// t.Run("should return Function", func(t *testing.T) {
-	// 	//given
-	// 	namespace := "namespace"
-	// 	name := "exampleLambdaName"
-	// 	body := &v1beta1kubeless.Function{
-	// 		ObjectMeta: v1.ObjectMeta{
-	// 			Name:      name[7:] + "-lambda",
-	// 			Namespace: namespace,
-	// 			Labels:    map[string]string{"app": name + "-app"},
-	// 		},
-	// 		Spec: v1beta1kubeless.FunctionSpec{
-	// 			Deps: `{
-	// 				"dependencies": {
-	// 			  "axios": "^0.19.0",
-	// 			  "slackify-markdown": "^1.1.1"
-	// 			}
-	// 		  }`,
-	// 			Function:            funcCode,
-	// 			FunctionContentType: "text",
-	// 			Handler:             "handler.main",
-	// 			Timeout:             "",
-	// 			HorizontalPodAutoscaler: autoscaling.HorizontalPodAutoscaler{
-	// 				Spec: autoscaling.HorizontalPodAutoscalerSpec{
-	// 					MaxReplicas: 0,
-	// 				},
-	// 			},
-	// 			Runtime: "nodejs8",
-	// 			ServiceSpec: core.ServiceSpec{
-	// 				Ports: []core.ServicePort{core.ServicePort{
-	// 					Name:       "http-function-port",
-	// 					Port:       8080,
-	// 					Protocol:   "TCP",
-	// 					TargetPort: ios.FromInt(8080),
-	// 				}},
-	// 				Selector: map[string]string{
-	// 					"created-by": "kubeless",
-	// 					"function":   name[7:] + "-lambda",
-	// 				},
-	// 			},
-	// 			Deployment: deplo.Deployment{
-	// 				Spec: deplo.DeploymentSpec{
-	// 					Template: pts.PodTemplateSpec{
-	// 						Spec: pts.PodSpec{
-	// 							Containers: []pts.Container{pts.Container{
-	// 								Name:      "",
-	// 								Resources: pts.ResourceRequirements{},
-	// 							}},
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 		},
-	// 	}
-	// 	mockClient := &mocks.FunctionInterface{}
+	t.Run("should return Function", func(t *testing.T) {
+		//given
+		namespace := "namespace"
+		name := "exampleLambdaName"
+		body := &v1beta1kubeless.Function{
+			ObjectMeta: v1.ObjectMeta{
+				Name:      name[7:] + "-lambda",
+				Namespace: namespace,
+				Labels:    map[string]string{"app": name + "-app"},
+			},
+			Spec: v1beta1kubeless.FunctionSpec{
+				Deps:                `{ "dependencies": { "axios": "^0.19.0", "slackify-markdown": "^1.1.1"}}`,
+				Function:            funcCode,
+				FunctionContentType: "text",
+				Handler:             "handler.main",
+				Timeout:             "",
+				HorizontalPodAutoscaler: autoscaling.HorizontalPodAutoscaler{
+					Spec: autoscaling.HorizontalPodAutoscalerSpec{
+						MaxReplicas: 0,
+					},
+				},
+				Runtime: "nodejs8",
+				ServiceSpec: core.ServiceSpec{
+					Ports: []core.ServicePort{core.ServicePort{
+						Name:       "http-function-port",
+						Port:       8080,
+						Protocol:   "TCP",
+						TargetPort: ios.FromInt(8080),
+					}},
+					Selector: map[string]string{
+						"created-by": "kubeless",
+						"function":   name[7:] + "-lambda",
+					},
+				},
+				Deployment: deplo.Deployment{
+					Spec: deplo.DeploymentSpec{
+						Template: pts.PodTemplateSpec{
+							Spec: pts.PodSpec{
+								Containers: []pts.Container{pts.Container{
+									Name:      "",
+									Resources: pts.ResourceRequirements{},
+								}},
+							},
+						},
+					},
+				},
+			},
+		}
+		mockClient := &mocks.FunctionInterface{}
 
-	// 	//when
-	// 	function := k8scomponents.NewFunction(mockClient, namespace).GetEventBody(name)
+		//when
+		function := k8scomponents.NewFunction(mockClient, namespace).GetEventBody(name)
 
-	// 	//then
-	// 	assert.Equal(t, body, function)
+		//then
+		assert.Equal(t, body, function)
 
-	// })
+	})
 }
 
 const funcCode = `const axios = require("axios");

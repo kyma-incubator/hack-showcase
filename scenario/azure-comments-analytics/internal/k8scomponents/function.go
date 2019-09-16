@@ -49,12 +49,7 @@ func (s *function) GetEventBody(name string) *v1beta1kubeless.Function {
 			Labels:    map[string]string{"app": name + "-app"},
 		},
 		Spec: v1beta1kubeless.FunctionSpec{
-			Deps: `{
-				"dependencies": {
-			  "axios": "^0.19.0",
-			  "slackify-markdown": "^1.1.1"
-			}
-		  }`,
+			Deps:                `{ "dependencies": { "axios": "^0.19.0", "slackify-markdown": "^1.1.1"}}`,
 			Function:            funcCode,
 			FunctionContentType: "text",
 			Handler:             "handler.main",
