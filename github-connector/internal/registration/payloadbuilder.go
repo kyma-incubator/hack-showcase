@@ -30,7 +30,7 @@ type payloadBuilder struct {
 
 //NewPayloadBuilder creates a serviceDetailsPayloadBuilder instance
 func NewPayloadBuilder(fr FileReader, appName string, token string, receive bool, send bool) payloadBuilder {
-	return payloadBuilder{fileReader: fr, applicationName: appName, githubToken: token}
+	return payloadBuilder{fileReader: fr, applicationName: appName, githubToken: token, receiveEvents: receive, sendEvents: send}
 }
 
 //Build creates a ServiceDetails structure with provided API specification URL
@@ -41,20 +41,21 @@ func (r payloadBuilder) Build() (ServiceDetails, error) {
 		Name:        r.applicationName,
 		Description: "GitHub Connector, which can be used for communication and handling events from GitHub",
 		API: &API{
-			TargetURL: "https://api.github.com",
-			//RequestParameters: &RequestParameters{Headers: &Headers{CustomHeader: []string{"token " + r.githubToken}}},
+			TargetURL:         "https://api.github.com",
+			RequestParameters: &RequestParameters{Headers: &Headers{CustomHeader: []string{"token " + r.githubToken}}},
 		},
 	}
-
-	file, err := r.fileReader.Read("githubasyncapi.json")
-	if err != nil {
-		return ServiceDetails{}, apperrors.Internal("While reading githubasyncapi.json: %s", err)
+	if r.receiveEvents {
+		file, err := r.fileReader.Read("githubasyncapi.json")
+		if err != nil {
+			return ServiceDetails{}, apperrors.Internal("While reading githubasyncapi.json: %s", err)
+		}
+		jsonBody.Events = &Events{Spec: file}
 	}
-	jsonBody.Events = &Events{Spec: file}
 
 	if r.sendEvents {
 		jsonBody.API.SpecificationURL = specificationURL
-		jsonBody.API.RequestParameters.Headers.CustomHeader = []string{"token " + r.githubToken}
+		//jsonBody.API.RequestParameters.Headers.CustomHeader = []string{"token " + r.githubToken}
 	}
 	return jsonBody, nil
 }

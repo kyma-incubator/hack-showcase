@@ -49,5 +49,9 @@ func main() {
 
 		http.HandleFunc("/webhook", webhook.HandleWebhook)
 		log.Info(http.ListenAndServe(":"+os.Getenv("PORT"), nil))
+	} else {
+		log.Info("Waiting for input...")
+		for {
+		}
 	}
 }
