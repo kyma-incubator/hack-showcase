@@ -1,4 +1,4 @@
-{{ if eq .Values.receiving true }}}
+{{ if eq .Values.receiving true }}
 apiVersion: gateway.kyma-project.io/v1alpha2
 kind: Api
 metadata:
@@ -13,4 +13,4 @@ spec:
       name: {{ include "slack-connector-chart.release.name" . }}
       port: {{ .Values.service.port }}
     hostname: {{ include "slack-connector-chart.release.name" . }}
-{{ end }}}
+{{ end }}
