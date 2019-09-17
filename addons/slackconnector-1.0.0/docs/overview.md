@@ -17,19 +17,21 @@ Now you can start using the Slack Connector. Add channel ID to lambda environmen
 
 ### Default plan
 
-In this plan you have to provide only only necessary values.
+This plan allows to both handle events incoming from connected Slack workspaces to an exposed endpoint and POST jsons to Slack API through Application Gateway, which automatically adds all necessary informations needed to communicate with Slack.
 
-| PARAMETER NAME | DISPLAY NAME | TYPE | DESCRIPTION | REQUIRED |
-|----------------|--------------|------|-------------|:--------:|
-| `slackBotToken` | Bot Token | `string` | The Slack workspace token, which you can find on this site: <https://auth-slack.herokuapp.com/> | yes |
-| `workspaceName` | Workspace Name | `string` | The name of workspace application will be installed to. | yes |
+### Event sending plan
 
-### Dev plan
+This plan allows only to POST jsons to Slack API through Application Gateway, which automatically adds all necessary informations needed to communicate with Slack.
 
-In this plan you can provide your own image of application, e.g. for testing purposes.
+### Event receiving plans
+
+This plan allows only to handle events incoming from connected Slack repositories to an exposed endpoint.
+
+### Fields
 
 | PARAMETER NAME | DISPLAY NAME | TYPE | DESCRIPTION | REQUIRED |
 |----------------|--------------|------|-------------|:--------:|
 | `image` | Docker Image | `string` | Specify the Slack Connector image you want to use. | no |
 | `slackBotToken` | Bot Token | `string` | The Slack workspace token, which you can find on this site: <https://auth-slack.herokuapp.com/> | yes |
-| `workspaceName` | Workspace Name | `string` | The name of workspace application will be installed to. | yes |
+| `workspaceName` | Workspace Name | `string` | The name of workspace application will be connected to. | yes |
+| `slackSecret` | Slack Signing Secret | `string` | The Slack app's signing secret used for validating requests coming from Slack by verifying its unique signature. You can find it in the app's Basic Information. | yes |
