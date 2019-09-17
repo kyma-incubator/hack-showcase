@@ -1,6 +1,0 @@
-name: dev
-id: 5f402d37-4fe8-4ded-a917-38707bec6872
-description: "Plan for installing/uninstalling the Slack Connector made for testing purposes"
-displayName: Dev
-bindable: false
-free: true

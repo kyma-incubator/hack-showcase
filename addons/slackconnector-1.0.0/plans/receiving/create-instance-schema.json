@@ -2,20 +2,10 @@
     "$schema": "http://json-schema.org/draft-04/schema#",
     "type": "object",
     "properties": {
-      "slackBotToken": {
-        "type":"string",
-        "title":"Bot Token",
-        "description": "The Slack workspace token, which you can find on this site: https://auth-slack.herokuapp.com/"
-      },
       "workspaceName": {
         "type":"string",
         "title":"Workspace Name",
         "description": "The name of workspace application will be installed to."
-      },
-      "image": {
-        "type":"string",
-        "title":"Docker image",
-        "description": "Specify the Slack Connector image you want to use."
       },
       "slackSecret": {
         "type":"string",
@@ -23,5 +13,5 @@
         "description": "The Slack app's signing secret used for validating requests coming from Slack by verifying its unique signature. You can find it in the app's Basic Information."
       }
     },
-    "required":["slackBotToken", "workspaceName", "slackSecret"] 
+    "required":["workspaceName", "slackSecret"]
   }

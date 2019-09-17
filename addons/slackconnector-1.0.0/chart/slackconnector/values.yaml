@@ -14,3 +14,6 @@ kymaAddress: adress
 slackBotToken: token
 workspaceName: name
 slackSecret: secret
+
+receiving: true
+sending: true

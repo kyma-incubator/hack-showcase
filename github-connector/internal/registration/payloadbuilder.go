@@ -30,7 +30,13 @@ type payloadBuilder struct {
 
 //NewPayloadBuilder creates a serviceDetailsPayloadBuilder instance
 func NewPayloadBuilder(fr FileReader, appName string, token string, receive bool, send bool) payloadBuilder {
-	return payloadBuilder{fileReader: fr, applicationName: appName, githubToken: token, receiveEvents: receive, sendEvents: send}
+	return payloadBuilder{
+		fileReader:      fr,
+		applicationName: appName,
+		githubToken:     token,
+		receiveEvents:   receive,
+		sendEvents:      send,
+	}
 }
 
 //Build creates a ServiceDetails structure with provided API specification URL
