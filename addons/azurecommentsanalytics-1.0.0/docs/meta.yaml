@@ -1,0 +1,9 @@
+docs:
+  - template:
+      displayName: "Documentation for testing-0.0.1"
+      description: "Overall documentation"
+      sources:
+        - type: markdown
+          name: docs
+          mode: package
+          filter: (docs/(.*?)\.md$)|(docs/assets)

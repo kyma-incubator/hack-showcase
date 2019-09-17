@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: hack-showcase-{{ include "azure-comments-analytics.repository" . }}
+spec:
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "false"
+    spec:
+      containers:
+      - name: hack-showcase-{{ include "azure-comments-analytics.repository" . }}
+        image: kymaflyingseals/azure-comments-analytics:0.1.0
+        env: 
+        - name: GITHUB_REPO
+          value: {{ include "azure-comments-analytics.repository" . }}
+        - name: SLACK_WORKSPACE
+          value: {{ include "azure-comments-analytics.workspace" . }}
+        - name: NAMESPACE
+          value: {{ .Release.Namespace }}
+      serviceAccountName: {{ include "azure-comments-analytics.repository" . }}
+      restartPolicy: Never
+  backoffLimit: 0
