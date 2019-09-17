@@ -5,8 +5,6 @@ import (
 	"os"
 	"time"
 
-	//kubeless "github.com/kubeless/kubeless/pkg/utils"
-
 	kubeless "github.com/kubeless/kubeless/pkg/client/clientset/versioned"
 	eventbus "github.com/kyma-project/kyma/components/event-bus/generated/push/clientset/versioned"
 	svcBind "github.com/kyma-project/kyma/components/service-binding-usage-controller/pkg/client/clientset/versioned/typed/servicecatalog/v1alpha1"
@@ -16,7 +14,6 @@ import (
 	"github.com/kyma-incubator/hack-showcase/scenario/azure-comments-analytics/internal/manager"
 	"github.com/vrischmann/envconfig"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	fake "k8s.io/client-go/kubernetes/fake"
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
 	restclient "k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
@@ -33,11 +30,10 @@ func main() {
 	namespace := os.Getenv("NAMESPACE")
 	azure := "azure-text-analytics"
 
-	fake.NewSimpleClientset()
-
-	log.Printf("Nazwa repo: %s\n", githubRepo)
-	log.Printf("Nazwa workspace: %s\n", slackWorkspace)
+	log.Printf("Github url: %s\n", githubRepo)
+	log.Printf("Slack workspace: %s\n", slackWorkspace)
 	log.Printf("Workspace: %s", namespace)
+	log.Printf("Azure: %s", azure)
 
 	var cfg Config
 	err := envconfig.InitWithPrefix(&cfg, "APP")
