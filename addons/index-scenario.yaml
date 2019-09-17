@@ -1,0 +1,7 @@
+apiVersion: v1
+entries:
+  githubconnector:
+    - name: azurecommentsanalytics
+      description: "Azure Comments Analytics Scenario"
+      version: 1.0.0
+      
