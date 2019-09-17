@@ -47,10 +47,6 @@ func (r payloadBuilder) Build() (ServiceDetails, error) {
 		Provider:    "Kyma",
 		Name:        r.applicationName,
 		Description: "Slack Connector, which is used for registering Slack API in Kyma",
-		API: &API{
-			TargetURL:         "https://slack.com/api",
-			RequestParameters: &RequestParameters{Headers: &Headers{CustomHeader: []string{}}},
-		},
 	}
 	if r.receiveEvents {
 		file, err := r.fileReader.Read("slackasyncapi.json")
@@ -61,8 +57,12 @@ func (r payloadBuilder) Build() (ServiceDetails, error) {
 	}
 
 	if r.sendEvents {
-		jsonBody.API.SpecificationURL = SpecificationURL
-		jsonBody.API.RequestParameters.Headers.CustomHeader = []string{"Bearer " + r.slackBotToken}
+
+		jsonBody.API = &API{
+			TargetURL:         "https://slack.com/api",
+			RequestParameters: &RequestParameters{Headers: &Headers{CustomHeader: []string{"Bearer " + r.slackBotToken}}},
+			SpecificationURL:  SpecificationURL,
+		}
 	}
 	return jsonBody, nil
 }

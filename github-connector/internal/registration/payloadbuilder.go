@@ -46,10 +46,6 @@ func (r payloadBuilder) Build() (ServiceDetails, error) {
 		Provider:    "Kyma",
 		Name:        r.applicationName,
 		Description: "GitHub Connector, which can be used for communication and handling events from GitHub",
-		API: &API{
-			TargetURL:         "https://api.github.com",
-			RequestParameters: &RequestParameters{Headers: &Headers{CustomHeader: []string{}}},
-		},
 	}
 	if r.receiveEvents {
 		file, err := r.fileReader.Read("githubasyncapi.json")
@@ -60,8 +56,11 @@ func (r payloadBuilder) Build() (ServiceDetails, error) {
 	}
 
 	if r.sendEvents {
-		jsonBody.API.SpecificationURL = specificationURL
-		jsonBody.API.RequestParameters.Headers.CustomHeader = []string{"token " + r.githubToken}
+		jsonBody.API = &API{
+			TargetURL:         "https://api.github.com",
+			RequestParameters: &RequestParameters{Headers: &Headers{CustomHeader: []string{"token " + r.githubToken}}},
+			SpecificationURL:  specificationURL,
+		}
 	}
 	return jsonBody, nil
 }
