@@ -13,14 +13,14 @@
 
 ## Overview
 
-The GitHub Connector is a component which allows interaction with GitHub API from inside of Kyma environment. The simplest way to install GitHub Connector in Kyma is to install it as an Add-On.
+The GitHub Connector is a component which allows interaction with the GitHub API from inside of Kyma environment. The simplest way to install the GitHub Connector in Kyma is to install it as an Add-On.
 
 ## Installation in Kyma as an Add-On
 
 ### Prerequisites
 
 - GitHub App with desired privileges installed to the destination repository or organization. To create a new application, go [here](https://github.com/settings/apps) or access **Github Apps** in the account through **Settings** in **Developer settings**.
-- Access to Kyma Console
+- Access to the Kyma Console
 
 > **NOTE**: It is best to create or use an additional service account (e.g. Your-Project-Name-Github-Connector) since any actions that the application performs are signed with the name of the user that the token belongs to.
 
@@ -42,10 +42,10 @@ The GitHub Connector is a component which allows interaction with GitHub API fro
 3. Go to the Namespace in which to install the Connector.
 4. Find the Add-On in the Service Catalog and click it.
 5. Click **Add** and select the installation plan. Fill in all required fields and click **Create Instance**.
-6. Go to the **Services** tab in the Service Catalog. After provisioning and automatic registration of application's resources, the Service Class of GitHub Connector appears here.
+6. Go to the **Services** tab in the Service Catalog. After provisioning and automatic registration of application's resources, the Service Class of the GitHub Connector appears here.
 7. Click the Service Class to enter its specification screen, click **Add once**, and then **Create Instance**.
 
-After you have created the service, you can easily bind it to the Lambda Function to allow the use of GitHub Events.
+To send requests to the GitHub API, bind the service you created to the Lambda Function.
 
 ### Verification
 
@@ -81,6 +81,6 @@ To correctly remove all GitHub Connector resources, you must delete them in orde
 
     >**CAUTION:** Make sure the Kyma address is in the correct format. It consists of the domain name and cannot begin with the dot. For example, `35.187.32.214.xip.io`.
 
-    >**NOTE:** To define the Namespace in which to install chart, add the `--namespace` flag to the command. To define the GitHub URL, add the `--set githubURL` flag. If you want to crate a webhook on one repository, use the construction `repos/:owner/:repo`. If you want create a webhook on the whole organization you have to use `orgs/:org`. To provide the security token use the `--set githubToken` flag.
+    >**NOTE:** To define the Namespace in which to install chart, add the `--namespace` flag to the command. To define the GitHub URL, add the `--set githubURL` flag. To crate a webhook on one repository, use the construction `repos/:owner/:repo`. To create a webhook on the whole organization, use `orgs/:org`. To provide the security token, use the `--set githubToken` flag.
 
 3. For further steps, see [configuration page](/docs/github-connector/configuration.md).

@@ -12,7 +12,7 @@
 
 ## Overview
 
-The Slack Connector is a component which allows interaction with Slack API from inside of Kyma environment. The simplest way to install Slack Connector in Kyma is to install it as an Add-On.
+The Slack Connector is a component which allows interaction with the Slack API from inside of Kyma environment. The simplest way to install the Slack Connector in Kyma is to install it as an Add-On.
 
 ## Installation in Kyma as an Add-On
 
@@ -39,10 +39,10 @@ The Slack Connector is a component which allows interaction with Slack API from 
 3. Go to the Namespace in which to install the Connector.
 4. Find the Add-On in the Service Catalog and click it.
 5. Click **Add** and select the installation plan. Fill in all required fields and click **Create Instance**.
-6. Go to the **Services** tab in the Service Catalog. After provisioning and automatic registration of application's resources, the Service Class of Slack Connector appears here.
+6. Go to the **Services** tab in the Service Catalog. After provisioning and automatic registration of application's resources, the Service Class of the Slack Connector appears here.
 7. Click the Service Class to enter its specification screen, click **Add once**, and then **Create Instance**.
 
-After you have created the service, you can easily bind it to the Lambda Function to allow the use of Slack Events.
+To send requests to the Slack API, bind the service you created to the Lambda Function.
 
 ### Verification
 
@@ -80,4 +80,5 @@ To correctly remove all Slack Connector resources, you must delete them in order
     ```
 
     >**CAUTION:** Make sure that the Kyma address is in the correct format. It consists of the domain name and omits the dot at the beginning. For example, `35.187.32.214.xip.io`.
-    >**NOTE:** To define Namespace in which to install chart, add the `--namespace` flag.
+
+    >**NOTE:** To define Namespace in which to install chart, add the `--namespace` flag. To provide security token, add the `--set slackBotToken` flag.
