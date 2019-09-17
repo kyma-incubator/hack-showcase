@@ -4,6 +4,7 @@ import (
 	"flag"
 	"net/http"
 	"os"
+	"sync"
 
 	"github.com/kyma-incubator/hack-showcase/slack-connector/internal/events"
 	"github.com/kyma-incubator/hack-showcase/slack-connector/internal/handlers"
@@ -40,9 +41,9 @@ func main() {
 		http.HandleFunc("/webhook", webhook.HandleWebhook)
 		log.Info(http.ListenAndServe(":"+os.Getenv("PORT"), nil))
 	} else {
-		log.Info("Waiting for input...")
-		for {
-
-		}
+		log.Info("Happy Slack-Connecting!")
+		var wg sync.WaitGroup
+		wg.Add(1)
+		wg.Wait()
 	}
 }
