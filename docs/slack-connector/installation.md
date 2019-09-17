@@ -63,7 +63,7 @@ To correctly remove all Slack Connector resources, you must delete them in order
 
 ### Prerequisites
 
-- Connection to Kyma cluster
+- Connection to the Kyma cluster
 - Slack Connector Docker image
 
 ### Steps
