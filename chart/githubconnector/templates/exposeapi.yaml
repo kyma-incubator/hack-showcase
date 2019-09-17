@@ -1,3 +1,4 @@
+{{ if eq .Values.receiving true }}
 apiVersion: gateway.kyma-project.io/v1alpha2
 kind: Api
 metadata:
@@ -12,3 +13,4 @@ spec:
       name: {{ .Release.Name }}
       port: {{ .Values.service.port }}
     hostname: {{ .Release.Name }}.{{ .Values.kymaAddress }}
+{{ end }}
