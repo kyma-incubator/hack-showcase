@@ -31,7 +31,7 @@ func NewBindingUsage(scatalog BindingUsageInterface, nspace string) BindingUsage
 func (s *bindingUsage) Create(body *v1alpha1.ServiceBindingUsage) (*v1alpha1.ServiceBindingUsage, apperrors.AppError) {
 	data, err := s.catalog.Create(body)
 	if err != nil {
-		return nil, apperrors.WrongInput("Can not create ServiceBindingUsage: %s", err)
+		return nil, apperrors.Internal("Can not create ServiceBindingUsage: %s", err)
 	}
 	return data, nil
 }

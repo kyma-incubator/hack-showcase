@@ -36,7 +36,7 @@ func NewFunction(functionInterface FunctionInterface, nspace string) Function {
 func (s *function) Create(body *v1beta1kubeless.Function) (*v1beta1kubeless.Function, apperrors.AppError) {
 	data, err := s.functionInterface.Create(body)
 	if err != nil {
-		return nil, apperrors.WrongInput("Can not create Function: %s", err)
+		return nil, apperrors.Internal("Can not create Function: %s", err)
 	}
 	return data, nil
 }

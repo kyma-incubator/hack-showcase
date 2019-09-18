@@ -35,7 +35,7 @@ func NewSubscription(sub SubscriptionInterface, nspace string) Subscription {
 func (s *subscription) Create(body *v1alpha1.Subscription) (*v1alpha1.Subscription, apperrors.AppError) {
 	data, err := s.subscriptionInterface.Create(body)
 	if err != nil {
-		return nil, apperrors.WrongInput("Can not create Subscription: %s", err)
+		return nil, apperrors.Internal("Can not create Subscription: %s", err)
 	}
 	return data, nil
 }
