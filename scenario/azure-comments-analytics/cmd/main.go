@@ -2,7 +2,6 @@ package main
 
 import (
 	"log"
-	"os"
 	"time"
 
 	kubeless "github.com/kubeless/kubeless/pkg/client/clientset/versioned"
@@ -19,25 +18,27 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 )
 
+const azureClassName = "azure-text-analytics"
+
 // Config holds application configuration
 type Config struct {
-	Kubeconfig string `envconfig:"optional"`
+	Kubeconfig     string `envconfig:"APP,optional"`
+	GithubURL      string `envconfig:"GITHUB_REPO"`
+	SlackWorkspace string `envconfig:"SLACK_WORKSPACE"`
+	Namespace      string `envconfig:"NAMESPACE"`
 }
 
 func main() {
-	githubRepo := os.Getenv("GITHUB_REPO")
-	slackWorkspace := os.Getenv("SLACK_WORKSPACE")
-	namespace := os.Getenv("NAMESPACE")
-	azure := "azure-text-analytics"
-
-	log.Printf("Github url: %s\n", githubRepo)
-	log.Printf("Slack workspace: %s\n", slackWorkspace)
-	log.Printf("Workspace: %s", namespace)
-	log.Printf("Azure: %s", azure)
 
 	var cfg Config
-	err := envconfig.InitWithPrefix(&cfg, "APP")
+	err := envconfig.Init(&cfg)
 	fatalOnError(err)
+
+	log.Printf("Kubeconfig: %s", cfg.Kubeconfig)
+	log.Printf("Github url: %s\n", cfg.GithubURL)
+	log.Printf("Slack workspace: %s\n", cfg.SlackWorkspace)
+	log.Printf("Workspace: %s", cfg.Namespace)
+	log.Printf("Azure: %s", azureClassName)
 
 	// general k8s config
 	k8sConfig, err := newRestClientConfig(cfg.Kubeconfig)
@@ -46,34 +47,34 @@ func main() {
 	//ServiceCatalog Client
 	svcClient, err := svcCatalog.NewForConfig(k8sConfig)
 	fatalOnError(err)
-	svcList, err := svcClient.ServiceClasses(namespace).List(v1.ListOptions{})
+	svcList, err := svcClient.ServiceClasses(cfg.Namespace).List(v1.ListOptions{})
 	fatalOnError(err)
 
 	//Create scenario Manager
-	manager := manager.NewManager(namespace, githubRepo, slackWorkspace, azure)
+	manager := manager.NewManager(cfg.Namespace, cfg.GithubURL, cfg.SlackWorkspace, cfg.Namespace)
 
 	//ServiceInstance
-	instance := wrappers.NewServiceCatalogClient(svcClient).Instance(namespace)
+	instance := wrappers.NewServiceCatalogClient(svcClient).Instance(cfg.Namespace)
 	err = manager.CreateServiceInstances(instance, svcList)
 	fatalOnError(err)
 
 	//Function
 	kubeless, err := kubeless.NewForConfig(k8sConfig)
 	fatalOnError(err)
-	function := wrappers.NewKubelessWrapper(kubeless.Kubeless()).Function(namespace)
+	function := wrappers.NewKubelessWrapper(kubeless.Kubeless()).Function(cfg.Namespace)
 	err = manager.CreateFunction(function)
 	fatalOnError(err)
 
 	time.Sleep(5 * time.Second)
 	//ServiceBindings
-	bindingManager := wrappers.NewServiceCatalogClient(svcClient).Binding(namespace)
+	bindingManager := wrappers.NewServiceCatalogClient(svcClient).Binding(cfg.Namespace)
 	err = manager.CreateServiceBindings(bindingManager)
 	fatalOnError(err)
 
 	//ServiceBindingUsages
 	catalogClient, err := svcBind.NewForConfig(k8sConfig)
 	fatalOnError(err)
-	bindingUsage := wrappers.NewKymaServiceCatalogWrapper(catalogClient).BindingUsage(namespace)
+	bindingUsage := wrappers.NewKymaServiceCatalogWrapper(catalogClient).BindingUsage(cfg.Namespace)
 	err = manager.CreateServiceBindingUsages(bindingUsage)
 	fatalOnError(err)
 
@@ -83,7 +84,7 @@ func main() {
 	//Subscription
 	bus, err := eventbus.NewForConfig(k8sConfig)
 	fatalOnError(err)
-	subscription := wrappers.NewSubscriptionManager(bus.Eventing()).Subscription(namespace)
+	subscription := wrappers.NewSubscriptionManager(bus.Eventing()).Subscription(cfg.Namespace)
 	err = manager.CreateSubscription(subscription)
 	fatalOnError(err)
 
