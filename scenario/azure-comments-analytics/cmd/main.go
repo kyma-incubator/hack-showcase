@@ -65,7 +65,9 @@ func main() {
 	err = manager.CreateFunction(function)
 	fatalOnError(err)
 
+	//Other components have to wait for end of creating function
 	time.Sleep(5 * time.Second)
+
 	//ServiceBindings
 	bindingManager := wrappers.NewServiceCatalogClient(svcClient).Binding(cfg.Namespace)
 	err = manager.CreateServiceBindings(bindingManager)
