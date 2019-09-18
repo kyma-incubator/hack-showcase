@@ -22,22 +22,22 @@ type manager struct {
 	slackWorkspace   string
 	azureServiceName string
 	namespace        string
-	lambdaName 		 string
+	lambdaName       string
 }
 
 //NewManager create and return new manager struct
 func NewManager(namespace string, githubRepo string, slackWorkspace string, azureServiceName string) Manager {
 	return &manager{
-		namespace: namespace, 
-		githubRepo: githubRepo, 
-		slackWorkspace: slackWorkspace, 
+		namespace:        namespace,
+		githubRepo:       githubRepo,
+		slackWorkspace:   slackWorkspace,
 		azureServiceName: azureServiceName,
-		lambdaName: githubRepo[7:] + "-lambda" //Due to Kyma's requirements lambda's name has to be short - it's trimmed here
+		lambdaName:       githubRepo[7:] + "-lambda", //Due to Kyma's requirements lambda's name has to be short - it's trimmed here
 	}
 }
 
 func (s *manager) CreateSubscription(subscription k8scomponents.Subscription) apperrors.AppError {
-	subscribe, err := subscription.Create(subscription.GetEventBody(s.githubRepo))
+	subscribe, err := subscription.Create(subscription.GetEventBody(s.githubRepo, s.lambdaName))
 	if err != nil {
 		return err
 	}
@@ -67,17 +67,17 @@ func (s *manager) CreateServiceBindingUsages(bindingUsage k8scomponents.BindingU
 }
 
 func (s *manager) CreateServiceBindings(binding k8scomponents.Binding) apperrors.AppError {
-	bind1, err := binding.Create(binding.GetEventBody(s.githubRepo))
+	bind1, err := binding.Create(binding.GetEventBody(s.githubRepo, s.lambdaName))
 	if err != nil {
 		return err
 	}
 	log.Printf("SvcBinding-1: %s\n", bind1.Name)
-	bind2, err := binding.Create(binding.GetEventBody(s.slackWorkspace, s.githubRepo))
+	bind2, err := binding.Create(binding.GetEventBody(s.slackWorkspace, s.lambdaName))
 	if err != nil {
 		return err
 	}
 	log.Printf("SvcBinding-2: %s\n", bind2.Name)
-	bind3, err := binding.Create(binding.GetEventBody(s.azureServiceName, s.githubRepo))
+	bind3, err := binding.Create(binding.GetEventBody(s.azureServiceName, s.lambdaName))
 	if err != nil {
 		return err
 	}
@@ -86,7 +86,7 @@ func (s *manager) CreateServiceBindings(binding k8scomponents.Binding) apperrors
 }
 
 func (s *manager) CreateFunction(function k8scomponents.Function) apperrors.AppError {
-	funct, err := function.Create(function.GetEventBody(s.githubRepo))
+	funct, err := function.Create(function.GetEventBody(s.githubRepo, s.lambdaName))
 	if err != nil {
 		return err
 	}

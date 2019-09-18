@@ -11,7 +11,7 @@ import (
 //Subscription define subscription struct
 type Subscription interface {
 	Create(body *v1alpha1.Subscription) (*v1alpha1.Subscription, apperrors.AppError)
-	GetEventBody(id string) *v1alpha1.Subscription
+	GetEventBody(id string, lambdaName string) *v1alpha1.Subscription
 }
 
 //SubscriptionInterface describe constructors argument and containe Subscriptions method
@@ -40,15 +40,15 @@ func (s *subscription) Create(body *v1alpha1.Subscription) (*v1alpha1.Subscripti
 	return data, nil
 }
 
-func (s *subscription) GetEventBody(id string) *v1alpha1.Subscription {
+func (s *subscription) GetEventBody(id string, lambdaName string) *v1alpha1.Subscription {
 	return &v1alpha1.Subscription{
 		ObjectMeta: v1.ObjectMeta{
-			Name:      "lambda-" + id[7:] + "-lambda-issuesevent-v1",
+			Name:      lambdaName + "-lambda-issuesevent-v1",
 			Namespace: s.namespace,
-			Labels:    map[string]string{"Function": id[7:] + "-lambda"},
+			Labels:    map[string]string{"Function": lambdaName},
 		},
 		SubscriptionSpec: v1alpha1.SubscriptionSpec{
-			Endpoint:                      fmt.Sprintf("%s%s%s%s%s", "http://", id[7:], "-lambda.", s.namespace, ":8080/"),
+			Endpoint:                      fmt.Sprintf("%s%s%s%s%s", "http://", lambdaName, ".", s.namespace, ":8080/"),
 			EventType:                     "IssuesEvent",
 			EventTypeVersion:              "v1",
 			IncludeSubscriptionNameHeader: true,
