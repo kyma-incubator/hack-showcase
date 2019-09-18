@@ -40,7 +40,7 @@ func NewManager(namespace string, githubRepo string, slackWorkspace string, azur
 }
 
 func (s *manager) CreateSubscription(subscription k8scomponents.Subscription) apperrors.AppError {
-	subscribe, err := subscription.Create(subscription.GetEventBody(s.githubRepo, s.lambdaName))
+	subscribe, err := subscription.Create(subscription.Prepare(s.githubRepo, s.lambdaName))
 	if err != nil {
 		return err
 	}
@@ -49,19 +49,19 @@ func (s *manager) CreateSubscription(subscription k8scomponents.Subscription) ap
 }
 
 func (s *manager) CreateServiceBindingUsages(bindingUsage k8scomponents.BindingUsage) apperrors.AppError {
-	usage1, err := bindingUsage.Create(bindingUsage.GetEventBody(s.githubRepo, "GITHUB_", s.lambdaName))
+	usage1, err := bindingUsage.Create(bindingUsage.Prepare(s.githubRepo, "GITHUB_", s.lambdaName))
 	if err != nil {
 		return err
 	}
 	log.Printf("SvcBindingUsage-1: %s\n", usage1.Name)
 
-	usage2, err := bindingUsage.Create(bindingUsage.GetEventBody(s.slackWorkspace, "", s.lambdaName))
+	usage2, err := bindingUsage.Create(bindingUsage.Prepare(s.slackWorkspace, "", s.lambdaName))
 	if err != nil {
 		return err
 	}
 	log.Printf("SvcBindingUsage-2: %s\n", usage2.Name)
 
-	usage3, err := bindingUsage.Create(bindingUsage.GetEventBody(s.azureServiceName, "", s.lambdaName))
+	usage3, err := bindingUsage.Create(bindingUsage.Prepare(s.azureServiceName, "", s.lambdaName))
 	if err != nil {
 		return err
 	}
@@ -70,17 +70,17 @@ func (s *manager) CreateServiceBindingUsages(bindingUsage k8scomponents.BindingU
 }
 
 func (s *manager) CreateServiceBindings(binding k8scomponents.Binding) apperrors.AppError {
-	bind1, err := binding.Create(binding.GetEventBody(s.githubRepo, s.lambdaName))
+	bind1, err := binding.Create(binding.Prepare(s.githubRepo, s.lambdaName))
 	if err != nil {
 		return err
 	}
 	log.Printf("SvcBinding-1: %s\n", bind1.Name)
-	bind2, err := binding.Create(binding.GetEventBody(s.slackWorkspace, s.lambdaName))
+	bind2, err := binding.Create(binding.Prepare(s.slackWorkspace, s.lambdaName))
 	if err != nil {
 		return err
 	}
 	log.Printf("SvcBinding-2: %s\n", bind2.Name)
-	bind3, err := binding.Create(binding.GetEventBody(s.azureServiceName, s.lambdaName))
+	bind3, err := binding.Create(binding.Prepare(s.azureServiceName, s.lambdaName))
 	if err != nil {
 		return err
 	}
@@ -89,7 +89,7 @@ func (s *manager) CreateServiceBindings(binding k8scomponents.Binding) apperrors
 }
 
 func (s *manager) CreateFunction(function k8scomponents.Function) apperrors.AppError {
-	funct, err := function.Create(function.GetEventBody(s.githubRepo, s.lambdaName))
+	funct, err := function.Create(function.Prepare(s.githubRepo, s.lambdaName))
 	if err != nil {
 		return err
 	}
@@ -102,14 +102,14 @@ func (s *manager) CreateServiceInstances(instance k8scomponents.ServiceInstance,
 	//Looking for ServiceClass with matching prefix on which basis ServiceInstance should be created.
 	for _, serv := range serviceClassList.Items {
 		if strings.HasPrefix(serv.Spec.ExternalName, s.githubRepo) {
-			svc, err := instance.Create(instance.GetEventBody(s.githubRepo, serv.Spec.ExternalName, "default", nil))
+			svc, err := instance.Create(instance.Prepare(s.githubRepo, serv.Spec.ExternalName, "default", nil))
 			if err != nil {
 				return err
 			}
 			log.Printf("ServiceInstance-1: %s", svc.Name)
 		}
 		if strings.HasPrefix(serv.Spec.ExternalName, s.slackWorkspace) {
-			svc, err := instance.Create(instance.GetEventBody(s.slackWorkspace, serv.Spec.ExternalName, "default", nil))
+			svc, err := instance.Create(instance.Prepare(s.slackWorkspace, serv.Spec.ExternalName, "default", nil))
 			if err != nil {
 				return err
 			}
@@ -121,7 +121,7 @@ func (s *manager) CreateServiceInstances(instance k8scomponents.ServiceInstance,
 			if err != nil {
 				return apperrors.Internal("%s", err)
 			}
-			svc, err := instance.Create(instance.GetEventBody(s.azureServiceName, serv.Spec.ExternalName, "standard-s0", &raw))
+			svc, err := instance.Create(instance.Prepare(s.azureServiceName, serv.Spec.ExternalName, "standard-s0", &raw))
 			if err != nil {
 				return apperrors.Internal("%s", err)
 			}

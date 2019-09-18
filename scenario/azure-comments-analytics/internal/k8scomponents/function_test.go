@@ -51,9 +51,10 @@ func TestGetEventBodyFunction(t *testing.T) {
 		//given
 		namespace := "namespace"
 		name := "exampleLambdaName"
+		lambdaName := "lambdaName"
 		body := &v1beta1kubeless.Function{
 			ObjectMeta: v1.ObjectMeta{
-				Name:      name[7:] + "-lambda",
+				Name:      lambdaName,
 				Namespace: namespace,
 				Labels:    map[string]string{"app": name + "-app"},
 			},
@@ -78,7 +79,7 @@ func TestGetEventBodyFunction(t *testing.T) {
 					}},
 					Selector: map[string]string{
 						"created-by": "kubeless",
-						"function":   name[7:] + "-lambda",
+						"function":   lambdaName,
 					},
 				},
 				Deployment: deplo.Deployment{
@@ -98,7 +99,7 @@ func TestGetEventBodyFunction(t *testing.T) {
 		mockClient := &mocks.FunctionInterface{}
 
 		//when
-		function := k8scomponents.NewFunction(mockClient, namespace).GetEventBody(name)
+		function := k8scomponents.NewFunction(mockClient, namespace).Prepare(name, lambdaName)
 
 		//then
 		assert.Equal(t, body, function)

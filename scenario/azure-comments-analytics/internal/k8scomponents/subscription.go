@@ -11,7 +11,7 @@ import (
 //Subscription define subscription struct
 type Subscription interface {
 	Create(body *v1alpha1.Subscription) (*v1alpha1.Subscription, apperrors.AppError)
-	GetEventBody(id string, lambdaName string) *v1alpha1.Subscription
+	Prepare(id string, lambdaName string) *v1alpha1.Subscription
 }
 
 //SubscriptionInterface describe constructors argument and containe Subscriptions method
@@ -40,7 +40,7 @@ func (s *subscription) Create(body *v1alpha1.Subscription) (*v1alpha1.Subscripti
 	return data, nil
 }
 
-func (s *subscription) GetEventBody(id string, lambdaName string) *v1alpha1.Subscription {
+func (s *subscription) Prepare(id string, lambdaName string) *v1alpha1.Subscription {
 	return &v1alpha1.Subscription{
 		ObjectMeta: v1.ObjectMeta{
 			Name:      lambdaName + "-lambda-issuesevent-v1",

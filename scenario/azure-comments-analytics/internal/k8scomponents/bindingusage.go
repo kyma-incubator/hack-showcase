@@ -10,7 +10,7 @@ import (
 //BindingUsage describe bindingUsage struct
 type BindingUsage interface {
 	Create(body *v1alpha1.ServiceBindingUsage) (*v1alpha1.ServiceBindingUsage, apperrors.AppError)
-	GetEventBody(name string, envPrefix string, lambdaName string) *v1alpha1.ServiceBindingUsage
+	Prepare(name string, envPrefix string, lambdaName string) *v1alpha1.ServiceBindingUsage
 }
 
 //BindingUsageInterface describe constructors argument and containe ServiceBindingUsages method
@@ -36,7 +36,7 @@ func (s *bindingUsage) Create(body *v1alpha1.ServiceBindingUsage) (*v1alpha1.Ser
 	return data, nil
 }
 
-func (s *bindingUsage) GetEventBody(name string, envPrefix string, lambdaName string) *v1alpha1.ServiceBindingUsage {
+func (s *bindingUsage) Prepare(name string, envPrefix string, lambdaName string) *v1alpha1.ServiceBindingUsage {
 	return &v1alpha1.ServiceBindingUsage{
 		TypeMeta: v1.TypeMeta{
 			Kind:       "ServiceBindingUsage",

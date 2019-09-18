@@ -68,7 +68,7 @@ func TestGetEventBodyServiceInstance(t *testing.T) {
 		mockClient := &mocks.ServiceInstanceInterface{}
 
 		//when
-		binding := k8scomponents.NewServiceInstance(mockClient, namespace).GetEventBody(name, serviceClassExternalName, plan, &raw)
+		binding := k8scomponents.NewServiceInstance(mockClient, namespace).Prepare(name, serviceClassExternalName, plan, &raw)
 
 		//then
 		assert.Equal(t, body, binding)

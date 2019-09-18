@@ -38,8 +38,8 @@ func (_m *ServiceInstance) Create(body *v1beta1.ServiceInstance) (*v1beta1.Servi
 	return r0, r1
 }
 
-// GetEventBody provides a mock function with given fields: name, serviceClassExternalName, plan, parameters
-func (_m *ServiceInstance) GetEventBody(name string, serviceClassExternalName string, plan string, parameters *runtime.RawExtension) *v1beta1.ServiceInstance {
+// Prepare provides a mock function with given fields: name, serviceClassExternalName, plan, parameters
+func (_m *ServiceInstance) Prepare(name string, serviceClassExternalName string, plan string, parameters *runtime.RawExtension) *v1beta1.ServiceInstance {
 	ret := _m.Called(name, serviceClassExternalName, plan, parameters)
 
 	var r0 *v1beta1.ServiceInstance

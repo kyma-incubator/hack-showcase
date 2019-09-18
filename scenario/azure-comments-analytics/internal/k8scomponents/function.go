@@ -20,7 +20,7 @@ type FunctionInterface interface {
 //Function describe function struct
 type Function interface {
 	Create(body *v1beta1kubeless.Function) (*v1beta1kubeless.Function, apperrors.AppError)
-	GetEventBody(name string, lambdaName string) *v1beta1kubeless.Function
+	Prepare(name string, lambdaName string) *v1beta1kubeless.Function
 }
 
 type function struct {
@@ -41,7 +41,7 @@ func (s *function) Create(body *v1beta1kubeless.Function) (*v1beta1kubeless.Func
 	return data, nil
 }
 
-func (s *function) GetEventBody(name string, lambdaName string) *v1beta1kubeless.Function {
+func (s *function) Prepare(name string, lambdaName string) *v1beta1kubeless.Function {
 	return &v1beta1kubeless.Function{
 		ObjectMeta: v1.ObjectMeta{
 			Name:      lambdaName,

@@ -47,13 +47,14 @@ func TestGetEventBodyBinding(t *testing.T) {
 	t.Run("should return ServiceBinding", func(t *testing.T) {
 		//given
 		name := "github-repo"
+		lambdaName := "lambdaName"
 		namespace := "namespace"
 		body := &v1beta1.ServiceBinding{
 			ObjectMeta: v1.ObjectMeta{
 				Name:      name + "bind",
 				Namespace: namespace,
 				Labels: map[string]string{
-					"Function": name[7:] + "-lambda",
+					"Function": lambdaName,
 				},
 			},
 			Spec: v1beta1svc.ServiceBindingSpec{
@@ -65,7 +66,7 @@ func TestGetEventBodyBinding(t *testing.T) {
 		mockClient := &mocks.BindingInterface{}
 
 		//when
-		binding := k8scomponents.NewBinding(mockClient, namespace).GetEventBody(name)
+		binding := k8scomponents.NewBinding(mockClient, namespace).Prepare(name, lambdaName)
 
 		//then
 		assert.Equal(t, body, binding)

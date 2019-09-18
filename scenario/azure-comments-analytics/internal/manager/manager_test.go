@@ -22,7 +22,7 @@ func TestCreateSubscription(t *testing.T) {
 		component := &componentsMocks.Subscription{}
 		subscriptionBody := &subscriptions.Subscription{}
 		component.On("Create", subscriptionBody).Return(subscriptionBody, nil)
-		component.On("GetEventBody", "githubRepo").Return(subscriptionBody)
+		component.On("Prepare", "githubRepo", "epo-lambda").Return(subscriptionBody)
 		testedManager := manager.NewManager("namespace", "githubRepo", "slackWorkspace", "azureServiceName")
 		//when
 		err := testedManager.CreateSubscription(component)
@@ -36,7 +36,7 @@ func TestCreateSubscription(t *testing.T) {
 		component := &componentsMocks.Subscription{}
 		subscriptionBody := &subscriptions.Subscription{}
 		component.On("Create", subscriptionBody).Return(subscriptionBody, apperrors.Internal("error"))
-		component.On("GetEventBody", "githubRepo").Return(subscriptionBody)
+		component.On("Prepare", "githubRepo", "epo-lambda").Return(subscriptionBody)
 		testedManager := manager.NewManager("namespace", "githubRepo", "slackWorkspace", "azureServiceName")
 		//when
 		err := testedManager.CreateSubscription(component)
@@ -52,9 +52,9 @@ func TestCreateServiceBindingUsages(t *testing.T) {
 		component := &componentsMocks.BindingUsage{}
 		bindingUsageBody := &serviceBindingUsages.ServiceBindingUsage{}
 		component.On("Create", bindingUsageBody).Return(bindingUsageBody, nil)
-		component.On("GetEventBody", "githubRepo", "GITHUB_").Return(bindingUsageBody)
-		component.On("GetEventBody", "slackWorkspace", "", "githubRepo").Return(bindingUsageBody)
-		component.On("GetEventBody", "azureServiceName", "", "githubRepo").Return(bindingUsageBody)
+		component.On("Prepare", "githubRepo", "GITHUB_", "epo-lambda").Return(bindingUsageBody)
+		component.On("Prepare", "slackWorkspace", "", "epo-lambda").Return(bindingUsageBody)
+		component.On("Prepare", "azureServiceName", "", "epo-lambda").Return(bindingUsageBody)
 		testedManager := manager.NewManager("namespace", "githubRepo", "slackWorkspace", "azureServiceName")
 		//when
 		err := testedManager.CreateServiceBindingUsages(component)
@@ -68,9 +68,9 @@ func TestCreateServiceBindingUsages(t *testing.T) {
 		component := &componentsMocks.BindingUsage{}
 		bindingUsageBody := &serviceBindingUsages.ServiceBindingUsage{}
 		component.On("Create", bindingUsageBody).Return(bindingUsageBody, apperrors.Internal("error"))
-		component.On("GetEventBody", "githubRepo", "GITHUB_").Return(bindingUsageBody)
-		component.On("GetEventBody", "slackWorkspace", "", "githubRepo").Return(bindingUsageBody)
-		component.On("GetEventBody", "azureServiceName", "", "githubRepo").Return(bindingUsageBody)
+		component.On("Prepare", "githubRepo", "GITHUB_", "epo-lambda").Return(bindingUsageBody)
+		component.On("Prepare", "slackWorkspace", "", "epo-lambda").Return(bindingUsageBody)
+		component.On("Prepare", "azureServiceName", "", "epo-lambda").Return(bindingUsageBody)
 		testedManager := manager.NewManager("namespace", "githubRepo", "slackWorkspace", "azureServiceName")
 		//when
 		err := testedManager.CreateServiceBindingUsages(component)
@@ -86,9 +86,9 @@ func TestCreateServiceBindings(t *testing.T) {
 		component := &componentsMocks.Binding{}
 		bindingBody := &bindings.ServiceBinding{}
 		component.On("Create", bindingBody).Return(bindingBody, nil)
-		component.On("GetEventBody", "githubRepo").Return(bindingBody)
-		component.On("GetEventBody", "slackWorkspace", "githubRepo").Return(bindingBody)
-		component.On("GetEventBody", "azureServiceName", "githubRepo").Return(bindingBody)
+		component.On("Prepare", "githubRepo", "epo-lambda").Return(bindingBody)
+		component.On("Prepare", "slackWorkspace", "epo-lambda").Return(bindingBody)
+		component.On("Prepare", "azureServiceName", "epo-lambda").Return(bindingBody)
 		testedManager := manager.NewManager("namespace", "githubRepo", "slackWorkspace", "azureServiceName")
 		//when
 		err := testedManager.CreateServiceBindings(component)
@@ -102,9 +102,9 @@ func TestCreateServiceBindings(t *testing.T) {
 		component := &componentsMocks.Binding{}
 		bindingBody := &bindings.ServiceBinding{}
 		component.On("Create", bindingBody).Return(bindingBody, apperrors.Internal("error"))
-		component.On("GetEventBody", "githubRepo").Return(bindingBody)
-		component.On("GetEventBody", "slackWorkspace", "githubRepo").Return(bindingBody)
-		component.On("GetEventBody", "azureServiceName", "githubRepo").Return(bindingBody)
+		component.On("Prepare", "githubRepo", "epo-lambda").Return(bindingBody)
+		component.On("Prepare", "slackWorkspace", "epo-lambda").Return(bindingBody)
+		component.On("Prepare", "azureServiceName", "epo-lambda").Return(bindingBody)
 		testedManager := manager.NewManager("namespace", "githubRepo", "slackWorkspace", "azureServiceName")
 		//when
 		err := testedManager.CreateServiceBindings(component)
@@ -120,7 +120,7 @@ func TestCreateFunction(t *testing.T) {
 		component := &componentsMocks.Function{}
 		subscriptionBody := &function.Function{}
 		component.On("Create", subscriptionBody).Return(subscriptionBody, nil)
-		component.On("GetEventBody", "githubRepo").Return(subscriptionBody)
+		component.On("Prepare", "githubRepo", "epo-lambda").Return(subscriptionBody)
 		testedManager := manager.NewManager("namespace", "githubRepo", "slackWorkspace", "azureServiceName")
 		//when
 		err := testedManager.CreateFunction(component)
@@ -134,7 +134,7 @@ func TestCreateFunction(t *testing.T) {
 		component := &componentsMocks.Function{}
 		subscriptionBody := &function.Function{}
 		component.On("Create", subscriptionBody).Return(subscriptionBody, apperrors.Internal("error"))
-		component.On("GetEventBody", "githubRepo").Return(subscriptionBody)
+		component.On("Prepare", "githubRepo", "epo-lambda").Return(subscriptionBody)
 		testedManager := manager.NewManager("namespace", "githubRepo", "slackWorkspace", "azureServiceName")
 		//when
 		err := testedManager.CreateFunction(component)
@@ -142,10 +142,6 @@ func TestCreateFunction(t *testing.T) {
 		//then
 		assert.Error(t, err)
 	})
-}
-
-func RawExtensionNiller() *runtime.RawExtension {
-	return nil
 }
 
 func TestCreateServiceInstances(t *testing.T) {
@@ -156,9 +152,9 @@ func TestCreateServiceInstances(t *testing.T) {
 		raw := runtime.RawExtension{}
 		unmarshalerr := raw.UnmarshalJSON([]byte(`{"location": "westeurope","resourceGroup": "flying-seals-tmp"}`))
 		component.On("Create", serviceInstanceBody).Return(serviceInstanceBody, nil)
-		component.On("GetEventBody", "azureServiceName", "azureServiceName", "standard-s0", &raw).Return(serviceInstanceBody)
-		component.On("GetEventBody", "githubRepo", "githubRepo-12345", "default", (*runtime.RawExtension)(nil)).Return(serviceInstanceBody)
-		component.On("GetEventBody", "slackWorkspace", "slackWorkspace-12345", "default", (*runtime.RawExtension)(nil)).Return(serviceInstanceBody)
+		component.On("Prepare", "azureServiceName", "azureServiceName", "standard-s0", &raw).Return(serviceInstanceBody)
+		component.On("Prepare", "githubRepo", "githubRepo-12345", "default", (*runtime.RawExtension)(nil)).Return(serviceInstanceBody)
+		component.On("Prepare", "slackWorkspace", "slackWorkspace-12345", "default", (*runtime.RawExtension)(nil)).Return(serviceInstanceBody)
 		testedManager := manager.NewManager("namespace", "githubRepo", "slackWorkspace", "azureServiceName")
 		serviceInstanceList := serviceInstance.ServiceClassList{
 			Items: []serviceInstance.ServiceClass{
@@ -198,9 +194,9 @@ func TestCreateServiceInstances(t *testing.T) {
 		raw := runtime.RawExtension{}
 		unmarshalerr := raw.UnmarshalJSON([]byte(`{"location": "westeurope","resourceGroup": "flying-seals-tmp"}`))
 		component.On("Create", serviceInstanceBody).Return(serviceInstanceBody, apperrors.Internal("error"))
-		component.On("GetEventBody", "azureServiceName", "azureServiceName", "standard-s0", &raw).Return(serviceInstanceBody)
-		component.On("GetEventBody", "githubRepo", "githubRepo-12345", "default", (*runtime.RawExtension)(nil)).Return(serviceInstanceBody)
-		component.On("GetEventBody", "slackWorkspace", "slackWorkspace-12345", "default", (*runtime.RawExtension)(nil)).Return(serviceInstanceBody)
+		component.On("Prepare", "azureServiceName", "azureServiceName", "standard-s0", &raw).Return(serviceInstanceBody)
+		component.On("Prepare", "githubRepo", "githubRepo-12345", "default", (*runtime.RawExtension)(nil)).Return(serviceInstanceBody)
+		component.On("Prepare", "slackWorkspace", "slackWorkspace-12345", "default", (*runtime.RawExtension)(nil)).Return(serviceInstanceBody)
 		testedManager := manager.NewManager("namespace", "githubRepo", "slackWorkspace", "azureServiceName")
 		serviceInstanceList := serviceInstance.ServiceClassList{
 			Items: []serviceInstance.ServiceClass{

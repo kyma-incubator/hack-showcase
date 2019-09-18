@@ -14,7 +14,7 @@ type ServiceInstanceInterface interface {
 
 //ServiceInstance describe serviceInstance struct
 type ServiceInstance interface {
-	GetEventBody(name string, serviceClassExternalName string, plan string, parameters *runtime.RawExtension) *v1beta1svc.ServiceInstance
+	Prepare(name string, serviceClassExternalName string, plan string, parameters *runtime.RawExtension) *v1beta1svc.ServiceInstance
 	Create(body *v1beta1svc.ServiceInstance) (*v1beta1svc.ServiceInstance, apperrors.AppError)
 }
 
@@ -36,7 +36,7 @@ func (s *serviceInstance) Create(body *v1beta1svc.ServiceInstance) (*v1beta1svc.
 	return data, nil
 }
 
-func (s *serviceInstance) GetEventBody(name string, serviceClassExternalName string, plan string, parameters *runtime.RawExtension) *v1beta1svc.ServiceInstance {
+func (s *serviceInstance) Prepare(name string, serviceClassExternalName string, plan string, parameters *runtime.RawExtension) *v1beta1svc.ServiceInstance {
 	return &v1beta1svc.ServiceInstance{
 		ObjectMeta: v1.ObjectMeta{
 			Name:      name + "inst",

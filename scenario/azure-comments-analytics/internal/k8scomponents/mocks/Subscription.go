@@ -37,13 +37,13 @@ func (_m *Subscription) Create(body *v1alpha1.Subscription) (*v1alpha1.Subscript
 	return r0, r1
 }
 
-// GetEventBody provides a mock function with given fields: id
-func (_m *Subscription) GetEventBody(id string) *v1alpha1.Subscription {
-	ret := _m.Called(id)
+// Prepare provides a mock function with given fields: id, lambdaName
+func (_m *Subscription) Prepare(id string, lambdaName string) *v1alpha1.Subscription {
+	ret := _m.Called(id, lambdaName)
 
 	var r0 *v1alpha1.Subscription
-	if rf, ok := ret.Get(0).(func(string) *v1alpha1.Subscription); ok {
-		r0 = rf(id)
+	if rf, ok := ret.Get(0).(func(string, string) *v1alpha1.Subscription); ok {
+		r0 = rf(id, lambdaName)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*v1alpha1.Subscription)

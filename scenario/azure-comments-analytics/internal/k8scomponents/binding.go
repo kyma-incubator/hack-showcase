@@ -10,7 +10,7 @@ import (
 //Binding describe binding struct
 type Binding interface {
 	Create(body *v1beta1.ServiceBinding) (*v1beta1.ServiceBinding, apperrors.AppError)
-	GetEventBody(name string, lambdaName string) *v1beta1.ServiceBinding
+	Prepare(name string, lambdaName string) *v1beta1.ServiceBinding
 }
 
 //BindingInterface describe constructors argument and containe ServiceBindings method
@@ -36,7 +36,7 @@ func (s *binding) Create(body *v1beta1.ServiceBinding) (*v1beta1.ServiceBinding,
 	return data, nil
 }
 
-func (s *binding) GetEventBody(name string, lambdaName string) *v1beta1.ServiceBinding {
+func (s *binding) Prepare(name string, lambdaName string) *v1beta1.ServiceBinding {
 	return &v1beta1.ServiceBinding{
 		ObjectMeta: v1.ObjectMeta{
 			Name:      name + "bind",

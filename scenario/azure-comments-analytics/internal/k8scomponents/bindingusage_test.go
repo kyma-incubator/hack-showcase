@@ -48,6 +48,7 @@ func TestGetEventBodyBindingUsage(t *testing.T) {
 		name := "github-repo"
 		namespace := "namespace"
 		envPrefix := "prefix"
+		lambdaName := "lambdaName"
 		body := &v1alpha1.ServiceBindingUsage{
 			TypeMeta: v1.TypeMeta{
 				Kind:       "ServiceBindingUsage",
@@ -57,7 +58,7 @@ func TestGetEventBodyBindingUsage(t *testing.T) {
 				Name:      name + "bu",
 				Namespace: namespace,
 				Labels: map[string]string{
-					"Function":       name[7:] + "-lambda",
+					"Function":       lambdaName,
 					"ServiceBinding": name + "bind",
 				},
 			},
@@ -66,7 +67,7 @@ func TestGetEventBodyBindingUsage(t *testing.T) {
 					Name: name + "bind",
 				},
 				UsedBy: v1alpha1svc.LocalReferenceByKindAndName{
-					Name: name[7:] + "-lambda",
+					Name: lambdaName,
 					Kind: "function",
 				},
 				Parameters: &v1alpha1svc.Parameters{
@@ -79,7 +80,7 @@ func TestGetEventBodyBindingUsage(t *testing.T) {
 		mockClient := &mocks.BindingUsageInterface{}
 
 		//when
-		binding := k8scomponents.NewBindingUsage(mockClient, namespace).GetEventBody(name, envPrefix)
+		binding := k8scomponents.NewBindingUsage(mockClient, namespace).Prepare(name, envPrefix, lambdaName)
 
 		//then
 		assert.Equal(t, body, binding)

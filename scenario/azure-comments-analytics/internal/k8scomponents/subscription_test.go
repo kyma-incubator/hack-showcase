@@ -42,19 +42,20 @@ func TestCreateSubscription(t *testing.T) {
 	})
 }
 
-func TestGetEventBodySubscription(t *testing.T) {
+func TestPrepare(t *testing.T) {
 	t.Run("should return ServiceBindingUsage", func(t *testing.T) {
 		//given
 		namespace := "namespace"
 		id := "github-repo"
+		lambdaName := "name"
 		body := &v1alpha1.Subscription{
 			ObjectMeta: v1.ObjectMeta{
-				Name:      "lambda-" + id[7:] + "-lambda-issuesevent-v1",
+				Name:      lambdaName + "-lambda-issuesevent-v1",
 				Namespace: namespace,
-				Labels:    map[string]string{"Function": id[7:] + "-lambda"},
+				Labels:    map[string]string{"Function": lambdaName},
 			},
 			SubscriptionSpec: v1alpha1.SubscriptionSpec{
-				Endpoint:                      fmt.Sprintf("%s%s%s%s%s", "http://", id[7:], "-lambda.", namespace, ":8080/"),
+				Endpoint:                      fmt.Sprintf("%s%s%s%s%s", "http://", lambdaName, ".", namespace, ":8080/"),
 				EventType:                     "IssuesEvent",
 				EventTypeVersion:              "v1",
 				IncludeSubscriptionNameHeader: true,
@@ -64,7 +65,7 @@ func TestGetEventBodySubscription(t *testing.T) {
 		mockClient := &mocks.SubscriptionInterface{}
 
 		//when
-		sub := k8scomponents.NewSubscription(mockClient, namespace).GetEventBody(id)
+		sub := k8scomponents.NewSubscription(mockClient, namespace).Prepare(id, lambdaName)
 
 		//then
 		assert.Equal(t, body, sub)
