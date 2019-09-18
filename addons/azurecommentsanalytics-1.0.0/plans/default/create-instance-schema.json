@@ -11,6 +11,11 @@
         "type":"string",
         "title":"Workspace Name",
         "description": "The name of workspace application will be installed to."
+      },
+      "image": {
+        "type":"string",
+        "title":"Docker image",
+        "description": "Docker image to install scenario from."
       }
     },
     "required":["githubURL","workspaceName"]

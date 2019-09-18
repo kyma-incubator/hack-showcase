@@ -10,7 +10,7 @@ spec:
     spec:
       containers:
       - name: hack-showcase-{{ include "azure-comments-analytics.repository" . }}
-        image: kymaflyingseals/azure-comments-analytics:0.1.0
+        image: {{ .Values.image }}}
         env: 
         - name: GITHUB_REPO
           value: {{ include "azure-comments-analytics.repository" . }}

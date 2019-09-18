@@ -1,11 +1,11 @@
 name: azure-comments-analytics
 version: 1.0.0
 id: f906c336-ed1f-45cc-8676-ef710e3cef89
-displayName: "Azure Comments Analytics"
-description: "Allows you to install"
+displayName: "Azure Comments Analytics Scenario"
+description: "Allows you to install team hack showcase scenario"
 
-tags: github
+tags: github, slack, azure, example
 providerDisplayName: Kyma
-longDescription: "The GitHub Connector allows to utilize GitHub events and to communicate with GitHub through its API. It registers a fully functional service witch API and events definitions. Then, user can use them in lambdas."
-imageURL: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
-documentationURL: https://github.com/kyma-incubator/hack-showcase/tree/master/docs/github-connector
+longDescription: "This addon analyzes new issues on connected GitHub repository and sends notifications to proper Slack channel if issue needs a review."
+imageURL: https://github.com/pPrecel/hack-showcase/raw/master/logo.png
+documentationURL: https://github.com/kyma-incubator/hack-showcase/tree/master/docs

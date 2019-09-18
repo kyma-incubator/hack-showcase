@@ -8,11 +8,10 @@ This addon allows you to install the scenario provided by Team Flying Seals. Azu
 
 1. Provision [Github Connector](https://github.com/kyma-incubator/hack-showcase/blob/master/docs/github-connector/README.md).
 2. Provision [Slack Connector](https://github.com/kyma-incubator/hack-showcase/blob/master/docs/slack-connector/README.md).
-3. Provision [Azure Bloker](https://github.com/kyma-project/addons/tree/master/addons/azure-service-broker-0.0.1).
-4. Wait for end of provisioning.
-5. [Provision](#provisioning) this addon.
+3. Provision [Azure Broker](https://github.com/kyma-project/addons/tree/master/addons/azure-service-broker-0.0.1).
+4. [Provision](#provisioning) this addon.
 
-Now you can start using the Azure Comments Analytics. Add new or edit Issue on given repo or org.
+Now you can start using the Azure Comments Analytics. Add a new issue or edit one on a given repository or organization.
 
 ## Provisioning
 
@@ -24,3 +23,4 @@ In this plan you have to provide only necessary values.
 |----------------|--------------|------|-------------|:--------:|
 | `githubURL` | GitHub repository | `string` | Link to GitHub repository in proper format: repos/:owner/:repo or orgs/:org | yes |
 | `workspaceName` | Workspace Name | `string` | The name of workspace application will be installed to. | yes |
+| `image` | Docker image | `string` | Docker image to install scenario from. | no |
