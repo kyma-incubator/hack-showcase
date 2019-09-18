@@ -26,6 +26,10 @@ spec:
             cpu: {{ .Values.container.limits.cpu }}
         ports:
         - containerPort: {{ .Values.container.containerPort }}
+        args:
+        - "./main"
+        - "--receiving={{ .Values.receiving }}"
+        - "--sending={{ .Values.sending }}"
         env:
         - name: PORT
           value: {{ quote .Values.container.containerPort }}

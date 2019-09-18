@@ -12,16 +12,11 @@
         "title":"Token",
         "description": "The GitHub repository token, which you can find on this site: https://auth-github-connector.herokuapp.com/"
       },
-      "kymaAddress": {
-        "type":"string",
-        "title":"Kyma address",
-        "description": "Kyma domain address needed to create a webhook on GitHub."
-      },
       "image": {
         "type":"string",
         "title":"Docker image",
         "description": "Specify the GitHub Connector image you want to use."
       }
     },
-    "required":["githubToken","githubURL","kymaAddress"]
+    "required":["githubToken","githubURL"]
   }

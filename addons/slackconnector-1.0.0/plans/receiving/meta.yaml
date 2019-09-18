@@ -1,0 +1,6 @@
+name: receiving
+id: 714ce9c9-793c-4f97-b279-0ce1934b8545
+description: "The default plan for installing/uninstall the Slack Connector"
+displayName: Event receiving
+bindable: false
+free: true

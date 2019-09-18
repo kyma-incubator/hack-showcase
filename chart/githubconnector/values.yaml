@@ -1,7 +1,7 @@
 replicaCount: 1
 
 container:
-  image: kymaflyingseals/github-connector:0.3.1
+  image: kymaflyingseals/github-connector:0.3.2
   containerPort: 8080
   limits:
     memory: "128Mi"
@@ -15,3 +15,5 @@ kymaAddress: 35.195.198.66.xip.io
 githubURL: repos/:owner/:repo
 
 githubToken: sampleToken
+receiving: true
+sending: true

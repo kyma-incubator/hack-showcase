@@ -1,0 +1,6 @@
+name: sending
+id: 5fcac9db-e797-4257-b5b0-6ea700a5908c
+description: "The plan for installing/uninstalling the GitHub Connector which allows to interact with connected repositories through GitHub API"
+displayName: Event sending
+bindable: false
+free: true

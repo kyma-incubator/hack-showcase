@@ -25,11 +25,19 @@ type payloadBuilder struct {
 	fileReader      FileReader
 	applicationName string
 	slackBotToken   string
+	receiveEvents   bool
+	sendEvents      bool
 }
 
 //NewPayloadBuilder creates a serviceDetailsPayloadBuilder instance
-func NewPayloadBuilder(fr FileReader, appName string, token string) payloadBuilder {
-	return payloadBuilder{fileReader: fr, applicationName: appName, slackBotToken: token}
+func NewPayloadBuilder(fr FileReader, appName string, token string, receive bool, send bool) payloadBuilder {
+	return payloadBuilder{
+		fileReader:      fr,
+		applicationName: appName,
+		slackBotToken:   token,
+		receiveEvents:   receive,
+		sendEvents:      send,
+	}
 }
 
 //Build creates a ServiceDetails structure with provided API specification URL
@@ -39,18 +47,23 @@ func (r payloadBuilder) Build() (ServiceDetails, error) {
 		Provider:    "Kyma",
 		Name:        r.applicationName,
 		Description: "Slack Connector, which is used for registering Slack API in Kyma",
-		API: &API{
+	}
+	if r.receiveEvents {
+		file, err := r.fileReader.Read("slackasyncapi.json")
+		if err != nil {
+			return ServiceDetails{}, apperrors.Internal("While reading 'slackopenapi.json' spec: %s", err)
+		}
+		jsonBody.Events = &Events{Spec: file}
+	}
+
+	if r.sendEvents {
+
+		jsonBody.API = &API{
 			TargetURL:         "https://slack.com/api",
 			RequestParameters: &RequestParameters{Headers: &Headers{CustomHeader: []string{"Bearer " + r.slackBotToken}}},
-		},
+			SpecificationURL:  SpecificationURL,
+		}
 	}
-	file, err := r.fileReader.Read("slackasyncapi.json")
-	if err != nil {
-		return ServiceDetails{}, apperrors.Internal("While reading 'slackopenapi.json' spec: %s", err)
-	}
-	jsonBody.Events = &Events{Spec: file}
-
-	jsonBody.API.SpecificationURL = SpecificationURL
 	return jsonBody, nil
 }
 

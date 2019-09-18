@@ -35,7 +35,7 @@ Diagram below shows how components will interact with each other in our example 
 
 ![Software architecture image](docs/flowdiagram.svg)
 
-Example of configuration of GitHub Connector can be found [here](/docs/examples/demoscenario.md).
+Example of configuration of GitHub Connector can be found [here](https://github.com/kyma-incubator/hack-showcase/blob/master/docs/github-connector/examples/demoscenario.md).
 
 ## Development
 1. Fork the repository in Github.
