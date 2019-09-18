@@ -2,8 +2,6 @@
 
 package mocks
 
-import apperrors "github.com/kyma-incubator/hack-showcase/scenario/azure-comments-analytics/internal/apperrors"
-
 import mock "github.com/stretchr/testify/mock"
 import v1alpha1 "github.com/kyma-project/kyma/components/event-bus/api/push/eventing.kyma-project.io/v1alpha1"
 
@@ -13,7 +11,7 @@ type Subscription struct {
 }
 
 // Create provides a mock function with given fields: body
-func (_m *Subscription) Create(body *v1alpha1.Subscription) (*v1alpha1.Subscription, apperrors.AppError) {
+func (_m *Subscription) Create(body *v1alpha1.Subscription) (*v1alpha1.Subscription, error) {
 	ret := _m.Called(body)
 
 	var r0 *v1alpha1.Subscription
@@ -25,13 +23,11 @@ func (_m *Subscription) Create(body *v1alpha1.Subscription) (*v1alpha1.Subscript
 		}
 	}
 
-	var r1 apperrors.AppError
-	if rf, ok := ret.Get(1).(func(*v1alpha1.Subscription) apperrors.AppError); ok {
+	var r1 error
+	if rf, ok := ret.Get(1).(func(*v1alpha1.Subscription) error); ok {
 		r1 = rf(body)
 	} else {
-		if ret.Get(1) != nil {
-			r1 = ret.Get(1).(apperrors.AppError)
-		}
+		r1 = ret.Error(1)
 	}
 
 	return r0, r1

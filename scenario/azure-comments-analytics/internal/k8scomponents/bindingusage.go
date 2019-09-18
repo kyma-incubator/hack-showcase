@@ -1,15 +1,15 @@
 package k8scomponents
 
 import (
-	"github.com/kyma-incubator/hack-showcase/scenario/azure-comments-analytics/internal/apperrors"
 	v1alpha1 "github.com/kyma-project/kyma/components/service-binding-usage-controller/pkg/apis/servicecatalog/v1alpha1"
 	v1alpha1svc "github.com/kyma-project/kyma/components/service-binding-usage-controller/pkg/apis/servicecatalog/v1alpha1"
+	"github.com/pkg/errors"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 //BindingUsage describe bindingUsage struct
 type BindingUsage interface {
-	Create(body *v1alpha1.ServiceBindingUsage) (*v1alpha1.ServiceBindingUsage, apperrors.AppError)
+	Create(body *v1alpha1.ServiceBindingUsage) (*v1alpha1.ServiceBindingUsage, error)
 	Prepare(name string, envPrefix string, lambdaName string) *v1alpha1.ServiceBindingUsage
 }
 
@@ -28,10 +28,10 @@ func NewBindingUsage(scatalog BindingUsageInterface, nspace string) BindingUsage
 	return &bindingUsage{catalog: scatalog, namespace: nspace}
 }
 
-func (s *bindingUsage) Create(body *v1alpha1.ServiceBindingUsage) (*v1alpha1.ServiceBindingUsage, apperrors.AppError) {
+func (s *bindingUsage) Create(body *v1alpha1.ServiceBindingUsage) (*v1alpha1.ServiceBindingUsage, error) {
 	data, err := s.catalog.Create(body)
 	if err != nil {
-		return nil, apperrors.Internal("Can not create ServiceBindingUsage: %s", err)
+		return nil, errors.Wrap(err, "Can not create ServiceBindingUsage")
 	}
 	return data, nil
 }

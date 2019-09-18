@@ -3,14 +3,14 @@ package k8scomponents
 import (
 	"fmt"
 
-	"github.com/kyma-incubator/hack-showcase/scenario/azure-comments-analytics/internal/apperrors"
 	v1alpha1 "github.com/kyma-project/kyma/components/event-bus/api/push/eventing.kyma-project.io/v1alpha1"
+	"github.com/pkg/errors"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 //Subscription define subscription struct
 type Subscription interface {
-	Create(body *v1alpha1.Subscription) (*v1alpha1.Subscription, apperrors.AppError)
+	Create(body *v1alpha1.Subscription) (*v1alpha1.Subscription, error)
 	Prepare(id string, lambdaName string) *v1alpha1.Subscription
 }
 
@@ -32,10 +32,10 @@ func NewSubscription(sub SubscriptionInterface, nspace string) Subscription {
 	}
 }
 
-func (s *subscription) Create(body *v1alpha1.Subscription) (*v1alpha1.Subscription, apperrors.AppError) {
+func (s *subscription) Create(body *v1alpha1.Subscription) (*v1alpha1.Subscription, error) {
 	data, err := s.subscriptionInterface.Create(body)
 	if err != nil {
-		return nil, apperrors.Internal("Can not create Subscription: %s", err)
+		return nil, errors.Wrap(err, "Can not create Subscription")
 	}
 	return data, nil
 }

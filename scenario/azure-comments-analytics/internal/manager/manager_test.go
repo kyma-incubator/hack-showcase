@@ -4,9 +4,9 @@ import (
 	"testing"
 
 	function "github.com/kubeless/kubeless/pkg/apis/kubeless/v1beta1"
-	"github.com/kyma-incubator/hack-showcase/scenario/azure-comments-analytics/internal/apperrors"
 	componentsMocks "github.com/kyma-incubator/hack-showcase/scenario/azure-comments-analytics/internal/k8scomponents/mocks"
 	"github.com/kyma-incubator/hack-showcase/scenario/azure-comments-analytics/internal/manager"
+	"github.com/kyma-project/kyma/components/application-gateway/pkg/apperrors"
 	subscriptions "github.com/kyma-project/kyma/components/event-bus/api/push/eventing.kyma-project.io/v1alpha1"
 	serviceBindingUsages "github.com/kyma-project/kyma/components/service-binding-usage-controller/pkg/apis/servicecatalog/v1alpha1"
 	bindings "github.com/poy/service-catalog/pkg/apis/servicecatalog/v1beta1"

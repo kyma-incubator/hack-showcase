@@ -2,8 +2,10 @@ package k8scomponents
 
 import (
 	v1beta1kubeless "github.com/kubeless/kubeless/pkg/apis/kubeless/v1beta1"
+	"github.com/pkg/errors"
+
 	//"github.com/kubeless/kubeless/pkg/client/clientset/versioned"
-	"github.com/kyma-incubator/hack-showcase/scenario/azure-comments-analytics/internal/apperrors"
+
 	autoscaling "k8s.io/api/autoscaling/v2beta1"
 	core "k8s.io/api/core/v1"
 	pts "k8s.io/api/core/v1"
@@ -19,7 +21,7 @@ type FunctionInterface interface {
 
 //Function describe function struct
 type Function interface {
-	Create(body *v1beta1kubeless.Function) (*v1beta1kubeless.Function, apperrors.AppError)
+	Create(body *v1beta1kubeless.Function) (*v1beta1kubeless.Function, error)
 	Prepare(name string, lambdaName string) *v1beta1kubeless.Function
 }
 
@@ -33,10 +35,10 @@ func NewFunction(functionInterface FunctionInterface, nspace string) Function {
 	return &function{functionInterface: functionInterface, namespace: nspace}
 }
 
-func (s *function) Create(body *v1beta1kubeless.Function) (*v1beta1kubeless.Function, apperrors.AppError) {
+func (s *function) Create(body *v1beta1kubeless.Function) (*v1beta1kubeless.Function, error) {
 	data, err := s.functionInterface.Create(body)
 	if err != nil {
-		return nil, apperrors.Internal("Can not create Function: %s", err)
+		return nil, errors.Wrap(err, "Can not create Function")
 	}
 	return data, nil
 }

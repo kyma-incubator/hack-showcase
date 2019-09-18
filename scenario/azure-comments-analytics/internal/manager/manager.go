@@ -4,8 +4,8 @@ import (
 	"log"
 	"strings"
 
-	"github.com/kyma-incubator/hack-showcase/scenario/azure-comments-analytics/internal/apperrors"
 	"github.com/kyma-incubator/hack-showcase/scenario/azure-comments-analytics/internal/k8scomponents"
+	"github.com/kyma-project/kyma/components/application-gateway/pkg/apperrors"
 	v1beta1 "github.com/poy/service-catalog/pkg/apis/servicecatalog/v1beta1"
 	"k8s.io/apimachinery/pkg/runtime"
 )
@@ -14,11 +14,11 @@ const azureConfiguration = `{"location": "westeurope","resourceGroup": "flying-s
 
 //Manager include important methods to deploy all k8s and kymas components to realize hack-showcase scenario
 type Manager interface {
-	CreateFunction(function k8scomponents.Function) apperrors.AppError
-	CreateServiceBindings(binding k8scomponents.Binding) apperrors.AppError
-	CreateSubscription(subscription k8scomponents.Subscription) apperrors.AppError
-	CreateServiceBindingUsages(bindingUsage k8scomponents.BindingUsage) apperrors.AppError
-	CreateServiceInstances(instance k8scomponents.ServiceInstance, serviceClassList *v1beta1.ServiceClassList) apperrors.AppError
+	CreateFunction(function k8scomponents.Function) error
+	CreateServiceBindings(binding k8scomponents.Binding) error
+	CreateSubscription(subscription k8scomponents.Subscription) error
+	CreateServiceBindingUsages(bindingUsage k8scomponents.BindingUsage) error
+	CreateServiceInstances(instance k8scomponents.ServiceInstance, serviceClassList *v1beta1.ServiceClassList) error
 }
 type manager struct {
 	githubRepo       string
@@ -39,7 +39,7 @@ func NewManager(namespace string, githubRepo string, slackWorkspace string, azur
 	}
 }
 
-func (s *manager) CreateSubscription(subscription k8scomponents.Subscription) apperrors.AppError {
+func (s *manager) CreateSubscription(subscription k8scomponents.Subscription) error {
 	subscribe, err := subscription.Create(subscription.Prepare(s.githubRepo, s.lambdaName))
 	if err != nil {
 		return err
@@ -48,7 +48,7 @@ func (s *manager) CreateSubscription(subscription k8scomponents.Subscription) ap
 	return nil
 }
 
-func (s *manager) CreateServiceBindingUsages(bindingUsage k8scomponents.BindingUsage) apperrors.AppError {
+func (s *manager) CreateServiceBindingUsages(bindingUsage k8scomponents.BindingUsage) error {
 	usage1, err := bindingUsage.Create(bindingUsage.Prepare(s.githubRepo, "GITHUB_", s.lambdaName))
 	if err != nil {
 		return err
@@ -69,7 +69,7 @@ func (s *manager) CreateServiceBindingUsages(bindingUsage k8scomponents.BindingU
 	return nil
 }
 
-func (s *manager) CreateServiceBindings(binding k8scomponents.Binding) apperrors.AppError {
+func (s *manager) CreateServiceBindings(binding k8scomponents.Binding) error {
 	bind1, err := binding.Create(binding.Prepare(s.githubRepo, s.lambdaName))
 	if err != nil {
 		return err
@@ -88,7 +88,7 @@ func (s *manager) CreateServiceBindings(binding k8scomponents.Binding) apperrors
 	return nil
 }
 
-func (s *manager) CreateFunction(function k8scomponents.Function) apperrors.AppError {
+func (s *manager) CreateFunction(function k8scomponents.Function) error {
 	funct, err := function.Create(function.Prepare(s.githubRepo, s.lambdaName))
 	if err != nil {
 		return err
@@ -97,7 +97,7 @@ func (s *manager) CreateFunction(function k8scomponents.Function) apperrors.AppE
 	return nil
 }
 
-func (s *manager) CreateServiceInstances(instance k8scomponents.ServiceInstance, serviceClassList *v1beta1.ServiceClassList) apperrors.AppError {
+func (s *manager) CreateServiceInstances(instance k8scomponents.ServiceInstance, serviceClassList *v1beta1.ServiceClassList) error {
 	//ServiceClass ExternalName suffix is generated randomly, but its prefix is based on name provided by user.
 	//Looking for ServiceClass with matching prefix on which basis ServiceInstance should be created.
 	for _, serv := range serviceClassList.Items {

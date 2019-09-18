@@ -1,7 +1,7 @@
 package k8scomponents
 
 import (
-	"github.com/kyma-incubator/hack-showcase/scenario/azure-comments-analytics/internal/apperrors"
+	"github.com/pkg/errors"
 	v1beta1svc "github.com/poy/service-catalog/pkg/apis/servicecatalog/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -15,7 +15,7 @@ type ServiceInstanceInterface interface {
 //ServiceInstance describe serviceInstance struct
 type ServiceInstance interface {
 	Prepare(name string, serviceClassExternalName string, plan string, parameters *runtime.RawExtension) *v1beta1svc.ServiceInstance
-	Create(body *v1beta1svc.ServiceInstance) (*v1beta1svc.ServiceInstance, apperrors.AppError)
+	Create(body *v1beta1svc.ServiceInstance) (*v1beta1svc.ServiceInstance, error)
 }
 
 type serviceInstance struct {
@@ -28,11 +28,12 @@ func NewServiceInstance(instance ServiceInstanceInterface, namespace string) Ser
 	return &serviceInstance{instance: instance, namespace: namespace}
 }
 
-func (s *serviceInstance) Create(body *v1beta1svc.ServiceInstance) (*v1beta1svc.ServiceInstance, apperrors.AppError) {
+func (s *serviceInstance) Create(body *v1beta1svc.ServiceInstance) (*v1beta1svc.ServiceInstance, error) {
 	data, err := s.instance.Create(body)
 	if err != nil {
-		return nil, apperrors.Internal("Can not create ServiceInstance: %s", err)
+		return nil, errors.Wrap(err, "Can not create ServiceInstance")
 	}
+
 	return data, nil
 }
 

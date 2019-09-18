@@ -2,8 +2,6 @@
 
 package mocks
 
-import apperrors "github.com/kyma-incubator/hack-showcase/scenario/azure-comments-analytics/internal/apperrors"
-
 import mock "github.com/stretchr/testify/mock"
 import v1beta1 "github.com/poy/service-catalog/pkg/apis/servicecatalog/v1beta1"
 
@@ -13,7 +11,7 @@ type Binding struct {
 }
 
 // Create provides a mock function with given fields: body
-func (_m *Binding) Create(body *v1beta1.ServiceBinding) (*v1beta1.ServiceBinding, apperrors.AppError) {
+func (_m *Binding) Create(body *v1beta1.ServiceBinding) (*v1beta1.ServiceBinding, error) {
 	ret := _m.Called(body)
 
 	var r0 *v1beta1.ServiceBinding
@@ -25,13 +23,11 @@ func (_m *Binding) Create(body *v1beta1.ServiceBinding) (*v1beta1.ServiceBinding
 		}
 	}
 
-	var r1 apperrors.AppError
-	if rf, ok := ret.Get(1).(func(*v1beta1.ServiceBinding) apperrors.AppError); ok {
+	var r1 error
+	if rf, ok := ret.Get(1).(func(*v1beta1.ServiceBinding) error); ok {
 		r1 = rf(body)
 	} else {
-		if ret.Get(1) != nil {
-			r1 = ret.Get(1).(apperrors.AppError)
-		}
+		r1 = ret.Error(1)
 	}
 
 	return r0, r1

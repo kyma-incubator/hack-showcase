@@ -1,7 +1,7 @@
 package k8scomponents
 
 import (
-	"github.com/kyma-incubator/hack-showcase/scenario/azure-comments-analytics/internal/apperrors"
+	"github.com/pkg/errors"
 	"github.com/poy/service-catalog/pkg/apis/servicecatalog/v1beta1"
 	v1beta1svc "github.com/poy/service-catalog/pkg/apis/servicecatalog/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -9,7 +9,7 @@ import (
 
 //Binding describe binding struct
 type Binding interface {
-	Create(body *v1beta1.ServiceBinding) (*v1beta1.ServiceBinding, apperrors.AppError)
+	Create(body *v1beta1.ServiceBinding) (*v1beta1.ServiceBinding, error)
 	Prepare(name string, lambdaName string) *v1beta1.ServiceBinding
 }
 
@@ -28,10 +28,10 @@ func NewBinding(client BindingInterface, nspace string) Binding {
 	return &binding{bindingInterface: client, namespace: nspace}
 }
 
-func (s *binding) Create(body *v1beta1.ServiceBinding) (*v1beta1.ServiceBinding, apperrors.AppError) {
+func (s *binding) Create(body *v1beta1.ServiceBinding) (*v1beta1.ServiceBinding, error) {
 	data, err := s.bindingInterface.Create(body)
 	if err != nil {
-		return nil, apperrors.Internal("Can not create ServiceBinding: %s", err)
+		return nil, errors.Wrap(err, "Can not create ServiceBinding")
 	}
 	return data, nil
 }
