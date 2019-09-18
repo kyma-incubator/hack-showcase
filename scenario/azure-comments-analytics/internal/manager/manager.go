@@ -5,7 +5,6 @@ import (
 	"strings"
 
 	"github.com/kyma-incubator/hack-showcase/scenario/azure-comments-analytics/internal/k8scomponents"
-	"github.com/kyma-project/kyma/components/application-gateway/pkg/apperrors"
 	v1beta1 "github.com/poy/service-catalog/pkg/apis/servicecatalog/v1beta1"
 	"k8s.io/apimachinery/pkg/runtime"
 )
@@ -119,11 +118,11 @@ func (s *manager) CreateServiceInstances(instance k8scomponents.ServiceInstance,
 			raw := runtime.RawExtension{}
 			err := raw.UnmarshalJSON([]byte(azureConfiguration))
 			if err != nil {
-				return apperrors.Internal("%s", err)
+				return err
 			}
 			svc, err := instance.Create(instance.Prepare(s.azureServiceName, serv.Spec.ExternalName, "standard-s0", &raw))
 			if err != nil {
-				return apperrors.Internal("%s", err)
+				return err
 			}
 			log.Printf("ServiceInstance-3: %s", svc.Name)
 		}
