@@ -21,6 +21,16 @@
         "type":"string",
         "title":"Docker image",
         "description": "Specify the GitHub Connector image you want to use."
+      },
+      "githubEndpoint": {
+        "description": "Tags to be applied to new resources, specified as key/value pairs.",
+        "title": "GitHub Endpoint (org or repo)",
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "minItems": 1,
+        "uniqueItems": true
       }
     },
     "required":["githubToken","githubURL","kymaAddress"]

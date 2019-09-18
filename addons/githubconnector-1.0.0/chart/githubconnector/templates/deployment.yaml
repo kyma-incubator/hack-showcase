@@ -30,6 +30,9 @@ spec:
         - "./main"
         - "--receiving={{ .Values.receiving }}"
         - "--sending={{ .Values.sending }}"
+        {{- range .Values.githubEndpoint -}}
+        - "{{ . | quote }}"
+        {{- end -}}}
         env:
         - name: PORT
           value: {{ quote .Values.container.containerPort }}

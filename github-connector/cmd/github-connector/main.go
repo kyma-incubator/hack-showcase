@@ -21,8 +21,12 @@ func main() {
 	receive := flag.Bool("receiving", true, "Specifies if Connector should subscribe events from GitHub")
 	send := flag.Bool("sending", true, "Specifies if Connector should send events to GitHub")
 	flag.Parse()
+	tail := flag.Args()
 	log.Infof("Events receiving: %t", *receive)
 	log.Infof("Events sending: %t", *send)
+	for _, t := range tail {
+		log.Infof("Moze?: %s", t)
+	}
 
 	builder := registration.NewPayloadBuilder(registration.NewFileReader(), os.Getenv("GITHUB_CONNECTOR_NAME"), os.Getenv("GITHUB_TOKEN"), *receive, *send)
 	id, err := registration.NewApplicationRegistryClient(builder, 5, 10).RegisterService()
