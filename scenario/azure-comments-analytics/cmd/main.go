@@ -54,30 +54,29 @@ func main() {
 	manager := manager.NewManager(cfg.Namespace, cfg.GithubURL, cfg.SlackWorkspace, cfg.Namespace)
 
 	//ServiceInstance
-	instance := wrappers.NewServiceCatalogClient(svcClient).Instance(cfg.Namespace)
-	err = manager.CreateServiceInstances(instance, svcList)
+	serviceCatalogClient := wrappers.NewServiceCatalogClient(svcClient)
+	err = manager.CreateServiceInstances(serviceCatalogClient.Instance(cfg.Namespace), svcList)
 	fatalOnError(err)
 
 	//Function
 	kubeless, err := kubeless.NewForConfig(k8sConfig)
 	fatalOnError(err)
-	function := wrappers.NewKubelessWrapper(kubeless.Kubeless()).Function(cfg.Namespace)
-	err = manager.CreateFunction(function)
+	kubelessClient := wrappers.NewKubelessClient(kubeless.Kubeless())
+	err = manager.CreateFunction(kubelessClient.Function(cfg.Namespace))
 	fatalOnError(err)
 
 	//Other components have to wait for end of creating function
 	time.Sleep(5 * time.Second)
 
 	//ServiceBindings
-	bindingManager := wrappers.NewServiceCatalogClient(svcClient).Binding(cfg.Namespace)
-	err = manager.CreateServiceBindings(bindingManager)
+	err = manager.CreateServiceBindings(serviceCatalogClient.Binding(cfg.Namespace))
 	fatalOnError(err)
 
 	//ServiceBindingUsages
 	catalogClient, err := svcBind.NewForConfig(k8sConfig)
 	fatalOnError(err)
-	bindingUsage := wrappers.NewKymaServiceCatalogWrapper(catalogClient).BindingUsage(cfg.Namespace)
-	err = manager.CreateServiceBindingUsages(bindingUsage)
+	kymaServiceCatalogClient := wrappers.NewKymaServiceCatalogClient(catalogClient)
+	err = manager.CreateServiceBindingUsages(kymaServiceCatalogClient.BindingUsage(cfg.Namespace))
 	fatalOnError(err)
 
 	//To create subscription resources above must be ready. Wait for their creation.
@@ -86,8 +85,8 @@ func main() {
 	//Subscription
 	bus, err := eventbus.NewForConfig(k8sConfig)
 	fatalOnError(err)
-	subscription := wrappers.NewSubscriptionManager(bus.Eventing()).Subscription(cfg.Namespace)
-	err = manager.CreateSubscription(subscription)
+	eventbusClient := wrappers.NewEventbusClient(bus.Eventing())
+	err = manager.CreateSubscription(eventbusClient.Subscription(cfg.Namespace))
 	fatalOnError(err)
 
 }

@@ -5,10 +5,12 @@ import (
 	"github.com/kyma-incubator/hack-showcase/scenario/azure-comments-analytics/internal/k8scomponents"
 )
 
+//KubelessWrapper is a wrapper dedicated for kubeless ClientSet
 type KubelessWrapper interface {
 	Function(namespace string) k8scomponents.Function
 }
 
+//KubelessClient describe constructors argument
 type KubelessClient interface {
 	Functions(string) v1beta1.FunctionInterface
 }
@@ -17,7 +19,8 @@ type kubelessWrapper struct {
 	client KubelessClient
 }
 
-func NewKubelessWrapper(client KubelessClient) KubelessWrapper {
+//NewKubelessClient create and return kubelessWrapper
+func NewKubelessClient(client KubelessClient) KubelessWrapper {
 	return &kubelessWrapper{client: client}
 }
 
