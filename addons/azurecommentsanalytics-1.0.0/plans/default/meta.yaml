@@ -1,0 +1,6 @@
+name: default
+id: 8842e9c4-fe21-463b-a0d5-70c2cb933f4b
+description: "The default plan for installing/uninstall the scenario"
+displayName: Default
+bindable: false
+free: true
