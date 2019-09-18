@@ -51,7 +51,7 @@ func main() {
 	fatalOnError(err)
 
 	//Create scenario Manager
-	manager := manager.NewManager(cfg.Namespace, cfg.GithubURL, cfg.SlackWorkspace, cfg.Namespace)
+	manager := manager.NewManager(cfg.Namespace, cfg.GithubURL, cfg.SlackWorkspace, azureClassName)
 
 	//ServiceInstance
 	serviceCatalogClient := wrappers.NewServiceCatalogClient(svcClient)

@@ -112,9 +112,10 @@
   version = "v1.0.4"
 
 [[projects]]
-  digest = "1:4cc5fab03f03b3ad2cac59789141374fc806fadffc7e0d3d0e2cd2eda2c5639f"
+  digest = "1:27c89e7e98a4f1991f383fedcee899788a1b97b8bccc5faa967b0664bcb80509"
   name = "github.com/kyma-project/kyma"
   packages = [
+    "components/application-gateway/pkg/apperrors",
     "components/event-bus/api/push/eventing.kyma-project.io",
     "components/event-bus/api/push/eventing.kyma-project.io/v1alpha1",
     "components/event-bus/generated/push/clientset/versioned",
@@ -474,6 +475,7 @@
     "github.com/kubeless/kubeless/pkg/apis/kubeless/v1beta1",
     "github.com/kubeless/kubeless/pkg/client/clientset/versioned",
     "github.com/kubeless/kubeless/pkg/client/clientset/versioned/typed/kubeless/v1beta1",
+    "github.com/kyma-project/kyma/components/application-gateway/pkg/apperrors",
     "github.com/kyma-project/kyma/components/event-bus/api/push/eventing.kyma-project.io/v1alpha1",
     "github.com/kyma-project/kyma/components/event-bus/generated/push/clientset/versioned",
     "github.com/kyma-project/kyma/components/event-bus/generated/push/clientset/versioned/typed/eventing.kyma-project.io/v1alpha1",
