@@ -36,7 +36,7 @@ The GitHub Connector is a component which allows interaction with the GitHub API
 2. Click **Add New Configuration** and in fill in the **Urls** field with this URL:
 
    ```http
-   github.com/kyma-incubator/hack-showcase//addons
+   github.com/kyma-incubator/hack-showcase//addons/index.yaml
    ```
 
 3. Go to the Namespace in which to install the Connector.
