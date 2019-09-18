@@ -2,12 +2,15 @@ package manager
 
 import (
 	"log"
+	"strings"
 
 	"github.com/kyma-incubator/hack-showcase/scenario/azure-comments-analytics/internal/apperrors"
 	"github.com/kyma-incubator/hack-showcase/scenario/azure-comments-analytics/internal/k8scomponents"
 	v1beta1 "github.com/poy/service-catalog/pkg/apis/servicecatalog/v1beta1"
 	"k8s.io/apimachinery/pkg/runtime"
 )
+
+const azureConfiguration = `{"location": "westeurope","resourceGroup": "flying-seals-tmp"}`
 
 //Manager include important methods to deploy all k8s and kymas components to realize hack-showcase scenario
 type Manager interface {
@@ -95,26 +98,26 @@ func (s *manager) CreateFunction(function k8scomponents.Function) apperrors.AppE
 }
 
 func (s *manager) CreateServiceInstances(instance k8scomponents.ServiceInstance, serviceClassList *v1beta1.ServiceClassList) apperrors.AppError {
+	//ServiceClass ExternalName suffix is generated randomly, but its prefix is based on name provided by user.
+	//Looking for ServiceClass with matching prefix on which basis ServiceInstance should be created.
 	for _, serv := range serviceClassList.Items {
-		chars := []rune(serv.Spec.ExternalName)
-		str := string(chars[0 : len(chars)-6])
-		if str == s.githubRepo {
+		if strings.HasPrefix(serv.Spec.ExternalName, s.githubRepo) {
 			svc, err := instance.Create(instance.GetEventBody(s.githubRepo, serv.Spec.ExternalName, "default", nil))
 			if err != nil {
 				return err
 			}
 			log.Printf("ServiceInstance-1: %s", svc.Name)
 		}
-		if str == s.slackWorkspace {
+		if strings.HasPrefix(serv.Spec.ExternalName, s.slackWorkspace) {
 			svc, err := instance.Create(instance.GetEventBody(s.slackWorkspace, serv.Spec.ExternalName, "default", nil))
 			if err != nil {
 				return err
 			}
 			log.Printf("ServiceInstance-2: %s", svc.Name)
 		}
-		if string(chars) == s.azureServiceName {
+		if serv.Spec.ExternalName == s.azureServiceName {
 			raw := runtime.RawExtension{}
-			err := raw.UnmarshalJSON([]byte(`{"location": "westeurope","resourceGroup": "flying-seals-tmp"}`))
+			err := raw.UnmarshalJSON([]byte(azureConfiguration))
 			if err != nil {
 				return apperrors.Internal("%s", err)
 			}
