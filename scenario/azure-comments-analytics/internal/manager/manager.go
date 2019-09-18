@@ -22,11 +22,18 @@ type manager struct {
 	slackWorkspace   string
 	azureServiceName string
 	namespace        string
+	lambdaName 		 string
 }
 
 //NewManager create and return new manager struct
 func NewManager(namespace string, githubRepo string, slackWorkspace string, azureServiceName string) Manager {
-	return &manager{namespace: namespace, githubRepo: githubRepo, slackWorkspace: slackWorkspace, azureServiceName: azureServiceName}
+	return &manager{
+		namespace: namespace, 
+		githubRepo: githubRepo, 
+		slackWorkspace: slackWorkspace, 
+		azureServiceName: azureServiceName,
+		lambdaName: githubRepo[7:] + "-lambda" //Due to Kyma's requirements lambda's name has to be short - it's trimmed here
+	}
 }
 
 func (s *manager) CreateSubscription(subscription k8scomponents.Subscription) apperrors.AppError {
@@ -39,19 +46,19 @@ func (s *manager) CreateSubscription(subscription k8scomponents.Subscription) ap
 }
 
 func (s *manager) CreateServiceBindingUsages(bindingUsage k8scomponents.BindingUsage) apperrors.AppError {
-	usage1, err := bindingUsage.Create(bindingUsage.GetEventBody(s.githubRepo, "GITHUB_"))
+	usage1, err := bindingUsage.Create(bindingUsage.GetEventBody(s.githubRepo, "GITHUB_", s.lambdaName))
 	if err != nil {
 		return err
 	}
 	log.Printf("SvcBindingUsage-1: %s\n", usage1.Name)
 
-	usage2, err := bindingUsage.Create(bindingUsage.GetEventBody(s.slackWorkspace, "", s.githubRepo))
+	usage2, err := bindingUsage.Create(bindingUsage.GetEventBody(s.slackWorkspace, "", s.lambdaName))
 	if err != nil {
 		return err
 	}
 	log.Printf("SvcBindingUsage-2: %s\n", usage2.Name)
 
-	usage3, err := bindingUsage.Create(bindingUsage.GetEventBody(s.azureServiceName, "", s.githubRepo))
+	usage3, err := bindingUsage.Create(bindingUsage.GetEventBody(s.azureServiceName, "", s.lambdaName))
 	if err != nil {
 		return err
 	}
@@ -61,6 +68,9 @@ func (s *manager) CreateServiceBindingUsages(bindingUsage k8scomponents.BindingU
 
 func (s *manager) CreateServiceBindings(binding k8scomponents.Binding) apperrors.AppError {
 	bind1, err := binding.Create(binding.GetEventBody(s.githubRepo))
+	if err != nil {
+		return err
+	}
 	log.Printf("SvcBinding-1: %s\n", bind1.Name)
 	bind2, err := binding.Create(binding.GetEventBody(s.slackWorkspace, s.githubRepo))
 	if err != nil {

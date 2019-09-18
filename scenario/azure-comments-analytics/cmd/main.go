@@ -77,7 +77,9 @@ func main() {
 	err = manager.CreateServiceBindingUsages(bindingUsage)
 	fatalOnError(err)
 
+	//To create subscription resources above must be ready. Wait for their creation.
 	time.Sleep(5 * time.Second)
+
 	//Subscription
 	bus, err := eventbus.NewForConfig(k8sConfig)
 	fatalOnError(err)
