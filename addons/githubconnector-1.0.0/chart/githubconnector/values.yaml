@@ -18,5 +18,7 @@ githubToken: sampleToken
 kymaAddress: kyma.address.com
 receiving: true
 sending: true
-githubEndpoint: |-
+githubEndpoint: 
   - repo
+  - repo2
+  - repo3
