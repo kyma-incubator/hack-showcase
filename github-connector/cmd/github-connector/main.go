@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"net/http"
-	"os"
 	"sync"
 
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/github"
@@ -14,9 +13,28 @@ import (
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/handlers"
 
 	log "github.com/sirupsen/logrus"
+	"github.com/vrischmann/envconfig"
 )
 
+//Config containg all program configs
+type Config struct {
+	GithubConnectorName string `envconfig:"GITHUB_CONNECTOR_NAME"`
+	GithubToken         string `envconfig:"GITHUB_TOKEN"`
+	KymaAddress         string `envconfig:"KYMA_ADDRESS"`
+	Port                string `envconfig:"PORT"`
+}
+
 func main() {
+	var conf Config
+	err := envconfig.Init(&conf)
+	if err != nil {
+		log.Fatal("Env error: ", err.Error())
+	}
+	log.Printf("Github Connector Name: %s", conf.GithubConnectorName)
+	log.Printf("Github Token: %s", conf.GithubToken)
+	log.Printf("Kyma Address: %s", conf.KymaAddress)
+	log.Printf("Port: %s", conf.Port)
+
 	log.Info("Registration started.")
 	receive := flag.Bool("receiving", true, "Specifies if Connector should subscribe events from GitHub")
 	send := flag.Bool("sending", true, "Specifies if Connector should send events to GitHub")
@@ -24,23 +42,28 @@ func main() {
 	repos := flag.Args()
 	log.Infof("Events receiving: %t", *receive)
 	log.Infof("Events sending: %t", *send)
-	for _, t := range repos {
-		log.Infof("Moze?: %s", t)
-	}
 
-	builder := registration.NewPayloadBuilder(registration.NewFileReader(), os.Getenv("GITHUB_CONNECTOR_NAME"), os.Getenv("GITHUB_TOKEN"), *receive, *send)
+	builder := registration.NewPayloadBuilder(registration.NewFileReader(), conf.GithubConnectorName, conf.GithubToken, *receive, *send)
 	id, err := registration.NewApplicationRegistryClient(builder, 5, 10).RegisterService()
 
 	if err != nil {
-		log.Fatal("Fatal error: ", err.Error())
+		log.Fatalf("Fatal error: %s", err.Error())
 	}
 	log.WithFields(log.Fields{
 		"id": id,
 	}).Info("Service registered")
 
 	if *receive {
-		webHook := hook.NewHook(os.Getenv("KYMA_ADDRESS"))
-		hookSecret, err := webHook.Create(os.Getenv("GITHUB_TOKEN"), os.Getenv("GITHUB_REPO_URL"))
+		webHook := hook.NewHook(conf.KymaAddress)
+		secret := webHook.GetSecret()
+		for i, address := range repos {
+			_, err := webHook.Create(conf.GithubToken, address, secret)
+			if err != nil {
+				log.Printf("Can not create %d webhook on %s adress. Prease create it manualy. Error body: %s", i, address, err.Error())
+			} else {
+				log.Printf("Webhook %d created: %s", i, address)
+			}
+		}
 		if err != nil {
 			log.Fatalf("Fatal error: %s", err.Error())
 		}
@@ -48,12 +71,12 @@ func main() {
 
 		kyma := events.NewSender(&http.Client{}, events.NewValidator(), "http://event-publish-service.kyma-system:8080/v1/events")
 		webhook := handlers.NewWebHookHandler(
-			github.NewReceivingEventsWrapper(hookSecret),
+			github.NewReceivingEventsWrapper(secret),
 			kyma,
 		)
 
 		http.HandleFunc("/webhook", webhook.HandleWebhook)
-		log.Info(http.ListenAndServe(":"+os.Getenv("PORT"), nil))
+		log.Info(http.ListenAndServe(":"+conf.Port, nil))
 	} else {
 		log.Info("Happy GitHub-Connecting!")
 		var wg sync.WaitGroup

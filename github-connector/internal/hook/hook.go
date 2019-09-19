@@ -18,26 +18,36 @@ const (
 	charset       = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 )
 
+//Hook describe hook struct
+type Hook interface {
+	Create(t string, githubURL string, secret string) (string, apperrors.AppError)
+	GetSecret() string
+}
+
 //Hook is a struct that contains information about github's repo/org url, OAuth token and allows creating webhooks
-type Hook struct {
+type hook struct {
 	kymaURL string
 }
 
 //NewHook create Hook structure
 func NewHook(URL string) Hook {
 	kURL := fmt.Sprintf(kymaURLFormat, kymaURLPrefix, URL, kymaURLSuffix)
-	return Hook{kymaURL: kURL}
+	return &hook{kymaURL: kURL}
+}
+
+//GetSecreat create new secret for creating Github's webhook
+func (s *hook) GetSecret() string {
+	return createSecret(charset)
 }
 
 //Create build request and create webhook in github's repository or organization
-func (c Hook) Create(t string, githubURL string) (string, apperrors.AppError) {
+func (s *hook) Create(t string, githubURL string, secret string) (string, apperrors.AppError) {
 	token := fmt.Sprintf("token %s", t)
-	secret := createSecret(charset)
 	hook := PayloadDetails{
 		Name:   "web",
 		Active: true,
 		Config: Config{
-			URL:         c.kymaURL,
+			URL:         s.kymaURL,
 			InsecureSSL: "1",
 			ContentType: "json",
 			Secret:      secret,

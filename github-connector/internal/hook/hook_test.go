@@ -27,7 +27,7 @@ func TestCreate(t *testing.T) {
 		defer server.Close()
 		webhook := hook.NewHook("URL")
 		//when
-		token, err := webhook.Create(sampleToken, server.URL)
+		token, err := webhook.Create(sampleToken, server.URL, "secret")
 		//then
 		assert.NoError(t, err)
 		assert.NotEqual(t, "", token)
@@ -40,9 +40,20 @@ func TestCreate(t *testing.T) {
 		defer server.Close()
 		webhook := hook.NewHook("URL")
 		//when
-		token, err := webhook.Create(sampleToken, server.URL)
+		token, err := webhook.Create(sampleToken, server.URL, "secret")
 		//then
 		assert.Error(t, err)
 		assert.Equal(t, "", token)
+	})
+}
+
+func TestGetSecret(t *testing.T) {
+	t.Run("should return secret", func(t *testing.T) {
+		//given
+		webhook := hook.NewHook("URL")
+		//when
+		secret := webhook.GetSecret()
+		//then
+		assert.NotEmpty(t, secret)
 	})
 }
