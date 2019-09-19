@@ -20,5 +20,3 @@ receiving: true
 sending: true
 githubEndpoint: 
   - repo
-  - repo2
-  - repo3

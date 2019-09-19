@@ -2,11 +2,6 @@
     "$schema": "http://json-schema.org/draft-04/schema#",
     "type": "object",
     "properties": {
-      "githubURL": {
-        "type": "string",
-        "title": "GitHub repository",
-        "description" : "Link to GitHub repository in proper format: repos/:owner/:repo or orgs/:org"
-      },
       "githubToken": {
         "type":"string",
         "title":"Token",
@@ -33,5 +28,5 @@
         "uniqueItems": true
       }
     },
-    "required":["githubToken","githubURL","kymaAddress"]
+    "required":["githubToken","githubEndpoint","kymaAddress"]
   }

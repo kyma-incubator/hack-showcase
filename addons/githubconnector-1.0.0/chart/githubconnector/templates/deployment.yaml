@@ -31,15 +31,13 @@ spec:
         - "--receiving={{ .Values.receiving }}"
         - "--sending={{ .Values.sending }}"
         {{ range .Values.githubEndpoint -}}
-        - {{ . | quote }}
+        - {{ . | printf "https://api.github.com/%s/hooks" | quote }}
         {{ end -}}
         env:
         - name: PORT
           value: {{ quote .Values.container.containerPort }}
         - name: GITHUB_CONNECTOR_NAME
           value: {{ include "github-connector-chart.repository" . }}
-        - name: GITHUB_REPO_URL
-          value: https://api.github.com/{{ .Values.githubURL }}/hooks
         - name: GITHUB_TOKEN
           value: {{ .Values.githubToken }}
         - name: KYMA_ADDRESS

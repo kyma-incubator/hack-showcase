@@ -21,10 +21,10 @@ func main() {
 	receive := flag.Bool("receiving", true, "Specifies if Connector should subscribe events from GitHub")
 	send := flag.Bool("sending", true, "Specifies if Connector should send events to GitHub")
 	flag.Parse()
-	tail := flag.Args()
+	repos := flag.Args()
 	log.Infof("Events receiving: %t", *receive)
 	log.Infof("Events sending: %t", *send)
-	for _, t := range tail {
+	for _, t := range repos {
 		log.Infof("Moze?: %s", t)
 	}
 
