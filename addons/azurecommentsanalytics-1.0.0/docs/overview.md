@@ -2,7 +2,7 @@
 
 Welcome to the Azure Comments Analytics addon!
 
-This addon allows you to install the scenario provided by Team Flying Seals. Azure Comments Analytics will receive information about Github's Issue from Github Connector, next analyze it using Azure Broker and then if Issue sentiment is too low, sent it to Slack and label Issue on Github.
+This add-on allows you to install the scenario provided by Team Flying Seals. Azure Comments Analytics will receive information about Github's Issue from the Github Connector, next lambda function analyses it using the Azure Broker and then if the Issue's sentiment is too low, lambda sends it to Slack and labels the Issue on Github.
 
 ## Installation
 
