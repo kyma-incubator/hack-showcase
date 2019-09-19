@@ -15,5 +15,6 @@
 {{- end -}}
 
 {{- define "github-connector-chart.repository" -}}
-{{- .Release.Name | trimAll "hb-" | trunc 47 | trimSuffix "-" | lower -}}
+{{- printf "%s" "github-connector-tmp" -}}
 {{- end -}}
+//{{- .Release.Name | trimAll "hb-" | trunc 47 | trimSuffix "-" | lower -}}
