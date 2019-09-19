@@ -15,6 +15,6 @@
 {{- end -}}
 
 {{- define "github-connector-chart.repository" -}}
-{{- $name := .Release.Name | trimAll "hb-github-connector-" | trunc 47 lower -}}
+{{- $name := .Release.Name | trimAll "hb-github-connector-" | trunc 47 | lower -}}
 {{- printf "github-%s" $name -}}
 {{- end -}}
