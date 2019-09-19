@@ -1,9 +1,9 @@
 {{- define "github-connector-chart.release.name" -}}
-{{- default .Release.Name | trunc 31 | trimSuffix "-" -}}
+{{- default .Release.Name | trunc 40 | trimSuffix "-" -}}
 {{- end -}}
 
 {{- define "github-connector-chart.release.service" -}}
-{{- default .Release.Service | trunc 31 | trimSuffix "-" -}}
+{{- default .Release.Service | trunc 40 | trimSuffix "-" -}}
 {{- end -}}
 
 {{- define "github-connector-chart.name" -}}
@@ -15,5 +15,5 @@
 {{- end -}}
 
 {{- define "github-connector-chart.repository" -}}
-{{- .Values.githubURL | trimAll "repos/" | trimAll "orgs/" | replace "/" "-" | trunc 47 | trimSuffix "-" | lower | printf "github-%s" -}}
+{{- .Release.Name | trimAll "hb-" | trunc 47 | trimSuffix "-" | lower -}}
 {{- end -}}
