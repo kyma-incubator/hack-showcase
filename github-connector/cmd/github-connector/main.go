@@ -30,10 +30,10 @@ func main() {
 	if err != nil {
 		log.Fatal("Env error: ", err.Error())
 	}
-	log.Printf("Github Connector Name: %s", conf.GithubConnectorName)
-	log.Printf("Github Token: %s", conf.GithubToken)
-	log.Printf("Kyma Address: %s", conf.KymaAddress)
-	log.Printf("Port: %s", conf.Port)
+	log.Infof("Github Connector Name: %s", conf.GithubConnectorName)
+	log.Infof("Github Token: %s", conf.GithubToken)
+	log.Infof("Kyma Address: %s", conf.KymaAddress)
+	log.Infof("Port: %s", conf.Port)
 
 	log.Info("Registration started.")
 	receive := flag.Bool("receiving", true, "Specifies if Connector should subscribe events from GitHub")
@@ -56,6 +56,7 @@ func main() {
 	if *receive {
 		webHook := hook.NewHook(conf.KymaAddress)
 		secret := webHook.GetSecret()
+		log.Infof("Webhook's secret: %s", secret)
 		for i, address := range repos {
 			_, err := webHook.Create(conf.GithubToken, address, secret)
 			if err != nil {
