@@ -14,7 +14,7 @@
         "description": "Specify the GitHub Connector image you want to use."
       },
       "githubEndpoint": {
-        "description": "Tags to be applied to new resources, specified as key/value pairs.",
+        "description": "Link to GitHub repository in proper format: repos/{OWNER}/{REPO} or orgs/{ORG}.",
         "title": "GitHub Endpoint (org or repo)",
         "type": "array",
         "items": {

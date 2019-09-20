@@ -4,13 +4,13 @@
     "properties": {
       "githubURL": {
         "type": "string",
-        "title": "GitHub repository",
-        "description" : "Link to GitHub repository in proper format: repos/:owner/:repo or orgs/:org"
+        "title": "GitHub Service Class name",
+        "description" : "The name of the GitHub Connector Service Class. Find it in Service Catalog > Services. It consist of \"github-\" and your repository or organization name"
       },
       "workspaceName": {
         "type":"string",
-        "title":"Workspace Name",
-        "description": "The name of workspace application will be installed to."
+        "title":"Slack Service Class name",
+        "description": "The name of the Slack Connector Service Class. Find it in Service Catalog > Services. It consist of \"slack-connector-\" and your Slack channel name"
       },
       "image": {
         "type":"string",
