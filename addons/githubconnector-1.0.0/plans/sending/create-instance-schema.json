@@ -3,10 +3,6 @@
     "type": "object",
     "properties": {
       "githubURL": {
-        "type": "string",
-        "title": "GitHub repository",
-        "description" : "Link to GitHub repository in proper format: repos/:owner/:repo or orgs/:org"
-      },
       "githubToken": {
         "type":"string",
         "title":"Token",
@@ -16,7 +12,18 @@
         "type":"string",
         "title":"Docker image",
         "description": "Specify the GitHub Connector image you want to use."
+      },
+      "githubEndpoint": {
+        "description": "Tags to be applied to new resources, specified as key/value pairs.",
+        "title": "GitHub Endpoint (org or repo)",
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "minItems": 1,
+        "uniqueItems": true
       }
-    },
-    "required":["githubToken","githubURL"]
+    }
+  },
+    "required":["githubToken", "githubEndpoint"]
   }

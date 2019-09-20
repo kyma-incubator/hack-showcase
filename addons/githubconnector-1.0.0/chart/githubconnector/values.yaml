@@ -19,4 +19,4 @@ kymaAddress: kyma.address.com
 receiving: true
 sending: true
 githubEndpoint: 
-  - repo
+  - repos/example/test
