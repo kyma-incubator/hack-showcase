@@ -7,9 +7,9 @@
 {{- end -}}
 
 {{- define "azure-comments-analytics.repository" -}}
-{{- .Values.githubURL | trimAll "repos/" | trimAll "orgs/" | replace "/" "-" | trunc 47 | trimSuffix "-" | printf "github-%s" -}}
+{{- .Values.githubURL -}}
 {{- end -}}
 
 {{- define "azure-comments-analytics.workspace" -}}
-{{- regexReplaceAll "[^a-zA-Z\\d\\w:]" (printf "slack-connector-%s" .Values.workspaceName | lower) "-" | replace "--" "-" | trunc 31 | trimSuffix "-" -}}
+{{- .Values.workspaceName -}}
 {{- end -}}
