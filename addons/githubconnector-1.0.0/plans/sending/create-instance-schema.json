@@ -1,29 +1,27 @@
 {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "type": "object",
-    "properties": {
-      "githubURL": {
-      "githubToken": {
-        "type":"string",
-        "title":"Token",
-        "description": "The GitHub repository token, which you can find on this site: https://auth-github-connector.herokuapp.com/"
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "githubToken": {
+      "type":"string",
+      "title":"Token",
+      "description": "The GitHub repository token, which you can find on this site: https://auth-github-connector.herokuapp.com/"
+    },
+    "image": {
+      "type":"string",
+      "title":"Docker image",
+      "description": "Specify the GitHub Connector image you want to use."
+    },
+    "githubEndpoint": {
+      "description": "Link to GitHub repository in proper format: repos/{OWNER}/{REPO} or orgs/{ORG}.",
+      "title": "GitHub Endpoint (org or repo)",
+      "type": "array",
+      "items": {
+        "type": "string"
       },
-      "image": {
-        "type":"string",
-        "title":"Docker image",
-        "description": "Specify the GitHub Connector image you want to use."
-      },
-      "githubEndpoint": {
-        "description": "Link to GitHub repository in proper format: repos/{OWNER}/{REPO} or orgs/{ORG}.",
-        "title": "GitHub Endpoint (org or repo)",
-        "type": "array",
-        "items": {
-          "type": "string"
-        },
-        "minItems": 1,
-        "uniqueItems": true
-      }
+      "minItems": 1,
+      "uniqueItems": true
     }
   },
-    "required":["githubToken", "githubEndpoint"]
-  }
+  "required":["githubToken", "githubEndpoint"]
+}
