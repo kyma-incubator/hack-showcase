@@ -2141,6 +2141,288 @@
         }
       }
     },
+    "MilestoneEvent.v1": {
+      "subscribe": {
+        "summary": "Triggered when a milestone is created, closed, opened, edited, or deleted. Events of this type are not visible in timelines. These events are only used to trigger hooks.",
+        "payload": {
+          "type": "object",
+          "required": ["action"],
+          "properties": {
+            "action": {
+              "type": "string",
+              "example": "created"
+            },
+            "milestone": {
+              "$ref": "#/components/schemas/milestone"
+            },
+            "repository": {
+              "$ref": "#/components/schemas/repository"
+            },
+            "sender": {
+              "$ref": "#/components/schemas/user"
+            }
+          }
+        }
+      }
+    },
+    "OrganizationEvent.v1": {
+      "subscribe": {
+        "summary": "Triggered when an organization is deleted and renamed, and when a user is added, removed, or invited to an organization. Events of this type are not visible in timelines. These events are only used to trigger organization hooks.",
+        "payload": {
+          "type": "object",
+          "required": ["action"],
+          "properties": {
+            "action": {
+              "type": "string",
+              "example": "member_added"
+            },
+            "membership": {
+              "type": "object",
+              "properties": {
+                "url": {
+                  "type": "string",
+                  "example": "https://api.github.com/orgs/Octocoders/memberships/hacktocat"
+                },
+                "state": {
+                  "type": "string",
+                  "example": "pending"
+                },
+                "role": {
+                  "type": "string",
+                  "example": "member"
+                },
+                "organization_url": {
+                  "type": "string",
+                  "example": "https://api.github.com/orgs/Octocoders"
+                },
+                "user": {
+                  "$ref": "#/components/schemas/user"
+                }
+              }
+            },
+            "organization": {
+              "$ref": "#/components/schemas/organization"
+            },
+            "sender": {
+              "$ref": "#/components/schemas/user"
+            }
+          }
+        }
+      }
+    },
+    "OrgBlockEvent.v1": {
+      "subscribe": {
+        "summary": "Triggered when an organization blocks or unblocks a user. These events are only used to trigger organization hooks.",
+        "payload": {
+          "type": "object",
+          "required": ["action"],
+          "properties": {
+            "action": {
+              "type": "string",
+              "example": "blocked"
+            },
+            "blocked_user": {
+              "$ref": "#/components/schemas/user"
+            },
+            "organization": {
+              "$ref": "#/components/schemas/organization"
+            },
+            "sender": {
+              "$ref": "#/components/schemas/user"
+            }
+          }
+        }
+      }
+    },
+    "PageBuildEvent.v1": {
+      "subscribe": {
+        "summary": "Represents an attempted build of a GitHub Pages site, whether successful or not. Triggered on push to a GitHub Pages enabled branch (gh-pages for project pages, master for user and organization pages). Events of this type are not visible in timelines. These events are only used to trigger hooks.",
+        "payload": {
+          "type": "object",
+          "required": ["action"],
+          "properties": {
+            "id": {
+              "type": "integer",
+              "example": 130514899
+            },
+            "build": {
+              "type": "object",
+              "properties": {
+                "url": {
+                  "type": "string",
+                  "example": "https://api.github.com/repos/Codertocat/Hello-World/pages/builds/130514899"
+                },
+                "status": {
+                  "type": "string",
+                  "example": "built"
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "null",
+                      "example": null
+                    }
+                  }
+                },
+                "pusher": {
+                  "$ref": "#/components/schemas/user"
+                },
+                "commit": {
+                  "type": "string",
+                  "example": "507fc9acd0d04ac4a9db87d12cb228c052cd813a"
+                },
+                "duration": {
+                  "type": "integer",
+                  "example": 16984
+                },
+                "created_at": {
+                  "type": "string",
+                  "example": "2019-05-15T15:20:23Z"
+                },
+                "updated_at": {
+                  "type": "string",
+                  "example": "2019-05-15T15:20:40Z"
+                }
+              }
+            },
+            "repository": {
+              "$ref": "#/components/schemas/repository"
+            },
+            "sender": {
+              "$ref": "#/components/schemas/user"
+            }
+          }
+        }
+      }
+    },
+    "ProjectCardEvent.v1": {
+      "subscribe": {
+        "summary": "Triggered when a project card is created, edited, moved, converted to an issue, or deleted.",
+        "payload": {
+          "type": "object",
+          "required": ["action"],
+          "properties": {
+            "action": {
+              "type": "string",
+              "example": "created"
+            },
+            "project_card": {
+              "type": "object",
+              "properties": {
+                "url": {
+                  "type": "string",
+                  "example": "https://api.github.com/projects/columns/cards/21567453"
+                },
+                "project_url": {
+                  "type": "string",
+                  "example": "https://api.github.com/projects/2640902"
+                },
+                "column_url": {
+                  "type": "string",
+                  "example": "https://api.github.com/projects/columns/5368157"
+                },
+                "column_id": {
+                  "type": "integer",
+                  "example": 5368157
+                },
+                "id": {
+                  "type": "integer",
+                  "example": 21567453
+                },
+                "node_id": {
+                  "type": "string",
+                  "example": "MDExOlByb2plY3RDYXJkMjE1Njc0NTM="
+                },
+                "note": {
+                  "type": "string",
+                  "example": "Work that can be completed in one hour or less."
+                },
+                "archived": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "creator": {
+                  "$ref": "#/components/schemas/user"
+                },
+                "created_at": {
+                  "type": "string",
+                  "example": "2019-05-15T15:21:10Z"
+                },
+                "updated_at": {
+                  "type": "string",
+                  "example": "2019-05-15T15:21:10Z"
+                }
+              }
+            },
+            "repository": {
+              "$ref": "#/components/schemas/repository"
+            },
+            "sender": {
+              "$ref": "#/components/schemas/user"
+            }
+          }
+        }
+      }
+    },
+    "ProjectColumnEvent.v1": {
+      "subscribe": {
+        "summary": "Triggered when a project column is created, updated, moved, or deleted.",
+        "payload": {
+          "type": "object",
+          "required": ["action"],
+          "properties": {
+            "action": {
+              "type": "string",
+              "example": "created"
+            },
+            "project_column": {
+              "type": "object",
+              "properties": {
+                "url": {
+                  "type": "string",
+                  "example": "https://api.github.com/projects/columns/5368157"
+                },
+                "project_url": {
+                  "type": "string",
+                  "example": "https://api.github.com/projects/2640902"
+                },
+                "cards_url": {
+                  "type": "string",
+                  "example": "https://api.github.com/projects/columns/5368157/cards"
+                },
+                "id": {
+                  "type": "integer",
+                  "example": 5368157
+                },
+                "node_id": {
+                  "type": "string",
+                  "example": "MDEzOlByb2plY3RDb2x1bW41MzY4MTU3"
+                },
+                "name": {
+                  "type": "string",
+                  "example": "Small bugfixes"
+                },
+                "created_at": {
+                  "type": "string",
+                  "example": "2019-05-15T15:21:09Z"
+                },
+                "updated_at": {
+                  "type": "string",
+                  "example": "2019-05-15T15:21:09Z"
+                }
+              }
+            },
+            "repository": {
+              "$ref": "#/components/schemas/repository"
+            },
+            "sender": {
+              "$ref": "#/components/schemas/user"
+            }
+          }
+        }
+      }
+    },
     "ProjectEvent.v1": {
       "subscribe": {
         "summary": "Triggered when a project is created, updated, closed, reopened, or deleted.",
