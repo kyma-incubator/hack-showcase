@@ -10,11 +10,13 @@ import (
 //ServiceInstanceInterface describe constructors argument and include important methods of ServiceInstances
 type ServiceInstanceInterface interface {
 	Create(*v1beta1svc.ServiceInstance) (*v1beta1svc.ServiceInstance, error)
+	Delete(name string, options *v1.DeleteOptions) error
 }
 
 //ServiceInstance describe serviceInstance struct
 type ServiceInstance interface {
 	Prepare(name string, serviceClassExternalName string, plan string, parameters *runtime.RawExtension) *v1beta1svc.ServiceInstance
+	Delete(name string, options *v1.DeleteOptions) error
 	Create(body *v1beta1svc.ServiceInstance) (*v1beta1svc.ServiceInstance, error)
 }
 
@@ -35,6 +37,10 @@ func (s *serviceInstance) Create(body *v1beta1svc.ServiceInstance) (*v1beta1svc.
 	}
 
 	return data, nil
+}
+
+func (s *serviceInstance) Delete(name string, options *v1.DeleteOptions) error {
+	return s.instance.Delete(name, options)
 }
 
 func (s *serviceInstance) Prepare(name string, serviceClassExternalName string, plan string, parameters *runtime.RawExtension) *v1beta1svc.ServiceInstance {

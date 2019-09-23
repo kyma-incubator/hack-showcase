@@ -15,11 +15,13 @@ import (
 //FunctionInterface describe constructors argument and include important methods of Functions
 type FunctionInterface interface {
 	Create(*v1beta1kubeless.Function) (*v1beta1kubeless.Function, error)
+	Delete(name string, options *v1.DeleteOptions) error
 }
 
 //Function describe function struct
 type Function interface {
 	Create(body *v1beta1kubeless.Function) (*v1beta1kubeless.Function, error)
+	Delete(name string, options *v1.DeleteOptions) error
 	Prepare(name string, lambdaName string) *v1beta1kubeless.Function
 }
 
@@ -39,6 +41,10 @@ func (s *function) Create(body *v1beta1kubeless.Function) (*v1beta1kubeless.Func
 		return nil, errors.Wrap(err, "Can not create Function")
 	}
 	return data, nil
+}
+
+func (s *function) Delete(name string, options *v1.DeleteOptions) error {
+	return s.functionInterface.Delete(name, options)
 }
 
 func (s *function) Prepare(name string, lambdaName string) *v1beta1kubeless.Function {

@@ -11,12 +11,14 @@ import (
 //Subscription define subscription struct
 type Subscription interface {
 	Create(body *v1alpha1.Subscription) (*v1alpha1.Subscription, error)
+	Delete(name string, options *v1.DeleteOptions) error
 	Prepare(id string, lambdaName string) *v1alpha1.Subscription
 }
 
 //SubscriptionInterface describe constructors argument and containe Subscriptions method
 type SubscriptionInterface interface {
 	Create(*v1alpha1.Subscription) (*v1alpha1.Subscription, error)
+	Delete(name string, options *v1.DeleteOptions) error
 }
 
 type subscription struct {
@@ -38,6 +40,10 @@ func (s *subscription) Create(body *v1alpha1.Subscription) (*v1alpha1.Subscripti
 		return nil, errors.Wrap(err, "Can not create Subscription")
 	}
 	return data, nil
+}
+
+func (s *subscription) Delete(name string, options *v1.DeleteOptions) error {
+	return s.subscriptionInterface.Delete(name, options)
 }
 
 func (s *subscription) Prepare(id string, lambdaName string) *v1alpha1.Subscription {

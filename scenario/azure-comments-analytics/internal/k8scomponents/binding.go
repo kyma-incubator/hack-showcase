@@ -10,12 +10,14 @@ import (
 //Binding describe binding struct
 type Binding interface {
 	Create(body *v1beta1.ServiceBinding) (*v1beta1.ServiceBinding, error)
+	Delete(name string, options *v1.DeleteOptions) error
 	Prepare(name string, lambdaName string) *v1beta1.ServiceBinding
 }
 
 //BindingInterface describe constructors argument and containe ServiceBindings method
 type BindingInterface interface {
 	Create(*v1beta1.ServiceBinding) (*v1beta1.ServiceBinding, error)
+	Delete(name string, options *v1.DeleteOptions) error
 }
 
 type binding struct {
@@ -34,6 +36,10 @@ func (s *binding) Create(body *v1beta1.ServiceBinding) (*v1beta1.ServiceBinding,
 		return nil, errors.Wrap(err, "Can not create ServiceBinding")
 	}
 	return data, nil
+}
+
+func (s *binding) Delete(name string, options *v1.DeleteOptions) error {
+	return s.bindingInterface.Delete(name, options)
 }
 
 func (s *binding) Prepare(name string, lambdaName string) *v1beta1.ServiceBinding {
