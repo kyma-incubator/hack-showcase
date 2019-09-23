@@ -1,4 +1,3 @@
-{{ if eq .Values.receiving true }}
 apiVersion: gateway.kyma-project.io/v1alpha2
 kind: Api
 metadata:
@@ -13,4 +12,3 @@ spec:
       name: {{ include "github-connector-chart.repository" . }}
       port: {{ .Values.service.port }}
     hostname: {{ include "github-connector-chart.repository" . }}
-{{ end }}

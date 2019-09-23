@@ -19,14 +19,6 @@ Now you can start using the Slack Connector. Add channel ID to lambda environmen
 
 This plan allows to both handle events incoming from connected Slack workspaces to an exposed endpoint and POST jsons to Slack API through Application Gateway, which automatically adds all necessary informations needed to communicate with Slack.
 
-### Event sending plan
-
-This plan allows only to POST jsons to Slack API through Application Gateway, which automatically adds all necessary informations needed to communicate with Slack.
-
-### Event receiving plans
-
-This plan allows only to handle events incoming from connected Slack repositories to an exposed endpoint.
-
 ### Fields
 
 | PARAMETER NAME | DISPLAY NAME | TYPE | DESCRIPTION | REQUIRED |

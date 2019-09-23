@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"net/http"
-	"sync"
 
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/github"
 	"github.com/kyma-incubator/hack-showcase/github-connector/internal/hook"
@@ -36,14 +35,10 @@ func main() {
 	log.Infof("Port: %s", conf.Port)
 
 	log.Info("Registration started.")
-	receive := flag.Bool("receiving", true, "Specifies if Connector should subscribe events from GitHub")
-	send := flag.Bool("sending", true, "Specifies if Connector should send events to GitHub")
 	flag.Parse()
 	repos := flag.Args()
-	log.Infof("Events receiving: %t", *receive)
-	log.Infof("Events sending: %t", *send)
 
-	builder := registration.NewPayloadBuilder(registration.NewFileReader(), conf.GithubConnectorName, conf.GithubToken, *receive, *send)
+	builder := registration.NewPayloadBuilder(registration.NewFileReader(), conf.GithubConnectorName, conf.GithubToken)
 	id, err := registration.NewApplicationRegistryClient(builder, 5, 10).RegisterService()
 
 	if err != nil {
@@ -53,35 +48,31 @@ func main() {
 		"id": id,
 	}).Info("Service registered")
 
-	if *receive {
-		webHook := hook.NewHook(conf.KymaAddress)
-		secret := webHook.GetSecret()
-		log.Infof("Webhook's secret: %s", secret)
-		for i, address := range repos {
-			_, err := webHook.Create(conf.GithubToken, address, secret)
-			if err != nil {
-				log.Printf("Can not create %d webhook on %s adress. Prease create it manualy. Error body: %s", i, address, err.Error())
-			} else {
-				log.Printf("Webhook %d created: %s", i, address)
-			}
-		}
+	webHook := hook.NewHook(conf.KymaAddress)
+	secret := webHook.GetSecret()
+	log.Infof("Webhook's secret: %s", secret)
+	for i, address := range repos {
+		_, err := webHook.Create(conf.GithubToken, address, secret)
 		if err != nil {
-			log.Fatalf("Fatal error: %s", err.Error())
+			log.Printf("Can not create %d webhook on %s adress. Prease create it manualy. Error body: %s", i, address, err.Error())
+		} else {
+			log.Printf("Webhook %d created: %s", i, address)
 		}
-		log.Info("Webhook created!")
-
-		kyma := events.NewSender(&http.Client{}, events.NewValidator(), "http://event-publish-service.kyma-system:8080/v1/events")
-		webhook := handlers.NewWebHookHandler(
-			github.NewReceivingEventsWrapper(secret),
-			kyma,
-		)
-
-		http.HandleFunc("/webhook", webhook.HandleWebhook)
-		log.Info(http.ListenAndServe(":"+conf.Port, nil))
-	} else {
-		log.Info("Happy GitHub-Connecting!")
-		var wg sync.WaitGroup
-		wg.Add(1)
-		wg.Wait()
 	}
+	if err != nil {
+		log.Fatalf("Fatal error: %s", err.Error())
+	}
+	log.Info("Webhook created!")
+
+	kyma := events.NewSender(&http.Client{}, events.NewValidator(), "http://event-publish-service.kyma-system:8080/v1/events")
+	webhook := handlers.NewWebHookHandler(
+		github.NewReceivingEventsWrapper(secret),
+		kyma,
+	)
+
+	http.HandleFunc("/webhook", webhook.HandleWebhook)
+	log.Info(http.ListenAndServe(":"+conf.Port, nil))
+
+	log.Info("Happy GitHub-Connecting!")
+
 }

@@ -14,5 +14,3 @@ service:
 kymaAddress: adress
 slackBotToken: token
 slackSecret: secret
-receiving: true
-sending: true

@@ -11,12 +11,7 @@ image: kymaflyingseals/github-connector:0.3.5
 service:
   port: 80
 
-githubURL: repos/:owner/:repo
-
 githubToken: sampleToken
-
 kymaAddress: kyma.address.com
-receiving: true
-sending: true
 githubEndpoint: 
   - repos/example/test

@@ -12,8 +12,7 @@ service:
 
 kymaAddress: 35.195.198.66.xip.io
 
-githubURL: repos/:owner/:repo
-
 githubToken: sampleToken
-receiving: true
-sending: true
+githubEndpoint: 
+  - repo
+  - repo2

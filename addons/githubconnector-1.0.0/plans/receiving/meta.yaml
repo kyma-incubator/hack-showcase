@@ -1,6 +1,0 @@
-name: receiving
-id: 6b31a093-c806-4fdf-90c1-105722fb1c80
-description: "The plan for installing/uninstalling the GitHub Connector which handles events incoming from connected GitHub repositories"
-displayName: Event receiving
-bindable: false
-free: true

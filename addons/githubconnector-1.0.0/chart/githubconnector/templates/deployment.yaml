@@ -28,8 +28,6 @@ spec:
         - containerPort: {{ .Values.container.containerPort }}
         args:
         - "./main"
-        - "--receiving={{ .Values.receiving }}"
-        - "--sending={{ .Values.sending }}"
         {{ range .Values.githubEndpoint -}}
         - {{ . | printf "https://api.github.com/%s/hooks" | quote }}
         {{ end -}}
