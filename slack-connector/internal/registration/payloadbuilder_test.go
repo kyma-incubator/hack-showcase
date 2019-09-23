@@ -17,7 +17,7 @@ func TestBuild(t *testing.T) {
 		fileBody := []byte(`{"json":"value"}`)
 		jsonBody := json.RawMessage(`{"json":"value"}`)
 		mockFileReader.On("Read", "slackasyncapi.json").Return(fileBody, nil)
-		builder := registration.NewPayloadBuilder(mockFileReader, "slack-connector", "token", true, true)
+		builder := registration.NewPayloadBuilder(mockFileReader, "slack-connector", "token")
 		url := registration.SpecificationURL
 
 		//when
@@ -35,7 +35,7 @@ func TestBuild(t *testing.T) {
 	t.Run("should return error and empty ServiceDetails{}", func(t *testing.T) {
 		mockFileReader := &mocks.FileReader{}
 		mockFileReader.On("Read", "slackasyncapi.json").Return(nil, apperrors.Internal("error"))
-		builder := registration.NewPayloadBuilder(mockFileReader, "slack-connector", "token", true, true)
+		builder := registration.NewPayloadBuilder(mockFileReader, "slack-connector", "token")
 
 		//when
 		details, err := builder.Build()
@@ -51,7 +51,7 @@ func TestGetApplicationRegistryURL(t *testing.T) {
 		//given
 		mockFileReader := &mocks.FileReader{}
 		targetURL := "http://application-registry-external-api.kyma-integration.svc.cluster.local:8081/slack-connector-app/v1/metadata/services"
-		builder := registration.NewPayloadBuilder(mockFileReader, "slack-connector", "token", true, true)
+		builder := registration.NewPayloadBuilder(mockFileReader, "slack-connector", "token")
 
 		//when
 		path := builder.GetApplicationRegistryURL()
