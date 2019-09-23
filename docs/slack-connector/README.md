@@ -7,4 +7,4 @@ The Slack Connector is an additional tool to Kyma for handling communication wit
 ## Table of Contents
 
 - [Installation](installation.md)
-- ~~Configuration~~
+

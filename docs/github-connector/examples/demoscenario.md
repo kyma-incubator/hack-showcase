@@ -1,4 +1,4 @@
-# Using GitHub Connector <!-- omit in toc -->
+# Example usage of GitHub Connector <!-- omit in toc -->
 
 - [Overview](#overview)
 - [Prerequisites](#prerequisites)

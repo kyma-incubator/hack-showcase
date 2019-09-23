@@ -83,4 +83,4 @@ To correctly remove all GitHub Connector resources, you must delete them in orde
 
     >**NOTE:** To define the Namespace in which to install chart, add the `--namespace` flag to the command. To define the GitHub URL, add the `--set githubURL` flag. To crate a webhook on one repository, use the construction `repos/:owner/:repo`. To create a webhook on the whole organization, use `orgs/:org`. To provide the security token, use the `--set githubToken` flag.
 
-3. For further steps, see [configuration page](/docs/github-connector/configuration.md).
+3. For further steps, see [manulal configuration page](/docs/github-connector/configuration.md).
