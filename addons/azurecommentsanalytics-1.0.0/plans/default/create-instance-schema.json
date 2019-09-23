@@ -16,7 +16,12 @@
         "type":"string",
         "title":"Docker image",
         "description": "Docker image to install scenario from."
+      },
+      "channelName": {
+        "type":"string",
+        "title":"Slack channel name",
+        "description": "The name of the slack channel where notifications will be sent to."
       }
     },
-    "required":["githubURL","workspaceName"]
+    "required":["githubURL","workspaceName","channelName"]
   }

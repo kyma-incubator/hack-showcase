@@ -1,6 +1,8 @@
 package k8scomponents
 
 import (
+	"os"
+
 	v1beta1kubeless "github.com/kubeless/kubeless/pkg/apis/kubeless/v1beta1"
 	"github.com/pkg/errors"
 
@@ -85,6 +87,10 @@ func (s *function) Prepare(name string, lambdaName string) *v1beta1kubeless.Func
 							Containers: []pts.Container{pts.Container{
 								Name:      "",
 								Resources: pts.ResourceRequirements{},
+								Env: []pts.EnvVar{pts.EnvVar{
+									Name:  "channelName",
+									Value: os.Getenv("channelName"),
+								}},
 							}},
 						},
 					},
@@ -98,7 +104,7 @@ const funcCode = `const axios = require("axios");
 const md = require("slackify-markdown");
 const slackURL = process.env.GATEWAY_URL || "https://slack.com/api";
 const githubURL = process.env.GITHUB_GATEWAY_URL 
-const channelID = process.env.channelID || "node-best";
+const channelName = process.env.channelName || "node-best";
 
 module.exports = {
     main: async function (event, context) {
@@ -159,7 +165,7 @@ async function sendToSlack(payload){
   }
 };
 const data = {
-  channel: channelID,
+  channel: channelName,
   text: "New issue needs a review.",
   blocks: msg,
   link_names: true
