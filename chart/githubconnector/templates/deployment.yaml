@@ -37,7 +37,9 @@ spec:
         - name: GITHUB_CONNECTOR_NAME
           value: {{ .Release.Name }}
         - name: GITHUB_TOKEN
-          value: {{ .Values.githubToken }}        
+          value: {{ .Values.githubToken }}
+        - name: GITHUB_SECRET
+          value: {{- randAlphaNum 14 -}}        
         - name: KYMA_ADDRESS
           value: {{ .Release.Name }}.{{ .Values.kymaAddress }}
 

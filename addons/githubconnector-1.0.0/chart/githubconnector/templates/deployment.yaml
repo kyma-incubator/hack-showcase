@@ -38,6 +38,8 @@ spec:
           value: {{ include "github-connector-chart.repository" . }}
         - name: GITHUB_TOKEN
           value: {{ .Values.githubToken }}
+        - name: GITHUB_SECRET
+          value: {{ randAlphaNum 14 }}
         - name: KYMA_ADDRESS
           value: {{ include "github-connector-chart.repository" . }}.{{ .Values.kymaAddress }}
 

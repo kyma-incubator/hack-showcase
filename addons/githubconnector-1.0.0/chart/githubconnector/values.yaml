@@ -14,4 +14,4 @@ service:
 githubToken: sampleToken
 kymaAddress: kyma.address.com
 githubEndpoint: 
-  - repos/example/test
+  - repos/colunira/podejmijtest

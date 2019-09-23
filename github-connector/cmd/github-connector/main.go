@@ -19,6 +19,7 @@ import (
 type Config struct {
 	GithubConnectorName string `envconfig:"GITHUB_CONNECTOR_NAME"`
 	GithubToken         string `envconfig:"GITHUB_TOKEN"`
+	GithubSecret        string `envconfig:"GITHUB_SECRET"`
 	KymaAddress         string `envconfig:"KYMA_ADDRESS"`
 	Port                string `envconfig:"PORT"`
 }
@@ -49,8 +50,7 @@ func main() {
 	}).Info("Service registered")
 
 	webHook := hook.NewHook(conf.KymaAddress)
-	secret := webHook.GetSecret()
-	log.Infof("Webhook's secret: %s", secret)
+	secret := conf.GithubSecret
 	for i, address := range repos {
 		_, err := webHook.Create(conf.GithubToken, address, secret)
 		if err != nil {
