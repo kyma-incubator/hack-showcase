@@ -46,14 +46,3 @@ func TestCreate(t *testing.T) {
 		assert.Equal(t, "", token)
 	})
 }
-
-func TestGetSecret(t *testing.T) {
-	t.Run("should return secret", func(t *testing.T) {
-		//given
-		webhook := hook.NewHook("URL")
-		//when
-		secret := webhook.GetSecret()
-		//then
-		assert.NotEmpty(t, secret)
-	})
-}
