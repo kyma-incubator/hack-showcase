@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"log"
 	"time"
 
@@ -101,8 +102,6 @@ func main() {
 
 	//ServiceBindingUsages
 	catalogClient, err := svcBind.NewForConfig(k8sConfig)
-	//v := &v1.DeleteOptions{TypeMeta: v1.TypeMeta{}}
-	//catalogClient.ServiceBindingUsages("").Delete("", v)
 	fatalOnError(err)
 	clientWrappers.KymaServiceCatalog = wrappers.NewKymaServiceCatalogClient(catalogClient)
 	installedComponents.ServiceBindingUsages, err = manager.CreateServiceBindingUsages(clientWrappers.KymaServiceCatalog.BindingUsage(cfg.Namespace))
@@ -118,6 +117,7 @@ func main() {
 	installedComponents.Subscriptions, err = manager.CreateSubscription(clientWrappers.Eventbus.Subscription(cfg.Namespace))
 	fatalOnError(err)
 
+	fatalOnError(errors.New("Now Uninstalling"))
 }
 
 func fatalOnError(err error) {
@@ -138,14 +138,12 @@ func newRestClientConfig(kubeConfigPath string) (*restclient.Config, error) {
 var deleteOptions *v1.DeleteOptions
 
 func uninstallComponents() {
-	deleteOptions = &v1.DeleteOptions{
-		TypeMeta: v1.TypeMeta{},
-	}
+	deleteOptions = &v1.DeleteOptions{}
 
 	for _, element := range installedComponents.Subscriptions {
 		err := clientWrappers.Eventbus.Subscription(cfg.Namespace).Delete(element.ObjectMeta.Name, deleteOptions)
 		if err != nil {
-			log.Printf("%s can't be removed. Please, remove it manually", element.ObjectMeta.Name)
+			log.Printf("%s can't be removed. Please, remove it manually: %s", element.ObjectMeta.Name, err.Error())
 		} else {
 			log.Printf("%s removed", element.ObjectMeta.Name)
 		}
@@ -154,7 +152,7 @@ func uninstallComponents() {
 	for _, element := range installedComponents.ServiceBindingUsages {
 		err := clientWrappers.KymaServiceCatalog.BindingUsage(cfg.Namespace).Delete(element.ObjectMeta.Name, deleteOptions)
 		if err != nil {
-			log.Printf("%s can't be removed. Please, remove it manually", element.ObjectMeta.Name)
+			log.Printf("%s can't be removed. Please, remove it manually: %s", element.ObjectMeta.Name, err.Error())
 		} else {
 			log.Printf("%s removed", element.ObjectMeta.Name)
 		}
@@ -163,7 +161,7 @@ func uninstallComponents() {
 	for _, element := range installedComponents.ServiceBindings {
 		err := clientWrappers.ServiceCatalog.Binding(cfg.Namespace).Delete(element.ObjectMeta.Name, deleteOptions)
 		if err != nil {
-			log.Printf("%s can't be removed. Please, remove it manually", element.ObjectMeta.Name)
+			log.Printf("%s can't be removed. Please, remove it manually: %s", element.ObjectMeta.Name, err.Error())
 		} else {
 			log.Printf("%s removed", element.ObjectMeta.Name)
 		}
@@ -172,7 +170,7 @@ func uninstallComponents() {
 	for _, element := range installedComponents.Functions {
 		err := clientWrappers.Kubeless.Function(cfg.Namespace).Delete(element.ObjectMeta.Name, deleteOptions)
 		if err != nil {
-			log.Printf("%s can't be removed. Please, remove it manually", element.ObjectMeta.Name)
+			log.Printf("%s can't be removed. Please, remove it manually: %s", element.ObjectMeta.Name, err.Error())
 		} else {
 			log.Printf("%s removed", element.ObjectMeta.Name)
 		}
@@ -181,7 +179,7 @@ func uninstallComponents() {
 	for _, element := range installedComponents.ServiceInstances {
 		err := clientWrappers.ServiceCatalog.Instance(cfg.Namespace).Delete(element.ObjectMeta.Name, deleteOptions)
 		if err != nil {
-			log.Printf("%s can't be removed. Please, remove it manually", element.ObjectMeta.Name)
+			log.Printf("%s can't be removed. Please, remove it manually: %s", element.ObjectMeta.Name, err.Error())
 		} else {
 			log.Printf("%s removed", element.ObjectMeta.Name)
 		}
