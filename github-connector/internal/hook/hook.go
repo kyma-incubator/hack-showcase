@@ -35,7 +35,7 @@ func NewHook(URL string) Hook {
 	return &hook{kymaURL: kURL}
 }
 
-//GetSecreat create new secret for creating Github's webhook
+//GetSecret creates new secret for creating Github's webhook
 func (s *hook) GetSecret() string {
 	return createSecret(charset)
 }
