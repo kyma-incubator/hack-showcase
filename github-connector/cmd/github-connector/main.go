@@ -15,7 +15,7 @@ import (
 	"github.com/vrischmann/envconfig"
 )
 
-//Config containg all program configs
+//Config containing all program configs
 type Config struct {
 	GithubConnectorName string `envconfig:"GITHUB_CONNECTOR_NAME"`
 	GithubToken         string `envconfig:"GITHUB_TOKEN"`
