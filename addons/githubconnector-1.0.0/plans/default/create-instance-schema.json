@@ -22,7 +22,8 @@
       "title": "GitHub Endpoint (org or repo)",
       "type": "array",
       "items": {
-        "type": "string"
+        "type": "string",
+        "pattern": "(repos\/.+\/.+)|(orgs\/.+)"
       },
       "minItems": 1,
       "uniqueItems": true
