@@ -1,8 +1,6 @@
 package k8scomponents
 
 import (
-	"os"
-
 	v1beta1kubeless "github.com/kubeless/kubeless/pkg/apis/kubeless/v1beta1"
 	"github.com/pkg/errors"
 
@@ -24,7 +22,7 @@ type FunctionInterface interface {
 type Function interface {
 	Create(body *v1beta1kubeless.Function) (*v1beta1kubeless.Function, error)
 	Delete(name string, options *v1.DeleteOptions) error
-	Prepare(name string, lambdaName string) *v1beta1kubeless.Function
+	Prepare(name string, lambdaName string, channelName string) *v1beta1kubeless.Function
 }
 
 type function struct {
@@ -49,7 +47,7 @@ func (s *function) Delete(name string, options *v1.DeleteOptions) error {
 	return s.functionInterface.Delete(name, options)
 }
 
-func (s *function) Prepare(name string, lambdaName string) *v1beta1kubeless.Function {
+func (s *function) Prepare(name string, lambdaName string, channelName string) *v1beta1kubeless.Function {
 	return &v1beta1kubeless.Function{
 		ObjectMeta: v1.ObjectMeta{
 			Name:      lambdaName,
@@ -89,7 +87,7 @@ func (s *function) Prepare(name string, lambdaName string) *v1beta1kubeless.Func
 								Resources: pts.ResourceRequirements{},
 								Env: []pts.EnvVar{pts.EnvVar{
 									Name:  "channelName",
-									Value: os.Getenv("CHANNEL_NAME"),
+									Value: channelName,
 								}},
 							}},
 						},
@@ -131,10 +129,10 @@ async function createPayload(githubPayload) {
     let sentiment = await checkSentiment(githubPayload.issue.body, githubPayload.issue.title)
     if (sentiment)
     {
-    labels = labels.filter(word => word != ':thinking: Review needed')    }
+    labels = labels.filter(word => word != ':thinking: Caution/offensive')    }
     else
     {
-        labels.push(":thinking: Review needed")
+        labels.push(":thinking: Caution/offensive")
         await sendToSlack(githubPayload)
         
     }

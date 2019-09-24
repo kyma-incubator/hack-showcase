@@ -23,10 +23,9 @@ func TestCreateSubscription(t *testing.T) {
 		subscriptionBody := &subscriptions.Subscription{}
 		component.On("Create", subscriptionBody).Return(subscriptionBody, nil)
 		component.On("Prepare", "githubRepo", "epo-lambda").Return(subscriptionBody)
-		testedManager := manager.NewManager("namespace", "githubRepo", "slackWorkspace", "azureServiceName")
+		testedManager := manager.NewManager("namespace", "githubRepo", "slackWorkspace", "azureServiceName", "slackChannel")
 		subs := []subscriptions.Subscription{*subscriptionBody}
 
-		//when
 		returnedSubs, err := testedManager.CreateSubscription(component)
 
 		//then
@@ -40,7 +39,7 @@ func TestCreateSubscription(t *testing.T) {
 		subscriptionBody := &subscriptions.Subscription{}
 		component.On("Create", subscriptionBody).Return(subscriptionBody, apperrors.Internal("error"))
 		component.On("Prepare", "githubRepo", "epo-lambda").Return(subscriptionBody)
-		testedManager := manager.NewManager("namespace", "githubRepo", "slackWorkspace", "azureServiceName")
+		testedManager := manager.NewManager("namespace", "githubRepo", "slackWorkspace", "azureServiceName", "slackChannel")
 
 		//when
 		returnedSubs, err := testedManager.CreateSubscription(component)
@@ -60,7 +59,8 @@ func TestCreateServiceBindingUsages(t *testing.T) {
 		component.On("Prepare", "githubRepo", "GITHUB_", "epo-lambda").Return(bindingUsageBody)
 		component.On("Prepare", "slackWorkspace", "", "epo-lambda").Return(bindingUsageBody)
 		component.On("Prepare", "azureServiceName", "", "epo-lambda").Return(bindingUsageBody)
-		testedManager := manager.NewManager("namespace", "githubRepo", "slackWorkspace", "azureServiceName")
+
+		testedManager := manager.NewManager("namespace", "githubRepo", "slackWorkspace", "azureServiceName", "slackChannel")
 		bindUsages := []serviceBindingUsages.ServiceBindingUsage{*bindingUsageBody, *bindingUsageBody, *bindingUsageBody}
 
 		//when
@@ -79,8 +79,7 @@ func TestCreateServiceBindingUsages(t *testing.T) {
 		component.On("Prepare", "githubRepo", "GITHUB_", "epo-lambda").Return(bindingUsageBody)
 		component.On("Prepare", "slackWorkspace", "", "epo-lambda").Return(bindingUsageBody)
 		component.On("Prepare", "azureServiceName", "", "epo-lambda").Return(bindingUsageBody)
-		testedManager := manager.NewManager("namespace", "githubRepo", "slackWorkspace", "azureServiceName")
-
+		testedManager := manager.NewManager("namespace", "githubRepo", "slackWorkspace", "azureServiceName", "slackChannel")
 		//when
 		returnedBinds, err := testedManager.CreateServiceBindingUsages(component)
 
@@ -99,9 +98,11 @@ func TestCreateServiceBindings(t *testing.T) {
 		component.On("Prepare", "githubRepo", "epo-lambda").Return(bindingBody)
 		component.On("Prepare", "slackWorkspace", "epo-lambda").Return(bindingBody)
 		component.On("Prepare", "azureServiceName", "epo-lambda").Return(bindingBody)
-		testedManager := manager.NewManager("namespace", "githubRepo", "slackWorkspace", "azureServiceName")
+
+		testedManager := manager.NewManager("namespace", "githubRepo", "slackWorkspace", "azureServiceName", "slackChannel")
 		binds := []bindings.ServiceBinding{*bindingBody, *bindingBody, *bindingBody}
 
+		testedManager := manager.NewManager("namespace", "githubRepo", "slackWorkspace", "azureServiceName", "slackChannel")
 		//when
 		returnedBinds, err := testedManager.CreateServiceBindings(component)
 
@@ -118,8 +119,7 @@ func TestCreateServiceBindings(t *testing.T) {
 		component.On("Prepare", "githubRepo", "epo-lambda").Return(bindingBody)
 		component.On("Prepare", "slackWorkspace", "epo-lambda").Return(bindingBody)
 		component.On("Prepare", "azureServiceName", "epo-lambda").Return(bindingBody)
-		testedManager := manager.NewManager("namespace", "githubRepo", "slackWorkspace", "azureServiceName")
-
+		testedManager := manager.NewManager("namespace", "githubRepo", "slackWorkspace", "azureServiceName", "slackChannel")
 		//when
 		returnedBinds, err := testedManager.CreateServiceBindings(component)
 
@@ -136,7 +136,7 @@ func TestCreateFunction(t *testing.T) {
 		funcBody := &function.Function{}
 		component.On("Create", funcBody).Return(funcBody, nil)
 		component.On("Prepare", "githubRepo", "epo-lambda").Return(funcBody)
-		testedManager := manager.NewManager("namespace", "githubRepo", "slackWorkspace", "azureServiceName")
+		testedManager := manager.NewManager("namespace", "githubRepo", "slackWorkspace", "azureServiceName", "slackChannel")
 		funcs := []function.Function{*funcBody}
 
 		//when
@@ -150,10 +150,11 @@ func TestCreateFunction(t *testing.T) {
 	t.Run("should return error when Create method break up", func(t *testing.T) {
 		//given
 		component := &componentsMocks.Function{}
+
 		funcBody := &function.Function{}
 		component.On("Create", funcBody).Return(funcBody, apperrors.Internal("error"))
-		component.On("Prepare", "githubRepo", "epo-lambda").Return(funcBody)
-		testedManager := manager.NewManager("namespace", "githubRepo", "slackWorkspace", "azureServiceName")
+		component.On("Prepare", "githubRepo", "epo-lambda", "slackChannel").Return(subscriptionBody)
+		testedManager := manager.NewManager("namespace", "githubRepo", "slackWorkspace", "azureServiceName", "slackChannel")
 
 		//when
 		returnedFuncs, err := testedManager.CreateFunction(component)
@@ -175,7 +176,7 @@ func TestCreateServiceInstances(t *testing.T) {
 		component.On("Prepare", "azureServiceName", "azureServiceName", "standard-s0", &raw).Return(serviceInstanceBody)
 		component.On("Prepare", "githubRepo", "githubRepo-12345", "default", (*runtime.RawExtension)(nil)).Return(serviceInstanceBody)
 		component.On("Prepare", "slackWorkspace", "slackWorkspace-12345", "default", (*runtime.RawExtension)(nil)).Return(serviceInstanceBody)
-		testedManager := manager.NewManager("namespace", "githubRepo", "slackWorkspace", "azureServiceName")
+		testedManager := manager.NewManager("namespace", "githubRepo", "slackWorkspace", "azureServiceName", "slackChannel")
 		serviceInstanceList := serviceInstance.ServiceClassList{
 			Items: []serviceInstance.ServiceClass{
 				serviceInstance.ServiceClass{
@@ -220,7 +221,7 @@ func TestCreateServiceInstances(t *testing.T) {
 		component.On("Prepare", "azureServiceName", "azureServiceName", "standard-s0", &raw).Return(serviceInstanceBody)
 		component.On("Prepare", "githubRepo", "githubRepo-12345", "default", (*runtime.RawExtension)(nil)).Return(serviceInstanceBody)
 		component.On("Prepare", "slackWorkspace", "slackWorkspace-12345", "default", (*runtime.RawExtension)(nil)).Return(serviceInstanceBody)
-		testedManager := manager.NewManager("namespace", "githubRepo", "slackWorkspace", "azureServiceName")
+		testedManager := manager.NewManager("namespace", "githubRepo", "slackWorkspace", "azureServiceName", "slackChannel")
 		serviceInstanceList := serviceInstance.ServiceClassList{
 			Items: []serviceInstance.ServiceClass{
 				serviceInstance.ServiceClass{

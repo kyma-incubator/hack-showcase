@@ -26,6 +26,7 @@ type Config struct {
 	GithubURL      string `envconfig:"GITHUB_REPO"`
 	SlackWorkspace string `envconfig:"SLACK_WORKSPACE"`
 	Namespace      string `envconfig:"NAMESPACE"`
+	ChannelName    string `envconfig:"CHANNEL_NAME"`
 }
 
 func main() {
@@ -43,6 +44,7 @@ func main() {
 	log.Printf("Slack workspace: %s\n", cfg.SlackWorkspace)
 	log.Printf("Workspace: %s", cfg.Namespace)
 	log.Printf("Azure: %s", azureClassName)
+	log.Printf("Slack channel: %s", cfg.ChannelName)
 
 	// general k8s config
 	k8sConfig, err := newRestClientConfig(cfg.Kubeconfig)
@@ -55,7 +57,7 @@ func main() {
 	fatalOnError(err)
 
 	//Create scenario Manager
-	manager = mgr.NewManager(cfg.Namespace, cfg.GithubURL, cfg.SlackWorkspace, azureClassName)
+	manager := manager.NewManager(cfg.Namespace, cfg.GithubURL, cfg.SlackWorkspace, azureClassName, cfg.ChannelName)
 
 	//ServiceInstance
 	serviceCatalogWrapper := wrappers.NewServiceCatalogClient(svcClient)

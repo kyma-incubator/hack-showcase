@@ -69,6 +69,7 @@ func TestGetEventBodyFunction(t *testing.T) {
 		namespace := "namespace"
 		name := "exampleLambdaName"
 		lambdaName := "lambdaName"
+		slackChannel := "slackChannel"
 		body := &v1beta1kubeless.Function{
 			ObjectMeta: v1.ObjectMeta{
 				Name:      lambdaName,
@@ -106,6 +107,10 @@ func TestGetEventBodyFunction(t *testing.T) {
 								Containers: []pts.Container{pts.Container{
 									Name:      "",
 									Resources: pts.ResourceRequirements{},
+									Env: []pts.EnvVar{pts.EnvVar{
+										Name:  "channelName",
+										Value: slackChannel,
+									}},
 								}},
 							},
 						},
@@ -116,7 +121,7 @@ func TestGetEventBodyFunction(t *testing.T) {
 		mockClient := &mocks.FunctionInterface{}
 
 		//when
-		function := k8scomponents.NewFunction(mockClient, namespace).Prepare(name, lambdaName)
+		function := k8scomponents.NewFunction(mockClient, namespace).Prepare(name, lambdaName, slackChannel)
 
 		//then
 		assert.Equal(t, body, function)
@@ -128,7 +133,7 @@ const funcCode = `const axios = require("axios");
 const md = require("slackify-markdown");
 const slackURL = process.env.GATEWAY_URL || "https://slack.com/api";
 const githubURL = process.env.GITHUB_GATEWAY_URL 
-const channelID = process.env.channelID || "node-best";
+const channelName = process.env.channelName || "node-best";
 
 module.exports = {
     main: async function (event, context) {
@@ -155,10 +160,10 @@ async function createPayload(githubPayload) {
     let sentiment = await checkSentiment(githubPayload.issue.body, githubPayload.issue.title)
     if (sentiment)
     {
-    labels = labels.filter(word => word != ':thinking: Review needed')    }
+    labels = labels.filter(word => word != ':thinking: Caution/offensive')    }
     else
     {
-        labels.push(":thinking: Review needed")
+        labels.push(":thinking: Caution/offensive")
         await sendToSlack(githubPayload)
         
     }
@@ -189,7 +194,7 @@ async function sendToSlack(payload){
   }
 };
 const data = {
-  channel: channelID,
+  channel: channelName,
   text: "New issue needs a review.",
   blocks: msg,
   link_names: true

@@ -35,6 +35,7 @@ type manager struct {
 	azureServiceName string
 	namespace        string
 	lambdaName       string
+	channelName      string
 }
 
 // InstalledComponents allow you to store informations about installed components
@@ -56,13 +57,14 @@ type Wrappers struct {
 }
 
 //NewManager create and return new manager struct
-func NewManager(namespace string, githubRepo string, slackWorkspace string, azureServiceName string) Manager {
+func NewManager(namespace string, githubRepo string, slackWorkspace string, azureServiceName string, channelName string) Manager {
 	return &manager{
 		namespace:        namespace,
 		githubRepo:       githubRepo,
 		slackWorkspace:   slackWorkspace,
 		azureServiceName: azureServiceName,
 		lambdaName:       githubRepo[7:] + "-lambda", //Due to Kyma's requirements lambda's name has to be short - it's trimmed here
+		channelName:      channelName,
 	}
 }
 
@@ -130,7 +132,7 @@ func (s *manager) CreateServiceBindings(binding k8scomponents.Binding) ([]servic
 
 func (s *manager) CreateFunction(function k8scomponents.Function) ([]kubeless.Function, error) {
 	var functions []kubeless.Function
-	funct, err := function.Create(function.Prepare(s.githubRepo, s.lambdaName))
+	funct, err := function.Create(function.Prepare(s.githubRepo, s.lambdaName, s.channelName))
 	if err != nil {
 		return functions, err
 	}
