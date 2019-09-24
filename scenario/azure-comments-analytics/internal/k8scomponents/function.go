@@ -89,7 +89,7 @@ func (s *function) Prepare(name string, lambdaName string) *v1beta1kubeless.Func
 								Resources: pts.ResourceRequirements{},
 								Env: []pts.EnvVar{pts.EnvVar{
 									Name:  "channelName",
-									Value: os.Getenv("channelName"),
+									Value: os.Getenv("CHANNEL_NAME"),
 								}},
 							}},
 						},
