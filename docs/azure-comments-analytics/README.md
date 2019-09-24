@@ -8,7 +8,7 @@ This add-on allows you to install the scenario provided by Team Flying Seals. Az
 
 Diagram below shows how components interact with each other in our scenario.
 
-![Software architecture image](docs/sequence-diagram.svg)
+![Sequence Diagram](docs/../../sequencediagram.svg)
 
 ## Installation
 
