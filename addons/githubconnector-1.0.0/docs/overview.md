@@ -19,9 +19,9 @@ This plan allows to both handle events incoming from connected GitHub repositori
 
 ### Fields
 
-| PARAMETER NAME | DISPLAY NAME | TYPE | DESCRIPTION | REQUIRED |
-|----------------|--------------|------|-------------|:--------:|
-| `githubToken` | Token | `string` | The GitHub repository token, which you can find on this site: <https://auth-github-connector.herokuapp.com/> | yes |
-| `githubEndpoint` | GitHub Endpoint (org or repo) | `string` | Link to GitHub repository in proper format: repos/{OWNER}/{REPO} or orgs/{ORG}. For example, "repos/kyma-incubator/hack-showcase". | yes |
-| `kymaAddress` | Kyma Domain name | `string` | Kyma domain address in proper format. For example, "domain.sap.com". | yes |
-| `image` | Docker image | `string` | The GitHub Connector image on DockerHub | no |
+| PARAMETER NAME   | DISPLAY NAME                  | TYPE     | DESCRIPTION                                                                                                                        | REQUIRED |
+| ---------------- | ----------------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------- | :------: |
+| `githubToken`    | Token                         | `string` | The GitHub repository token, which you can find on this site: <https://auth-github-connector.herokuapp.com/>                       |   yes    |
+| `githubEndpoint` | GitHub Endpoint (org or repo) | `string` | Link to GitHub repository in proper format: repos/{OWNER}/{REPO} or orgs/{ORG}. For example, "repos/kyma-incubator/hack-showcase". |   yes    |
+| `kymaAddress`    | Kyma Domain name              | `string` | Kyma domain address in proper format. For example, "domain.sap.com".                                                               |   yes    |
+| `image`          | Docker image                  | `string` | The GitHub Connector image on DockerHub                                                                                            |    no    |

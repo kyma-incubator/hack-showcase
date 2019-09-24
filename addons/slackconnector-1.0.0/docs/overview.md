@@ -26,4 +26,4 @@ This plan allows to both handle events incoming from connected Slack workspaces 
 | `image` | Docker Image | `string` | Specify the Slack Connector image you want to use. | no |
 | `slackBotToken` | Bot Token | `string` | The Slack workspace token, which you can find on this site: <https://auth-slack.herokuapp.com/> | yes |
 | `workspaceName` | Workspace Name | `string` | The name of workspace application will be connected to. | yes |
-| `slackSecret` | Slack Signing Secret | `string` | The Slack app's signing secret used for validating requests coming from Slack by verifying its unique signature. You can find it in the app's Basic Information. | yes |
+| `slackSecret` | Slack Signing Secret | `string` | The Slack app's signing secret used for validating requests coming from Slack by verifying its unique signature. To get this secret you need to create your Slack App. Then you can find the secret on this site: <https://api.slack.com/apps> in the app's Basic Information | yes |
