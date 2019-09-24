@@ -7,5 +7,5 @@ description: "Allows you to install Team Hack showcase scenario"
 tags: github, slack, azure, example
 providerDisplayName: Kyma
 longDescription: "This add-on analyzes new issues on connected GitHub repository and, if issue needs a review, sends notifications to proper Slack channel."
-imageURL: https://github.com/pPrecel/hack-showcase/raw/master/logo.png
+imageURL: https://github.com/kyma-incubator/hack-showcase/blob/master/logo.png
 documentationURL: https://github.com/kyma-incubator/hack-showcase/tree/master/docs
