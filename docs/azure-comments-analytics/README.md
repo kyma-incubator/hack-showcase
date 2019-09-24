@@ -6,6 +6,10 @@ Welcome to the Azure Comments Analytics addon!
 
 This add-on allows you to install the scenario provided by Team Flying Seals. Azure Comments Analytic receives information about Github's Issue from the Github Connector. Next, the lambda function analyses it using the Azure Broker and then, if the Issue's sentiment is negative, the lambda sends it to Slack and labels the Issue on Github.
 
+Diagram below shows how components interact with each other in our scenario.
+
+![Software architecture image](docs/sequence-diagram.svg)
+
 ## Installation
 
 1. Provision [Github Connector](https://github.com/kyma-incubator/hack-showcase/blob/master/docs/github-connector/README.md).
@@ -21,8 +25,8 @@ The Azure Comments Analytics Scenario is now ready to use. Add a new issue or ed
 
 In this plan, you only provide the required values.
 
-| PARAMETER NAME | DISPLAY NAME | TYPE | DESCRIPTION | REQUIRED |
-|----------------|--------------|------|-------------|:--------:|
-| `githubURL` | GitHub repository | `string` | Link to GitHub repository in the proper format: repos/:owner/:repo or orgs/:org | yes |
-| `workspaceName` | Workspace Name | `string` | The name of the workspace to install the application to. | yes |
-| `image` | Docker image | `string` | Docker image to install scenario from. | no |
+| PARAMETER NAME  | DISPLAY NAME      | TYPE     | DESCRIPTION                                                                     | REQUIRED |
+| --------------- | ----------------- | -------- | ------------------------------------------------------------------------------- | :------: |
+| `githubURL`     | GitHub repository | `string` | Link to GitHub repository in the proper format: repos/:owner/:repo or orgs/:org |   yes    |
+| `workspaceName` | Workspace Name    | `string` | The name of the workspace to install the application to.                        |   yes    |
+| `image`         | Docker image      | `string` | Docker image to install scenario from.                                          |    no    |
