@@ -43,8 +43,25 @@ func TestCreateBinding(t *testing.T) {
 	})
 }
 
-func TestGetEventBodyBinding(t *testing.T) {
+func TestDeleteBinding(t *testing.T) {
 	t.Run("should return ServiceBinding", func(t *testing.T) {
+		//given
+		name := "name"
+		namespace := "namespace"
+		options := &v1.DeleteOptions{}
+		mockClient := &mocks.BindingInterface{}
+		mockClient.On("Delete", name, options).Return(nil)
+		//when
+		err := k8scomponents.NewBinding(mockClient, namespace).Delete(name, options)
+
+		//then
+		assert.NoError(t, err)
+
+	})
+}
+
+func TestGetEventBodyBinding(t *testing.T) {
+	t.Run("should return nil", func(t *testing.T) {
 		//given
 		name := "github-repo"
 		lambdaName := "lambdaName"

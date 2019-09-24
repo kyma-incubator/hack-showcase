@@ -46,6 +46,23 @@ func TestCreateFunction(t *testing.T) {
 	})
 }
 
+func TestDeleteFunction(t *testing.T) {
+	t.Run("should return ServiceBinding", func(t *testing.T) {
+		//given
+		name := "name"
+		namespace := "namespace"
+		options := &v1.DeleteOptions{}
+		mockClient := &mocks.FunctionInterface{}
+		mockClient.On("Delete", name, options).Return(nil)
+		//when
+		err := k8scomponents.NewFunction(mockClient, namespace).Delete(name, options)
+
+		//then
+		assert.NoError(t, err)
+
+	})
+}
+
 func TestGetEventBodyFunction(t *testing.T) {
 	t.Run("should return Function", func(t *testing.T) {
 		//given

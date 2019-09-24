@@ -4,11 +4,17 @@ import (
 	"log"
 	"strings"
 
+	kubelessbeta1 "github.com/kubeless/kubeless/pkg/apis/kubeless/v1beta1"
+	eventingalpha1 "github.com/kyma-project/kyma/components/event-bus/api/push/eventing.kyma-project.io/v1alpha1"
+	kymaservicecatalogaplha1 "github.com/kyma-project/kyma/components/service-binding-usage-controller/pkg/apis/servicecatalog/v1alpha1"
+	servicecatalogbeta1 "github.com/poy/service-catalog/pkg/apis/servicecatalog/v1beta1"
+
 	kubeless "github.com/kubeless/kubeless/pkg/apis/kubeless/v1beta1"
 	"github.com/kyma-incubator/hack-showcase/scenario/azure-comments-analytics/internal/k8scomponents"
 	eventing "github.com/kyma-project/kyma/components/event-bus/api/push/eventing.kyma-project.io/v1alpha1"
 	kymaservicecatalog "github.com/kyma-project/kyma/components/service-binding-usage-controller/pkg/apis/servicecatalog/v1alpha1"
 	servicecatalog "github.com/poy/service-catalog/pkg/apis/servicecatalog/v1beta1"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -16,6 +22,7 @@ const azureConfiguration = `{"location": "westeurope","resourceGroup": "flying-s
 
 //Manager include important methods to deploy all k8s and kymas components to realize hack-showcase scenario
 type Manager interface {
+	DeleteAllComponents(installedComponents *InstalledComponents, clientWrappers *Wrappers)
 	CreateFunction(function k8scomponents.Function) ([]kubeless.Function, error)
 	CreateServiceBindings(binding k8scomponents.Binding) ([]servicecatalog.ServiceBinding, error)
 	CreateSubscription(subscription k8scomponents.Subscription) ([]eventing.Subscription, error)
@@ -28,6 +35,24 @@ type manager struct {
 	azureServiceName string
 	namespace        string
 	lambdaName       string
+}
+
+// InstalledComponents allow you to store informations about installed components
+type InstalledComponents struct {
+	Subscriptions        []eventingalpha1.Subscription
+	ServiceBindingUsages []kymaservicecatalogaplha1.ServiceBindingUsage
+	Functions            []kubelessbeta1.Function
+	ServiceInstances     []servicecatalogbeta1.ServiceInstance
+	ServiceBindings      []servicecatalogbeta1.ServiceBinding
+}
+
+// Wrappers store all client wrappers
+type Wrappers struct {
+	Subscription    k8scomponents.Subscription
+	BindingUsage    k8scomponents.BindingUsage
+	Binding         k8scomponents.Binding
+	Function        k8scomponents.Function
+	ServiceInstance k8scomponents.ServiceInstance
 }
 
 //NewManager create and return new manager struct
@@ -150,4 +175,53 @@ func (s *manager) CreateServiceInstances(instance k8scomponents.ServiceInstance,
 		}
 	}
 	return serviceInstances, nil
+}
+
+func (s *manager) DeleteAllComponents(installedComponents *InstalledComponents, clientWrappers *Wrappers) {
+	deleteOptions := &v1.DeleteOptions{}
+
+	for _, element := range installedComponents.Subscriptions {
+		err := clientWrappers.Subscription.Delete(element.ObjectMeta.Name, deleteOptions)
+		if err != nil {
+			log.Printf("%s can't be removed. Please, remove it manually: %s", element.ObjectMeta.Name, err.Error())
+		} else {
+			log.Printf("%s removed", element.ObjectMeta.Name)
+		}
+	}
+
+	for _, element := range installedComponents.ServiceBindingUsages {
+		err := clientWrappers.BindingUsage.Delete(element.ObjectMeta.Name, deleteOptions)
+		if err != nil {
+			log.Printf("%s can't be removed. Please, remove it manually: %s", element.ObjectMeta.Name, err.Error())
+		} else {
+			log.Printf("%s removed", element.ObjectMeta.Name)
+		}
+	}
+
+	for _, element := range installedComponents.ServiceBindings {
+		err := clientWrappers.Binding.Delete(element.ObjectMeta.Name, deleteOptions)
+		if err != nil {
+			log.Printf("%s can't be removed. Please, remove it manually: %s", element.ObjectMeta.Name, err.Error())
+		} else {
+			log.Printf("%s removed", element.ObjectMeta.Name)
+		}
+	}
+
+	for _, element := range installedComponents.Functions {
+		err := clientWrappers.Function.Delete(element.ObjectMeta.Name, deleteOptions)
+		if err != nil {
+			log.Printf("%s can't be removed. Please, remove it manually: %s", element.ObjectMeta.Name, err.Error())
+		} else {
+			log.Printf("%s removed", element.ObjectMeta.Name)
+		}
+	}
+
+	for _, element := range installedComponents.ServiceInstances {
+		err := clientWrappers.ServiceInstance.Delete(element.ObjectMeta.Name, deleteOptions)
+		if err != nil {
+			log.Printf("%s can't be removed. Please, remove it manually: %s", element.ObjectMeta.Name, err.Error())
+		} else {
+			log.Printf("%s removed", element.ObjectMeta.Name)
+		}
+	}
 }

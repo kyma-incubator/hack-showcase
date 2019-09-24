@@ -11,15 +11,15 @@ type ServiceCatalogWrapper struct {
 }
 
 // Binding provides a mock function with given fields: namespace
-func (_m *ServiceCatalogWrapper) Binding(namespace string) k8scomponents.BindingInterface {
+func (_m *ServiceCatalogWrapper) Binding(namespace string) k8scomponents.Binding {
 	ret := _m.Called(namespace)
 
-	var r0 k8scomponents.BindingInterface
-	if rf, ok := ret.Get(0).(func(string) k8scomponents.BindingInterface); ok {
+	var r0 k8scomponents.Binding
+	if rf, ok := ret.Get(0).(func(string) k8scomponents.Binding); ok {
 		r0 = rf(namespace)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(k8scomponents.BindingInterface)
+			r0 = ret.Get(0).(k8scomponents.Binding)
 		}
 	}
 

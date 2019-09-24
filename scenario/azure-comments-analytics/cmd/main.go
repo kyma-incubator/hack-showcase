@@ -1,14 +1,8 @@
 package main
 
 import (
-	"errors"
 	"log"
 	"time"
-
-	kubelessbeta1 "github.com/kubeless/kubeless/pkg/apis/kubeless/v1beta1"
-	eventingalpha1 "github.com/kyma-project/kyma/components/event-bus/api/push/eventing.kyma-project.io/v1alpha1"
-	kymaservicecatalogaplha1 "github.com/kyma-project/kyma/components/service-binding-usage-controller/pkg/apis/servicecatalog/v1alpha1"
-	servicecatalogbeta1 "github.com/poy/service-catalog/pkg/apis/servicecatalog/v1beta1"
 
 	kubeless "github.com/kubeless/kubeless/pkg/client/clientset/versioned"
 	eventbus "github.com/kyma-project/kyma/components/event-bus/generated/push/clientset/versioned"
@@ -16,7 +10,7 @@ import (
 
 	svcCatalog "github.com/google/kf/pkg/client/servicecatalog/clientset/versioned/typed/servicecatalog/v1beta1"
 	wrappers "github.com/kyma-incubator/hack-showcase/scenario/azure-comments-analytics/internal/clientwrappers"
-	"github.com/kyma-incubator/hack-showcase/scenario/azure-comments-analytics/internal/manager"
+	mgr "github.com/kyma-incubator/hack-showcase/scenario/azure-comments-analytics/internal/manager"
 	"github.com/vrischmann/envconfig"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
@@ -26,10 +20,6 @@ import (
 
 const azureClassName = "azure-text-analytics"
 
-var installedComponents InstalledComponents
-var clientWrappers Wrappers
-var cfg Config
-
 // Config holds application configuration
 type Config struct {
 	Kubeconfig     string `envconfig:"APP,optional"`
@@ -38,25 +28,13 @@ type Config struct {
 	Namespace      string `envconfig:"NAMESPACE"`
 }
 
-// InstalledComponents allow you to store informations about installed components
-type InstalledComponents struct {
-	Subscriptions        []eventingalpha1.Subscription
-	ServiceBindingUsages []kymaservicecatalogaplha1.ServiceBindingUsage
-	Functions            []kubelessbeta1.Function
-	ServiceInstances     []servicecatalogbeta1.ServiceInstance
-	ServiceBindings      []servicecatalogbeta1.ServiceBinding
-}
-
-// Wrappers store all client wrappers
-type Wrappers struct {
-	Namespace          string
-	Eventbus           wrappers.EventbusWrapper
-	Kubeless           wrappers.KubelessWrapper
-	ServiceCatalog     wrappers.ServiceCatalogWrapper
-	KymaServiceCatalog wrappers.KymaServiceCatalogWrapper
-}
-
 func main() {
+	//Contain all created components
+	var installedComponents mgr.InstalledComponents
+	var clientWrappers mgr.Wrappers
+	var manager mgr.Manager
+
+	var cfg Config
 	err := envconfig.Init(&cfg)
 	fatalOnError(err)
 
@@ -77,34 +55,36 @@ func main() {
 	fatalOnError(err)
 
 	//Create scenario Manager
-	manager := manager.NewManager(cfg.Namespace, cfg.GithubURL, cfg.SlackWorkspace, azureClassName)
-
-	//Contain all created components
+	manager = mgr.NewManager(cfg.Namespace, cfg.GithubURL, cfg.SlackWorkspace, azureClassName)
 
 	//ServiceInstance
-	clientWrappers.ServiceCatalog = wrappers.NewServiceCatalogClient(svcClient)
-	installedComponents.ServiceInstances, err = manager.CreateServiceInstances(clientWrappers.ServiceCatalog.Instance(cfg.Namespace), svcList)
+	serviceCatalogWrapper := wrappers.NewServiceCatalogClient(svcClient)
+	clientWrappers.ServiceInstance = serviceCatalogWrapper.Instance(cfg.Namespace)
+	installedComponents.ServiceInstances, err = manager.CreateServiceInstances(clientWrappers.ServiceInstance, svcList)
 	fatalOnError(err)
 
 	//Function
 	kubeless, err := kubeless.NewForConfig(k8sConfig)
 	fatalOnError(err)
-	clientWrappers.Kubeless = wrappers.NewKubelessClient(kubeless.Kubeless())
-	installedComponents.Functions, err = manager.CreateFunction(clientWrappers.Kubeless.Function(cfg.Namespace))
+	kubelessWrapper := wrappers.NewKubelessClient(kubeless.Kubeless())
+	clientWrappers.Function = kubelessWrapper.Function(cfg.Namespace)
+	installedComponents.Functions, err = manager.CreateFunction(clientWrappers.Function)
 	fatalOnError(err)
 
 	//Other components have to wait for end of creating function
 	time.Sleep(5 * time.Second)
 
 	//ServiceBindings
-	installedComponents.ServiceBindings, err = manager.CreateServiceBindings(clientWrappers.ServiceCatalog.Binding(cfg.Namespace))
+	clientWrappers.Binding = serviceCatalogWrapper.Binding(cfg.Namespace)
+	installedComponents.ServiceBindings, err = manager.CreateServiceBindings(clientWrappers.Binding)
 	fatalOnError(err)
 
 	//ServiceBindingUsages
 	catalogClient, err := svcBind.NewForConfig(k8sConfig)
 	fatalOnError(err)
-	clientWrappers.KymaServiceCatalog = wrappers.NewKymaServiceCatalogClient(catalogClient)
-	installedComponents.ServiceBindingUsages, err = manager.CreateServiceBindingUsages(clientWrappers.KymaServiceCatalog.BindingUsage(cfg.Namespace))
+	kymaServiceCatalog := wrappers.NewKymaServiceCatalogClient(catalogClient)
+	clientWrappers.BindingUsage = kymaServiceCatalog.BindingUsage(cfg.Namespace)
+	installedComponents.ServiceBindingUsages, err = manager.CreateServiceBindingUsages(clientWrappers.BindingUsage)
 	fatalOnError(err)
 
 	//To create subscription resources above must be ready. Wait for their creation.
@@ -113,16 +93,14 @@ func main() {
 	//Subscription
 	bus, err := eventbus.NewForConfig(k8sConfig)
 	fatalOnError(err)
-	clientWrappers.Eventbus = wrappers.NewEventbusClient(bus.Eventing())
-	installedComponents.Subscriptions, err = manager.CreateSubscription(clientWrappers.Eventbus.Subscription(cfg.Namespace))
+	eventbusWrapper := wrappers.NewEventbusClient(bus.Eventing())
+	clientWrappers.Subscription = eventbusWrapper.Subscription(cfg.Namespace)
+	installedComponents.Subscriptions, err = manager.CreateSubscription(clientWrappers.Subscription)
 	fatalOnError(err)
-
-	fatalOnError(errors.New("Now Uninstalling"))
 }
 
 func fatalOnError(err error) {
 	if err != nil {
-		uninstallComponents()
 		log.Fatal(err)
 	}
 }
@@ -133,55 +111,4 @@ func newRestClientConfig(kubeConfigPath string) (*restclient.Config, error) {
 	}
 
 	return restclient.InClusterConfig()
-}
-
-var deleteOptions *v1.DeleteOptions
-
-func uninstallComponents() {
-	deleteOptions = &v1.DeleteOptions{}
-
-	for _, element := range installedComponents.Subscriptions {
-		err := clientWrappers.Eventbus.Subscription(cfg.Namespace).Delete(element.ObjectMeta.Name, deleteOptions)
-		if err != nil {
-			log.Printf("%s can't be removed. Please, remove it manually: %s", element.ObjectMeta.Name, err.Error())
-		} else {
-			log.Printf("%s removed", element.ObjectMeta.Name)
-		}
-	}
-
-	for _, element := range installedComponents.ServiceBindingUsages {
-		err := clientWrappers.KymaServiceCatalog.BindingUsage(cfg.Namespace).Delete(element.ObjectMeta.Name, deleteOptions)
-		if err != nil {
-			log.Printf("%s can't be removed. Please, remove it manually: %s", element.ObjectMeta.Name, err.Error())
-		} else {
-			log.Printf("%s removed", element.ObjectMeta.Name)
-		}
-	}
-
-	for _, element := range installedComponents.ServiceBindings {
-		err := clientWrappers.ServiceCatalog.Binding(cfg.Namespace).Delete(element.ObjectMeta.Name, deleteOptions)
-		if err != nil {
-			log.Printf("%s can't be removed. Please, remove it manually: %s", element.ObjectMeta.Name, err.Error())
-		} else {
-			log.Printf("%s removed", element.ObjectMeta.Name)
-		}
-	}
-
-	for _, element := range installedComponents.Functions {
-		err := clientWrappers.Kubeless.Function(cfg.Namespace).Delete(element.ObjectMeta.Name, deleteOptions)
-		if err != nil {
-			log.Printf("%s can't be removed. Please, remove it manually: %s", element.ObjectMeta.Name, err.Error())
-		} else {
-			log.Printf("%s removed", element.ObjectMeta.Name)
-		}
-	}
-
-	for _, element := range installedComponents.ServiceInstances {
-		err := clientWrappers.ServiceCatalog.Instance(cfg.Namespace).Delete(element.ObjectMeta.Name, deleteOptions)
-		if err != nil {
-			log.Printf("%s can't be removed. Please, remove it manually: %s", element.ObjectMeta.Name, err.Error())
-		} else {
-			log.Printf("%s removed", element.ObjectMeta.Name)
-		}
-	}
 }

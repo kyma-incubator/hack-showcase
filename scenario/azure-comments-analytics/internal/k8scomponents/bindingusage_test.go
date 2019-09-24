@@ -42,6 +42,23 @@ func TestCreateBindingUsage(t *testing.T) {
 	})
 }
 
+func TestDeleteBindingUsage(t *testing.T) {
+	t.Run("should return ServiceBinding", func(t *testing.T) {
+		//given
+		name := "name"
+		namespace := "namespace"
+		options := &v1.DeleteOptions{}
+		mockClient := &mocks.BindingUsageInterface{}
+		mockClient.On("Delete", name, options).Return(nil)
+		//when
+		err := k8scomponents.NewBindingUsage(mockClient, namespace).Delete(name, options)
+
+		//then
+		assert.NoError(t, err)
+
+	})
+}
+
 func TestGetEventBodyBindingUsage(t *testing.T) {
 	t.Run("should return ServiceBindingUsage", func(t *testing.T) {
 		//given
