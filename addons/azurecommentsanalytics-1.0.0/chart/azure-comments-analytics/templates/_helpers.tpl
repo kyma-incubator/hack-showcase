@@ -13,7 +13,3 @@
 {{- define "azure-comments-analytics.workspace" -}}
 {{- .Values.workspaceName -}}
 {{- end -}}
-
-{{- define "azure-comments-analytics.channel" -}}
-{{- .Values.channelName -}}
-{{- end -}}
