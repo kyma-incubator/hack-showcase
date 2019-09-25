@@ -101,8 +101,6 @@ func TestCreateServiceBindings(t *testing.T) {
 
 		testedManager := manager.NewManager("namespace", "githubRepo", "slackWorkspace", "azureServiceName", "slackChannel")
 		binds := []bindings.ServiceBinding{*bindingBody, *bindingBody, *bindingBody}
-
-		testedManager := manager.NewManager("namespace", "githubRepo", "slackWorkspace", "azureServiceName", "slackChannel")
 		//when
 		returnedBinds, err := testedManager.CreateServiceBindings(component)
 
@@ -135,7 +133,7 @@ func TestCreateFunction(t *testing.T) {
 		component := &componentsMocks.Function{}
 		funcBody := &function.Function{}
 		component.On("Create", funcBody).Return(funcBody, nil)
-		component.On("Prepare", "githubRepo", "epo-lambda").Return(funcBody)
+		component.On("Prepare", "githubRepo", "epo-lambda", "slackChannel").Return(funcBody)
 		testedManager := manager.NewManager("namespace", "githubRepo", "slackWorkspace", "azureServiceName", "slackChannel")
 		funcs := []function.Function{*funcBody}
 
@@ -153,7 +151,7 @@ func TestCreateFunction(t *testing.T) {
 
 		funcBody := &function.Function{}
 		component.On("Create", funcBody).Return(funcBody, apperrors.Internal("error"))
-		component.On("Prepare", "githubRepo", "epo-lambda", "slackChannel").Return(subscriptionBody)
+		component.On("Prepare", "githubRepo", "epo-lambda", "slackChannel").Return(funcBody)
 		testedManager := manager.NewManager("namespace", "githubRepo", "slackWorkspace", "azureServiceName", "slackChannel")
 
 		//when
