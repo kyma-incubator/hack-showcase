@@ -25,3 +25,4 @@ In this plan, you only provide the required values.
 |----------------|--------------|------|-------------|:--------:|
 | `githubURL` | GitHub repository | `string` | Link to GitHub repository in the proper format: repos/:owner/:repo or orgs/:org | yes |
 | `workspaceName` | Workspace Name | `string` | The name of the workspace to install the application to. | yes |
+| `channelName` | Slack channel name | `string` | The name of the slack channel where notifications will be sent to. | yes |
