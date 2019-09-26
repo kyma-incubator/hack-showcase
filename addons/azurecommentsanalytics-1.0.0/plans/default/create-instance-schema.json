@@ -12,11 +12,6 @@
         "title":"Slack Service Class name",
         "description": "The name of the Slack Connector Service Class. Find it in Service Catalog > Services. It consist of \"slack-connector-\" and your Slack channel name"
       },
-      "image": {
-        "type":"string",
-        "title":"Docker image",
-        "description": "Docker image to install scenario from."
-      },
       "channelName": {
         "type":"string",
         "title":"Slack channel name",
