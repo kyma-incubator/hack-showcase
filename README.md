@@ -1,8 +1,4 @@
-# Connectors for Kyma
-
-<p align="center">
- <img src="logo.png" width="235">
-</p>
+# The GitHub and Slack Connectors for Kyma
 
 ---
 
@@ -53,7 +49,7 @@ You can install the Connectors and start using them with just few steps. Follow 
 
     >**NOTE:** Keep in mind that all resources created in previous step have to be ready. Check their status in Instances in Service Management section.
 
-4. Create a new issue on a GitHub repository you specified during the GitHub Connector installation to check if everything is configured correctly. You should get a notification on Slack and the issue should be tagged with `Caution/offensive` label.
+4. Create a new issue on a GitHub repository you specified during the GitHub Connector installation to check if everything is configured correctly. You should get a notification on Slack and the issue should be tagged with `Caution/offensive` label if the issue's sentiment is negative.
 
 ## Installation
 
