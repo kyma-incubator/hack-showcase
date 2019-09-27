@@ -28,5 +28,5 @@ kubectl get deployments -n {NAMESPACE} {DEPLOYMENT_NAME} -o jsonpath='{.spec.tem
     - **Secret**: {OBTAINED_SECRET}
     - **SSL verification**: `Disabled`
 
-5. Select the events to receive in the GitHub Connector.
+5. Select the Events to receive in the GitHub Connector.
 6. Click `Add webhook`. This redirects you back to the webhooks page. You can see a new webhook in the list. A successful configuration results in a green tick next to the new webhook.

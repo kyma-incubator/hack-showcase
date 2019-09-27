@@ -1,7 +1,7 @@
 # Overview
 
 
-This addon allows you to communicate with GitHub. You can handle events incoming from GitHub repositories or manage repositories through the GitHub API. You must provision an instance for every repository you want to communicate with.
+This addon allows you to communicate with GitHub. You can handle Events incoming from GitHub repositories or manage repositories through the GitHub API. You must provision an instance for every repository you want to communicate with.
 
 ## Installation
 
@@ -14,7 +14,7 @@ Now you can start using the GitHub Connector. Add a new Event trigger to react t
 
 ### Default plan
 
-This plan allows to both handle events incoming from connected GitHub repositories to an exposed endpoint and POST jsons to the GitHub API through Application Gateway, which automatically adds all necessary informations needed to communicate with GitHub.
+This plan allows to both handle Events incoming from connected GitHub repositories to an exposed endpoint and POST jsons to the GitHub API through Application Gateway, which automatically adds all necessary informations needed to communicate with GitHub.
 
 ### Fields
 

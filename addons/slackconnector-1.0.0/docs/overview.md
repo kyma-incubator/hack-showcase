@@ -13,7 +13,7 @@ Now you can start using the Slack Connector. Add the channel name to the lambda 
 
 ### Default plan
 
-This plan allows to handle events incoming from connected Slack workspaces to an exposed endpoint, and POST jsons to the Slack API through the Application Gateway, which automatically adds all the information necessary to communicate with Slack.
+This plan allows to handle Events incoming from connected Slack workspaces to an exposed endpoint, and POST jsons to the Slack API through the Application Gateway, which automatically adds all the information necessary to communicate with Slack.
 
 ### Fields
 
@@ -21,5 +21,5 @@ This plan allows to handle events incoming from connected Slack workspaces to an
 |----------------|--------------|------|-------------|:--------:|
 | `image` | Docker Image | `string` | The Slack Connector image to use. | no |
 | `slackBotToken` | Bot Token | `string` | DO NAPISANIA | yes |
-| `workspaceName` | Workspace Name | `string` | The name of the workspace to which to connect the application. | yes |
+| `workspaceName` | Workspace Name | `string` | The name of the workspace to which to connect the Application. | yes |
 | `slackSecret` | Slack Signing Secret | `string` | The Slack Application's signing Secret used for validating requests coming from Slack by verifying its unique signature. To get this Secret, create your Slack Application. Then, find the Secret in the [Application's](https://api.slack.com/apps) Basic Information. | yes |

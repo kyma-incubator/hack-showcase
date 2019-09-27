@@ -17,4 +17,4 @@ Our scenario consists of two main components: GitHub Connector and Slack Connect
 ### Slack Connector
 * [x] The Connector as a Kyma Add-On 
 * [x] Sending notifications to corresponding channels on Slack
-* [x] Handling all Slack events 
+* [x] Handling all Slack Events 

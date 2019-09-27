@@ -36,7 +36,7 @@ The GitHub Connector is a component which allows interaction with the GitHub API
 3. Go to the Namespace in which to install the Connector.
 4. Find the addon in the Service Catalog and click it.
 5. Click **Add** and select the installation plan. Fill in all required fields and click **Create Instance**.
-6. Go to the **Services** tab in the Service Catalog. After provisioning and automatic registration of the application resources, the Service Class of the GitHub Connector appears here.
+6. Go to the **Services** tab in the Service Catalog. After provisioning and automatic registration of the Application resources, the Service Class of the GitHub Connector appears here.
 7. Click the Service Class to enter its specification screen, click **Add once**, and then **Create Instance**.
 
 To send requests to the GitHub API, bind the service you created to the Lambda Function.

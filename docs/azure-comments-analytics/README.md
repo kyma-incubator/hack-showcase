@@ -22,5 +22,5 @@ In this plan, you only provide the required values.
 | PARAMETER NAME  | DISPLAY NAME      | TYPE     | DESCRIPTION                                                                     | REQUIRED |
 | --------------- | ----------------- | -------- | ------------------------------------------------------------------------------- | :------: |
 | `githubURL`     | GitHub repository | `string` | Link to a GitHub repository in the proper format: repos/:owner/:repo or orgs/:org |   yes    |
-| `workspaceName` | Workspace Name    | `string` | The name of the workspace to which to install the application to.                        |   yes    |
+| `workspaceName` | Workspace Name    | `string` | The name of the workspace to which to install the Application to.                        |   yes    |
 | `image`         | Docker image      | `string` | Docker image to install scenario from.                                          |    no    |
