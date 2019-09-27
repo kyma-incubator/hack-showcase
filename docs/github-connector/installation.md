@@ -19,7 +19,7 @@ The GitHub Connector is a component which allows interaction with the GitHub API
 
 ### Prerequisites
 
-- Personal Acces Token with desired privileges. To generate a new token, go [here](https://github.com/settings/tokens) or access **Personal access tokens** in the account through **Developer settings** in **Settings**.
+- Personal Access Token with desired privileges. To generate a new token, go [here](https://github.com/settings/tokens) or access **Personal access tokens** in the account through **Developer settings** in **Settings**.
 - Access to the Kyma Console
 
 > **NOTE**: It is best to create or use an additional service account (e.g. Your-Project-Name-Github-Connector) since any actions that the application performs are signed with the name of the user that the token belongs to.
@@ -78,4 +78,4 @@ To correctly remove all GitHub Connector resources, you must delete them in orde
 
     >**NOTE:** To define the Namespace in which to install the chart, add the `--namespace` flag to the command. To define the GitHub URL, add the `--set githubURL` flag. To create a webhook on one repository, use the construction `repos/:owner/:repo`. To create a webhook on the whole organization, use `orgs/:org`. To provide the security token, use the `--set githubToken` flag.
 
-If you want to add new repository after the instalation, see [manual configuration page](/docs/github-connector/manual_connection.md).
+If you want to add new repository after the installation, see the [manual configuration page](/docs/github-connector/manual_connection.md).

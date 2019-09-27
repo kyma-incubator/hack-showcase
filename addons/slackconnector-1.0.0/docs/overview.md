@@ -7,7 +7,7 @@ With the use of the token provided during the provisioning of the addon, the Sla
 1. [Provision](#provisioning) this addon.
 2. In **Service Management**, go to **Catalog** and choose **Services**. Find the service named `slack-connector-{DESIRED_WORKSPACE_NAME}` and add it.
 
-Now you can start using the Slack Connector. Add channel name to lambda environmental variables to send authorized requests to the Slack Web API.
+Now you can start using the Slack Connector. Add the channel name to the lambda environmental variables to send authorized requests to the Slack Web API.
 
 ## Provisioning
 

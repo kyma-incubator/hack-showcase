@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document describes how to manually connect a GitHub repository to the existing GitHub Connector installed in Kyma the enviroment.
+This document describes how to manually connect a GitHub repository to the existing GitHub Connector installed in the Kyma environment.
 
 ## Prerequisites
 
@@ -22,7 +22,7 @@ This document describes how to manually connect a GitHub repository to the exist
 kubectl get deployments -n {NAMESPACE} {DEPLOYMENT_NAME} -o jsonpath='{.spec.template.spec.containers[0].env[3].value}'
 ```
 
-4. Set other fields as follows:
+4. Set the other fields as follows:
 
     - **Content type**: `application/json`
     - **Secret**: {OBTAINED_SECRET}
