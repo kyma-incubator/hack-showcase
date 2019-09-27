@@ -7,4 +7,4 @@ The GitHub Connector is a tool to Kyma for handling GitHub events. It registers 
 ## Table of Contents
 
 - [Installation](installation.md)
-- [Example usage](examples/demoscenario.md)
+- [Manual webhook connection](manual_connection.md)
