@@ -12,11 +12,6 @@
       "title":"Kyma Domain name",
       "description": "Kyma domain address in proper format. For example, \"domain.sap.com\"."
     },
-    "image": {
-      "type":"string",
-      "title":"Docker image",
-      "description": "Specify the GitHub Connector image you want to use."
-    },
     "githubEndpoint": {
       "description": "Link to GitHub repository in proper format: repos/{OWNER}/{REPO} or orgs/{ORG}. For example, \"repos/kyma-incubator/hack-showcase\".",
       "title": "GitHub Endpoint (org or repo)",

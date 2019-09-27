@@ -15,12 +15,14 @@ import (
 //FunctionInterface describe constructors argument and include important methods of Functions
 type FunctionInterface interface {
 	Create(*v1beta1kubeless.Function) (*v1beta1kubeless.Function, error)
+	Delete(name string, options *v1.DeleteOptions) error
 }
 
 //Function describe function struct
 type Function interface {
 	Create(body *v1beta1kubeless.Function) (*v1beta1kubeless.Function, error)
-	Prepare(name string, lambdaName string) *v1beta1kubeless.Function
+	Delete(name string, options *v1.DeleteOptions) error
+	Prepare(name string, lambdaName string, channelName string) *v1beta1kubeless.Function
 }
 
 type function struct {
@@ -41,7 +43,11 @@ func (s *function) Create(body *v1beta1kubeless.Function) (*v1beta1kubeless.Func
 	return data, nil
 }
 
-func (s *function) Prepare(name string, lambdaName string) *v1beta1kubeless.Function {
+func (s *function) Delete(name string, options *v1.DeleteOptions) error {
+	return s.functionInterface.Delete(name, options)
+}
+
+func (s *function) Prepare(name string, lambdaName string, channelName string) *v1beta1kubeless.Function {
 	return &v1beta1kubeless.Function{
 		ObjectMeta: v1.ObjectMeta{
 			Name:      lambdaName,
@@ -79,6 +85,10 @@ func (s *function) Prepare(name string, lambdaName string) *v1beta1kubeless.Func
 							Containers: []pts.Container{pts.Container{
 								Name:      "",
 								Resources: pts.ResourceRequirements{},
+								Env: []pts.EnvVar{pts.EnvVar{
+									Name:  "channelName",
+									Value: channelName,
+								}},
 							}},
 						},
 					},
@@ -92,7 +102,7 @@ const funcCode = `const axios = require("axios");
 const md = require("slackify-markdown");
 const slackURL = process.env.GATEWAY_URL || "https://slack.com/api";
 const githubURL = process.env.GITHUB_GATEWAY_URL 
-const channelID = process.env.channelID || "node-best";
+const channelName = process.env.channelName || "node-best";
 
 module.exports = {
     main: async function (event, context) {
@@ -119,10 +129,10 @@ async function createPayload(githubPayload) {
     let sentiment = await checkSentiment(githubPayload.issue.body, githubPayload.issue.title)
     if (sentiment)
     {
-    labels = labels.filter(word => word != ':thinking: Review needed')    }
+    labels = labels.filter(word => word != ':thinking: Caution/offensive')    }
     else
     {
-        labels.push(":thinking: Review needed")
+        labels.push(":thinking: Caution/offensive")
         await sendToSlack(githubPayload)
         
     }
@@ -153,7 +163,7 @@ async function sendToSlack(payload){
   }
 };
 const data = {
-  channel: channelID,
+  channel: channelName,
   text: "New issue needs a review.",
   blocks: msg,
   link_names: true

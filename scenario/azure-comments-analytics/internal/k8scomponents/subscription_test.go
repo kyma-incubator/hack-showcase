@@ -42,6 +42,23 @@ func TestCreateSubscription(t *testing.T) {
 	})
 }
 
+func TestDeleteSubscription(t *testing.T) {
+	t.Run("should return ServiceBinding", func(t *testing.T) {
+		//given
+		name := "name"
+		namespace := "namespace"
+		options := &v1.DeleteOptions{}
+		mockClient := &mocks.SubscriptionInterface{}
+		mockClient.On("Delete", name, options).Return(nil)
+		//when
+		err := k8scomponents.NewSubscription(mockClient, namespace).Delete(name, options)
+
+		//then
+		assert.NoError(t, err)
+
+	})
+}
+
 func TestPrepare(t *testing.T) {
 	t.Run("should return ServiceBindingUsage", func(t *testing.T) {
 		//given

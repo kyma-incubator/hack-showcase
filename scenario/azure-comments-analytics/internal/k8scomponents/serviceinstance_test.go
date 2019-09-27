@@ -43,6 +43,23 @@ func TestCreateServiceInstance(t *testing.T) {
 	})
 }
 
+func TestDeleteServiceInstance(t *testing.T) {
+	t.Run("should return ServiceBinding", func(t *testing.T) {
+		//given
+		name := "name"
+		namespace := "namespace"
+		options := &v1.DeleteOptions{}
+		mockClient := &mocks.ServiceInstanceInterface{}
+		mockClient.On("Delete", name, options).Return(nil)
+		//when
+		err := k8scomponents.NewServiceInstance(mockClient, namespace).Delete(name, options)
+
+		//then
+		assert.NoError(t, err)
+
+	})
+}
+
 func TestGetEventBodyServiceInstance(t *testing.T) {
 	t.Run("should return ServiceBinding", func(t *testing.T) {
 		//given

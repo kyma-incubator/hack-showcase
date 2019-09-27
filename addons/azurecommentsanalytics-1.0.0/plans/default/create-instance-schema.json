@@ -12,11 +12,11 @@
         "title":"Slack Service Class name",
         "description": "The name of the Slack Connector Service Class. Find it in Service Catalog > Services. It consist of \"slack-connector-\" and your Slack channel name"
       },
-      "image": {
+      "channelName": {
         "type":"string",
-        "title":"Docker image",
-        "description": "Docker image to install scenario from."
+        "title":"Slack channel name",
+        "description": "The name of the slack channel where notifications will be sent to."
       }
     },
-    "required":["githubURL","workspaceName"]
+    "required":["githubURL","workspaceName","channelName"]
   }
