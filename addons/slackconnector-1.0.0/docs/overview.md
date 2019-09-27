@@ -20,6 +20,6 @@ This plan allows to handle events incoming from connected Slack workspaces to an
 | PARAMETER NAME | DISPLAY NAME | TYPE | DESCRIPTION | REQUIRED |
 |----------------|--------------|------|-------------|:--------:|
 | `image` | Docker Image | `string` | The Slack Connector image to use. | no |
-| `slackBotToken` | Bot Token | `string` | The Slack workspace [token](). | yes |
+| `slackBotToken` | Bot Token | `string` | DO NAPISANIA | yes |
 | `workspaceName` | Workspace Name | `string` | The name of the workspace to which to connect the application. | yes |
 | `slackSecret` | Slack Signing Secret | `string` | The Slack Application's signing Secret used for validating requests coming from Slack by verifying its unique signature. To get this Secret, create your Slack Application. Then, find the Secret in the [Application's](https://api.slack.com/apps) Basic Information. | yes |
