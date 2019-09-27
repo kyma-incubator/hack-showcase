@@ -39,7 +39,7 @@ The Slack Connector is a component which allows interaction with the Slack API f
 3. Go to the Namespace in which to install the Connector.
 4. Find the Add-On in the Service Catalog and click it.
 5. Click **Add** and select the installation plan. Fill in all required fields and click **Create Instance**.
-6. Go to the **Services** tab in the Service Catalog. After provisioning and automatic registration of application's resources, the Service Class of the Slack Connector appears here.
+6. Go to the **Services** tab in the Service Catalog. After provisioning and automatic registration of Application's resources, the Service Class of the Slack Connector appears here.
 7. Click the Service Class to enter its specification screen, click **Add once**, and then **Create Instance**.
 
 To send requests to the Slack API, bind the service you created to the Lambda Function.
