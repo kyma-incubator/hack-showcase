@@ -26,7 +26,7 @@ The GitHub Connector is a component which allows interaction with the GitHub API
 
 ### Steps
 
-1. In the Kyma console, access the **Addons Config** menu.
+1. In the Kyma console, access the **Add-Ons Config** menu.
 2. Click **Add New Configuration** and fill in the **Urls** field with this URL:
 
    ```http
@@ -53,8 +53,8 @@ To correctly remove all GitHub Connector resources, you must delete them in orde
 
 1. Delete all service bindings from Lambda Functions and other bindings connected with your GitHub Connector Service Instance.
 2. Delete the GitHub Connector Service Instance found under the **Services** tab in the **Instances** area.
-3. Delete the GitHub Connector addon Instance found in the **Addons** tab.
-4. To remove the addon configuration, find it in the global **Addons Config** catalog and remove it.
+3. Delete the GitHub Connector addon Instance found in the **Add-Ons** tab.
+4. To remove the addon configuration, find it in the global **Add-Ons Config** catalog and remove it.
    > **CAUTION**: This step also removes the Slack Connector template.
 
 ## Installation in Kyma with Helm
