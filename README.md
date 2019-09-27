@@ -30,18 +30,18 @@ You can install the Connectors and start using them with just few steps. Follow 
 1. Add addons configuration to Kyma. Run:
 
     ``` shell
-cat <<EOF | kubectl apply -f -
-apiVersion: addons.kyma-project.io/v1alpha1
-kind: ClusterAddonsConfiguration
-metadata:
-  name: addons-slack-github-connectors
-  finalizers:
-  - addons.kyma-project.io
-spec:
-  repositories:
-    - url: github.com/kyma-incubator/hack-showcase//addons/index.yaml
-    - url: github.com/kyma-incubator/hack-showcase//addons/index-scenario.yaml
-EOF
+    cat <<EOF | kubectl apply -f -
+    apiVersion: addons.kyma-project.io/v1alpha1
+    kind: ClusterAddonsConfiguration
+    metadata:
+      name: addons-slack-github-connectors
+      finalizers:
+      - addons.kyma-project.io
+    spec:
+      repositories:
+        - url: github.com/kyma-incubator/hack-showcase//addons/index.yaml
+        - url: github.com/kyma-incubator/hack-showcase//addons/index-scenario.yaml
+    EOF
     ```
 
 2. Connect to Kyma Console (UI). Go to a Namespace of your choice, then to Catalog in Service Management section. Add the Slack Connector, the GitHub Connector and the Azure Service Broker. Follow the instructions available in these addons.
