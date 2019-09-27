@@ -4,7 +4,6 @@
 
 This document describes how to manually connect GitHub repository to existing GitHub Connector installed in Kyma enviroment. After completion you are able to handle events incoming from GitHub in lambdas.
 
-
 ## Prerequisites
 
 - Kyma with the GitHub Connector [installed](/docs/github-connector/installation.md)
