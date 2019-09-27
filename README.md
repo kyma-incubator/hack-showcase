@@ -21,7 +21,7 @@ This showcase covers the user story described in the project [concept](https://g
 
 This diagram shows the interaction of the components in the described scenario:
 
-![Software architecture image](docs/flowdiagram.svg)
+![Software architecture image](docs/assets/flowdiagram.svg)
 
 ## Quick start
 
