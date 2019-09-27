@@ -33,7 +33,7 @@ Showcase covers user story described in the [`project concept`](https://github.c
 
 Diagram below shows how components will interact with each other in our example scenario.
 
-![Software architecture image](docs/flowdiagram.svg)
+![Software architecture image](docs/assets/flowdiagram.svg)
 
 Example of configuration of GitHub Connector can be found [here](https://github.com/kyma-incubator/hack-showcase/blob/master/docs/github-connector/examples/demoscenario.md).
 
