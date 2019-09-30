@@ -47,7 +47,7 @@ You can install the Connectors and start using them in just a few steps. Follow 
 2. Connect to the Kyma Console (UI). Go to a Namespace of your choice, then to **Catalog** in the **Service Management** section. Add the Slack Connector, the GitHub Connector, and the Azure Service Broker. Follow the instructions available in these addons.
 3. After provisioning, add the Azure Comments Analytics Scenario.
 
-    >**NOTE:** Keep in mind that all resources created in previous step have to be ready. Check their status in Instances in Service Management section.
+    >**NOTE:** Keep in mind that all resources created in the previous step must be ready before you proceed. Check their status in **Instances** in the **Service Management** section.
 
 4. Create a new issue on a GitHub repository you specified during the GitHub Connector installation to check if everything is configured correctly. You should get a notification on Slack and the issue should be tagged with `Caution/offensive` label if the issue's sentiment is negative.
 
