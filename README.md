@@ -25,7 +25,7 @@ This diagram shows the interaction of the components in the described scenario:
 
 ## Quick start
 
-You can install the Connectors and start using them with just few steps. Follow the instructions to install the Connectors and the scenario described above.
+You can install the Connectors and start using them in just a few steps. Follow the instructions to install the Connectors and run the described scenario.
 
 1. Add addons configuration to Kyma. Run:
 
