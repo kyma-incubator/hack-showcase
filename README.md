@@ -68,10 +68,7 @@ Install the Connectors locally or on a cluster. For installation details, see th
     ```
 
     Follow the steps described in the [`git-workflow.md`](https://github.com/kyma-project/community/blob/master/contributing/03-git-workflow.md) document to configure your fork.
-
-3. Install dependencies.
-
-    Go to the main directory of the project in your workspace location and install the required dependencies:
+3. Install dependencies in the main project directory. For example, for the GitHub Connector run:
 
     ``` shell
     cd github-connector
