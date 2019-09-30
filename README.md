@@ -49,7 +49,7 @@ You can install the Connectors and start using them in just a few steps. Follow 
 
     >**NOTE:** Keep in mind that all resources created in the previous step must be ready before you proceed. Check their status in **Instances** in the **Service Management** section.
 
-4. Create a new issue on a GitHub repository you specified during the GitHub Connector installation to check if everything is configured correctly. You should get a notification on Slack and the issue should be tagged with `Caution/offensive` label if the issue's sentiment is negative.
+4. Create a new issue on the GitHub repository specified during the GitHub Connector installation to check if everything is configured correctly. After you create the issue, its sentiment is checked and if it is negative, you get a notification on Slack, and the issue is tagged with the `Caution/offensive` label.
 
 ## Installation
 
