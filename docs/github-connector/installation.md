@@ -20,7 +20,7 @@ The GitHub Connector is a component which allows interaction with the GitHub API
 ### Prerequisites
 
 - Personal Access Token with desired privileges. To generate a new token, go [here](https://github.com/settings/tokens) or access **Personal access tokens** in the account through **Developer settings** in **Settings**. 
-> **NOTE**: In case of generating token for an organization the [OAuth or Github App](https://developer.github.com/apps/) is needed.
+> **NOTE**:To generate a token for an organization, you need the [OAuth or Github App](https://developer.github.com/apps/).
 - Access to the Kyma Console
 
 > **NOTE**: It is best to create or use an additional service account (e.g. Your-Project-Name-Github-Connector) since any actions that the application performs are signed with the name of the user that the token belongs to.

@@ -22,7 +22,7 @@ The Slack Connector is a component which allows interaction with the Slack API f
 
     After creating the app:
     - The Slack Application's {SIGNING_SECRET} is used for validating requests coming from Slack by verifying its unique signature. Find it in the [Application's](https://api.slack.com/apps) **Settings** in the **Basic Information** section. [Learn more](https://api.slack.com/docs/verifying-requests-from-slack).
-    - The Slack Application's {SLACK_TOKEN} is used for requests authorization. Find it in the [Application's](https://api.slack.com/apps) **Features** in the **OAuth & Permissions** section. Depending on the usecase it will be *OAuth Access Token* or *Bot User OAuth Access Token*. [Learn more](https://api.slack.com/docs/oauth).
+    - The Slack Application's {SLACK_TOKEN} is used for requests authorization. Find it in the [Application's](https://api.slack.com/apps) **Features** in the **OAuth & Permissions** section. Depending on the usecase it will be **OAuth Access Token** or **Bot User OAuth Access Token**. [Learn more](https://api.slack.com/docs/oauth).
 - Access to Kyma Console
 
 ### Steps
@@ -43,7 +43,7 @@ The Slack Connector is a component which allows interaction with the Slack API f
     ```
     
 2. Go to the Namespace in which to install the Connector.
-3. Find the Add-On in the Service Catalog and click it.
+3. Find the addon in the Service Catalog and click it.
 4. Click **Add** and select the installation plan. Fill in all required fields and click **Create Instance**.
 5. Go to the **Services** tab in the Service Catalog. After provisioning and automatic registration of Application's resources, the Service Class of the Slack Connector appears here.
 6. Click the Service Class to enter its specification screen, click **Add once**, and then **Create Instance**.
