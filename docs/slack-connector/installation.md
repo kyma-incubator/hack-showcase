@@ -18,29 +18,35 @@ The Slack Connector is a component which allows interaction with the Slack API f
 
 ### Prerequisites
 
-- Slack Bot with desired privileges installed to the destination workspace. See the tutorial provided by Slack on how to setup an application [here](https://api.slack.com/bot-users#getting-started). After you have created the Signing Secret, it appears in the application's **Settings** in the **Basic Information** section.
+- Slack App with desired privileges installed to the destination workspace. See the tutorial provided by Slack on how to setup an application [here](https://api.slack.com/bot-users#getting-started).
+
+    After creating the app:
+    - The Slack Application's {SIGNING_SECRET} is used for validating requests coming from Slack by verifying its unique signature. Find it in the [Application's](https://api.slack.com/apps) **Settings** in the **Basic Information** section. [Learn more](https://api.slack.com/docs/verifying-requests-from-slack).
+    - The Slack Application's {SLACK_TOKEN} is used for requests authorization. Find it in the [Application's](https://api.slack.com/apps) **Features** in the **OAuth & Permissions** section. Depending on the usecase it will be **OAuth Access Token** or **Bot User OAuth Access Token**. [Learn more](https://api.slack.com/docs/oauth).
 - Access to Kyma Console
 
-> **OPTIONAL:** Follow these steps to install the default application. Be aware that it has **full permissions** in the workspace.
->
-> 1. Go to the [authentication page](https://auth-slack.herokuapp.com/). Click the **Add to Slack** button, which redirects you to another page. Select the desired workspace and click **Allow**.
->       - **NOTE:** If the link does not work, see [this](https://api.slack.com/docs/oauth#flow) tutorial in the Slack API documentation to create your own application.
-> 2. Copy the Bot Authentication Token and/or Slack Signing Secret. You will need it later in the installation process.
-
 ### Steps
+1. Add addons configuration to Kyma. Run:
 
-1. In Kyma console, access the **Add-Ons Config** menu.
-2. Click **Add New Configuration** and fill in the **Urls** field with this URL:
-
-   ```http
-   github.com/kyma-incubator/hack-showcase//addons/index.yaml
-   ```
-
-3. Go to the Namespace in which to install the Connector.
-4. Find the Add-On in the Service Catalog and click it.
-5. Click **Add** and select the installation plan. Fill in all required fields and click **Create Instance**.
-6. Go to the **Services** tab in the Service Catalog. After provisioning and automatic registration of Application's resources, the Service Class of the Slack Connector appears here.
-7. Click the Service Class to enter its specification screen, click **Add once**, and then **Create Instance**.
+    ``` shell
+    cat <<EOF | kubectl apply -f -
+    apiVersion: addons.kyma-project.io/v1alpha1
+    kind: ClusterAddonsConfiguration
+    metadata:
+      name: addons-slack-github-connectors
+      finalizers:
+      - addons.kyma-project.io
+    spec:
+      repositories:
+        - url: github.com/kyma-incubator/hack-showcase//addons/index.yaml
+    EOF
+    ```
+    
+2. Go to the Namespace in which to install the Connector.
+3. Find the addon in the Service Catalog and click it.
+4. Click **Add** and select the installation plan. Fill in all required fields and click **Create Instance**.
+5. Go to the **Services** tab in the Service Catalog. After provisioning and automatic registration of Application's resources, the Service Class of the Slack Connector appears here.
+6. Click the Service Class to enter its specification screen, click **Add once**, and then **Create Instance**.
 
 To send requests to the Slack API, bind the service you created to the Lambda Function.
 

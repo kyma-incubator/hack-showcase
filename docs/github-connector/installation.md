@@ -19,25 +19,35 @@ The GitHub Connector is a component which allows interaction with the GitHub API
 
 ### Prerequisites
 
-- Personal Access Token with desired privileges. To generate a new token, go [here](https://github.com/settings/tokens) or access **Personal access tokens** in the account through **Developer settings** in **Settings**.
+- Personal Access Token with desired privileges. To generate a new token, go [here](https://github.com/settings/tokens) or access **Personal access tokens** in the account through **Developer settings** in **Settings**. 
+> **NOTE**:To generate a token for an organization, you need the [OAuth or Github App](https://developer.github.com/apps/).
 - Access to the Kyma Console
 
 > **NOTE**: It is best to create or use an additional service account (e.g. Your-Project-Name-Github-Connector) since any actions that the application performs are signed with the name of the user that the token belongs to.
 
 ### Steps
 
-1. In the Kyma console, access the **Add-Ons Config** menu.
-2. Click **Add New Configuration** and fill in the **Urls** field with this URL:
+1. Add addons configuration to Kyma. Run:
 
-   ```http
-   github.com/kyma-incubator/hack-showcase//addons/index.yaml
-   ```
+    ``` shell
+    cat <<EOF | kubectl apply -f -
+    apiVersion: addons.kyma-project.io/v1alpha1
+    kind: ClusterAddonsConfiguration
+    metadata:
+      name: addons-slack-github-connectors
+      finalizers:
+      - addons.kyma-project.io
+    spec:
+      repositories:
+        - url: github.com/kyma-incubator/hack-showcase//addons/index.yaml
+    EOF
+    ```
 
-3. Go to the Namespace in which to install the Connector.
-4. Find the addon in the Service Catalog and click it.
-5. Click **Add** and select the installation plan. Fill in all required fields and click **Create Instance**.
-6. Go to the **Services** tab in the Service Catalog. After provisioning and automatic registration of the Application resources, the Service Class of the GitHub Connector appears here.
-7. Click the Service Class to enter its specification screen, click **Add once**, and then **Create Instance**.
+2. Go to the Namespace in which to install the Connector.
+3. Find the addon in the Service Catalog and click it.
+4. Click **Add** and select the installation plan. Fill in all required fields and click **Create Instance**.
+5. Go to the **Services** tab in the Service Catalog. After provisioning and automatic registration of the Application resources, the Service Class of the GitHub Connector appears here.
+6. Click the Service Class to enter its specification screen, click **Add once**, and then **Create Instance**.
 
 To send requests to the GitHub API, bind the service you created to the Lambda Function.
 
