@@ -8,7 +8,7 @@ With the use of the token provided during the provisioning of the addon, the Sla
 
     After creating the app:
     - The Slack Application's {SIGNING_SECRET} is used for validating requests coming from Slack by verifying its unique signature. Find it in the [Application's](https://api.slack.com/apps) **Settings** in the **Basic Information** section. [Learn more](https://api.slack.com/docs/verifying-requests-from-slack).
-    - The Slack Application's {SLACK_TOKEN} is used for requests authorization. Find it in the [Application's](https://api.slack.com/apps) **Features** in the **OAuth & Permissions** section. Depending on the usecase it will be *OAuth Access Token* or *Bot User OAuth Access Token*. [Learn more](https://api.slack.com/docs/oauth).
+    - The Slack Application's {SLACK_TOKEN} is used for requests authorization. Find it in the [Application's](https://api.slack.com/apps) **Features** in the **OAuth & Permissions** section. Depending on the usecase it will be **OAuth Access Token** or **Bot User OAuth Access Token**. [Learn more](https://api.slack.com/docs/oauth).
 
 #### Installation
 
