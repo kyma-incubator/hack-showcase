@@ -1,7 +1,4 @@
-# Hack Showcase
-<p align="center">
- <img src="logo.png" width="235">
-</p>
+# The GitHub and Slack Connectors for Kyma
 
 ---
 
@@ -11,50 +8,69 @@
 
 ## Overview
 
-The main goal of the showcase project is to create connectors for Github and Slack applications in Kyma environment. Connectors allow utilizing applications' functions inside Kyma ecosystem by communicating with corresponding API. Use it to trigger Lambdas on events incoming from third-party applications and react to them.
+This document describes the Connectors for Github and Slack to use in the [Kyma](https://github.com/kyma-project/kyma) environment. They allow utilizing applications' functions inside the Kyma ecosystem by communicating with the corresponding APIs. Use them to trigger lambda functions on Events incoming from third-party applications and react to them.
 
 ## Prerequisites
 
 * **Kyma**
-Connectors are configured to work inside Kyma ecosystem, so you need to install it locally or on a cluster. See the [Installation guides](https://kyma-project.io/docs/root/kyma#installation-installation) for details.
-
-If you want to run connectors separately from Kyma, check certain connector's documentation for more information.
-
-## Installation
-
-Install Connectors locally or on cluster. For installation details, see corresponding guide:
-
-* [Github Connector Installation](/docs/github-connector/installation.md)
-* [Slack Connector installation](/docs/slack-connector/installation.md)
+The Connectors are configured to work inside the Kyma ecosystem, so you must install them locally or on a cluster. See the [Installation guides](https://kyma-project.io/docs/root/kyma#installation-installation) for details.
 
 ## Usage
 
-Showcase covers user story described in the [`project concept`](https://github.com/kyma-incubator/hack-showcase/blob/master/docs/concept.md#reacting-to-prissue-comments), however considering the fact that connectors provide a way to communicate with external applications there are lots of possible use cases. Using the connector is as simple as deploying a new Lambda in Kyma - check corresponding [serverless documentation](https://kyma-project.io/docs/components/serverless) to find out more.
+This showcase covers the user story described in the project [concept](https://github.com/kyma-incubator/hack-showcase/blob/master/docs/concept.md#reacting-to-prissue-comments). It labels issues on GitHub that may be offensive and sends notifications to Slack about it. However, considering the fact that the Connectors provide a way to communicate with external applications, there are many possible use cases. Using the Connectors is as simple as deploying a new lambda function in Kyma. Check the corresponding [serverless documentation](https://kyma-project.io/docs/components/serverless) to find out more.
 
-Diagram below shows how components will interact with each other in our example scenario.
+This diagram shows the interaction of the components in the described scenario:
 
-![Software architecture image](docs/assets/flowdiagram.svg)
+![Software architecture image](docs/flowdiagram.svg)
 
-Example of configuration of GitHub Connector can be found [here](https://github.com/kyma-incubator/hack-showcase/blob/master/docs/github-connector/examples/demoscenario.md).
+## Quick start
+
+You can install the Connectors and start using them in just a few steps. Follow the instructions to install the Connectors and run the described scenario.
+
+1. Add addons configuration to Kyma. Run:
+
+    ``` shell
+    cat <<EOF | kubectl apply -f -
+    apiVersion: addons.kyma-project.io/v1alpha1
+    kind: ClusterAddonsConfiguration
+    metadata:
+      name: addons-slack-github-connectors
+      finalizers:
+      - addons.kyma-project.io
+    spec:
+      repositories:
+        - url: github.com/kyma-incubator/hack-showcase//addons/index.yaml
+        - url: github.com/kyma-incubator/hack-showcase//addons/index-scenario.yaml
+    EOF
+    ```
+
+2. Connect to the Kyma Console (UI). Go to a Namespace of your choice, then to **Catalog** in the **Service Management** section. Add the Slack Connector, the GitHub Connector, and the Azure Service Broker. Follow the instructions available in these addons.
+3. After provisioning, add the Azure Comments Analytics Scenario.
+
+    >**NOTE:** Keep in mind that all resources created in the previous step must be ready before you proceed. Check their status in **Instances** in the **Service Management** section.
+
+4. Create a new issue on the GitHub repository specified during the GitHub Connector installation to check if everything is configured correctly. After you create the issue, its sentiment is checked and if it is negative, you get a notification on Slack, and the issue is tagged with the `Caution/offensive` label.
+
+## Installation
+
+Install the Connectors locally or on a cluster. For installation details, see the corresponding guides:
+
+* [The Github Connector installation](/docs/github-connector/installation.md)
+* [The Slack Connector installation](/docs/slack-connector/installation.md)
 
 ## Development
+
 1. Fork the repository in Github.
 2. Clone the fork to your `$GOPATH` workspace. Use this command to create the folder structure and clone the repository under the correct location:
 
-    ```
+    ``` shell
     git clone git@github.com:{GitHubUsername}/hack-showcase.git $GOPATH/src/github.com/kyma-incubator/hack-showcase
     ```
 
     Follow the steps described in the [`git-workflow.md`](https://github.com/kyma-project/community/blob/master/contributing/03-git-workflow.md) document to configure your fork.
+3. Install dependencies in the main project directory. For example, for the GitHub Connector run:
 
-3. Install dependencies.
-
-    Go to the main directory of the project in your workspace location and install the required dependencies:
-
+    ``` shell
+    cd github-connector
+    dep ensure -vendor-only
     ```
-    $ cd github-connector
-    $ dep ensure -vendor-only
-    ```
-
-## Roadmap
-For detailed plans for the future development, see the project [`roadmap`](/docs/roadmap.md).
