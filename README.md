@@ -8,7 +8,7 @@
 
 ## Overview
 
-Connectors for Github and Slack applications to use in [Kyma](https://github.com/kyma-project/kyma) environment. They allow utilizing applications' functions inside Kyma ecosystem by communicating with corresponding API. Use it to trigger Lambdas on events incoming from third-party applications and react to them.
+This document describes the Connectors for Github and Slack to use in the [Kyma](https://github.com/kyma-project/kyma) environment. They allow utilizing applications' functions inside the Kyma ecosystem by communicating with the corresponding APIs. Use them to trigger lambda functions on Events incoming from third-party applications and react to them.
 
 ## Prerequisites
 
