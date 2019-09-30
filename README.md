@@ -53,7 +53,7 @@ You can install the Connectors and start using them in just a few steps. Follow 
 
 ## Installation
 
-Install Connectors locally or on a cluster. For installation details, see corresponding guide:
+Install the Connectors locally or on a cluster. For installation details, see the corresponding guides:
 
 * [Github Connector installation](/docs/github-connector/installation.md)
 * [Slack Connector installation](/docs/slack-connector/installation.md)
