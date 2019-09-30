@@ -13,7 +13,7 @@ This document describes the Connectors for Github and Slack to use in the [Kyma]
 ## Prerequisites
 
 * **Kyma**
-Connectors are configured to work inside Kyma ecosystem, so you need to install it locally or on a cluster. See the [Installation guides](https://kyma-project.io/docs/root/kyma#installation-installation) for details.
+The Connectors are configured to work inside the Kyma ecosystem, so you must install them locally or on a cluster. See the [Installation guides](https://kyma-project.io/docs/root/kyma#installation-installation) for details.
 
 ## Usage
 
