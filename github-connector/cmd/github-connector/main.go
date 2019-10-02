@@ -4,12 +4,12 @@ import (
 	"flag"
 	"net/http"
 
-	"github.com/kyma-incubator/hack-showcase/github-connector/internal/github"
-	"github.com/kyma-incubator/hack-showcase/github-connector/internal/hook"
-	"github.com/kyma-incubator/hack-showcase/github-connector/internal/registration"
+	"github.com/kyma-incubator/github-slack-connectors/github-connector/internal/github"
+	"github.com/kyma-incubator/github-slack-connectors/github-connector/internal/hook"
+	"github.com/kyma-incubator/github-slack-connectors/github-connector/internal/registration"
 
-	"github.com/kyma-incubator/hack-showcase/github-connector/internal/events"
-	"github.com/kyma-incubator/hack-showcase/github-connector/internal/handlers"
+	"github.com/kyma-incubator/github-slack-connectors/github-connector/internal/events"
+	"github.com/kyma-incubator/github-slack-connectors/github-connector/internal/handlers"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/vrischmann/envconfig"

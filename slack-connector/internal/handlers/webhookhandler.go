@@ -7,11 +7,11 @@ import (
 	"os"
 	"strings"
 
-	"github.com/kyma-incubator/hack-showcase/slack-connector/internal/httperrors"
+	"github.com/kyma-incubator/github-slack-connectors/slack-connector/internal/httperrors"
 	"github.com/nlopes/slack/slackevents"
 
-	"github.com/kyma-incubator/hack-showcase/slack-connector/internal/apperrors"
-	"github.com/kyma-incubator/hack-showcase/slack-connector/internal/slack"
+	"github.com/kyma-incubator/github-slack-connectors/slack-connector/internal/apperrors"
+	"github.com/kyma-incubator/github-slack-connectors/slack-connector/internal/slack"
 	log "github.com/sirupsen/logrus"
 )
 

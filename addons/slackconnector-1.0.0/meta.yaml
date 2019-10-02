@@ -8,4 +8,4 @@ tags: slack
 providerDisplayName: Kyma
 longDescription: "With the use of token provided during provision of addon, Slack Connector allows sending requests to Slack Web API, that were specified at the Slack Application installation to the workspace, such as posting a message to specified channel, getting list of current users, etc."
 imageURL: https://cdn.brandfolder.io/5H442O3W/as/pl546j-7le8zk-4nzzs1/Slack_Mark_Web.png
-documentationURL: https://github.com/kyma-incubator/hack-showcase/tree/master/docs/slack-connector
+documentationURL: https://github.com/kyma-incubator/github-slack-connectors/tree/master/docs/slack-connector

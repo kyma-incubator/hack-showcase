@@ -2,7 +2,7 @@ package wrappers
 
 import (
 	svcCatalog "github.com/google/kf/pkg/client/servicecatalog/clientset/versioned/typed/servicecatalog/v1beta1"
-	"github.com/kyma-incubator/hack-showcase/scenario/azure-comments-analytics/internal/k8scomponents"
+	"github.com/kyma-incubator/github-slack-connectors/scenario/azure-comments-analytics/internal/k8scomponents"
 )
 
 //ServiceCatalogWrapper is a wrapper dedicated for servicecatalog ClientSet

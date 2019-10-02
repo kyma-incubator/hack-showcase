@@ -6,12 +6,12 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/kyma-incubator/hack-showcase/slack-connector/internal/apperrors"
+	"github.com/kyma-incubator/github-slack-connectors/slack-connector/internal/apperrors"
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/kyma-incubator/hack-showcase/slack-connector/internal/registration"
-	"github.com/kyma-incubator/hack-showcase/slack-connector/internal/registration/mocks"
+	"github.com/kyma-incubator/github-slack-connectors/slack-connector/internal/registration"
+	"github.com/kyma-incubator/github-slack-connectors/slack-connector/internal/registration/mocks"
 )
 
 const expectedID = "123-456-789"

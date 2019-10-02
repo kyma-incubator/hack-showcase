@@ -10,7 +10,7 @@ import (
 	servicecatalogbeta1 "github.com/poy/service-catalog/pkg/apis/servicecatalog/v1beta1"
 
 	kubeless "github.com/kubeless/kubeless/pkg/apis/kubeless/v1beta1"
-	"github.com/kyma-incubator/hack-showcase/scenario/azure-comments-analytics/internal/k8scomponents"
+	"github.com/kyma-incubator/github-slack-connectors/scenario/azure-comments-analytics/internal/k8scomponents"
 	eventing "github.com/kyma-project/kyma/components/event-bus/api/push/eventing.kyma-project.io/v1alpha1"
 	kymaservicecatalog "github.com/kyma-project/kyma/components/service-binding-usage-controller/pkg/apis/servicecatalog/v1alpha1"
 	servicecatalog "github.com/poy/service-catalog/pkg/apis/servicecatalog/v1beta1"
@@ -20,7 +20,7 @@ import (
 
 const azureConfiguration = `{"location": "westeurope","resourceGroup": "flying-seals-tmp"}`
 
-//Manager include important methods to deploy all k8s and kymas components to realize hack-showcase scenario
+//Manager include important methods to deploy all k8s and kymas components to realize github-slack-connectors scenario
 type Manager interface {
 	DeleteAllComponents(installedComponents *InstalledComponents, clientWrappers *Wrappers)
 	CreateFunction(function k8scomponents.Function) ([]kubeless.Function, error)

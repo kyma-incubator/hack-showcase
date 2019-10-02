@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/google/go-github/github"
-	"github.com/kyma-incubator/hack-showcase/github-connector/internal/apperrors"
+	"github.com/kyma-incubator/github-slack-connectors/github-connector/internal/apperrors"
 )
 
 type receivingEventsWrapper struct {

@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/kyma-incubator/hack-showcase/github-connector/internal/apperrors"
+	"github.com/kyma-incubator/github-slack-connectors/github-connector/internal/apperrors"
 )
 
 const (

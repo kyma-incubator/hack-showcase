@@ -8,10 +8,10 @@ import (
 	"reflect"
 
 	"github.com/google/go-github/github"
-	"github.com/kyma-incubator/hack-showcase/github-connector/internal/httperrors"
+	"github.com/kyma-incubator/github-slack-connectors/github-connector/internal/httperrors"
 
-	"github.com/kyma-incubator/hack-showcase/github-connector/internal/apperrors"
-	git "github.com/kyma-incubator/hack-showcase/github-connector/internal/github"
+	"github.com/kyma-incubator/github-slack-connectors/github-connector/internal/apperrors"
+	git "github.com/kyma-incubator/github-slack-connectors/github-connector/internal/github"
 	log "github.com/sirupsen/logrus"
 )
 

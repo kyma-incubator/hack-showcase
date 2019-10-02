@@ -8,9 +8,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kyma-incubator/hack-showcase/github-connector/internal/apperrors"
-	"github.com/kyma-incubator/hack-showcase/github-connector/internal/events"
-	"github.com/kyma-incubator/hack-showcase/github-connector/internal/events/mocks"
+	"github.com/kyma-incubator/github-slack-connectors/github-connector/internal/apperrors"
+	"github.com/kyma-incubator/github-slack-connectors/github-connector/internal/events"
+	"github.com/kyma-incubator/github-slack-connectors/github-connector/internal/events/mocks"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
