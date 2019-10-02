@@ -2,7 +2,7 @@
 
 package mocks
 
-import apperrors "github.com/kyma-incubator/hack-showcase/github-connector/internal/apperrors"
+import apperrors "github.com/kyma-incubator/github-slack-connectors/github-connector/internal/apperrors"
 
 import http "net/http"
 import mock "github.com/stretchr/testify/mock"
