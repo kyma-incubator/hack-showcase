@@ -3,7 +3,6 @@
     "components": {
         "schemas": {
             "GenericEventWrapper": {
-                "additionalProperties": true,
                 "description": "Adapted from auto-generated content",
                 "properties": {
                     "api_app_id": {
@@ -24,7 +23,6 @@
                         "uniqueItems": true
                     },
                     "event": {
-                        "additionalProperties": true,
                         "properties": {
                             "event_ts": {
                                 "title": "When the event was dispatched",
@@ -1232,7 +1230,6 @@
                     "url": "https://api.slack.com/events/message"
                 },
                 "payload": {
-                    "additionalProperties": true,
                     "description": "Generated from events/events-1512674163.json with shasum b83372d878e1276a26d9e4df3d4a2563a60440a6",
                     "properties": {
                         "api_app_id": {
@@ -1248,7 +1245,6 @@
                             "uniqueItems": true
                         },
                         "event": {
-                            "additionalProperties": true,
                             "properties": {
                                 "channel": {
                                     "type": "string"
@@ -1263,11 +1259,9 @@
                                     "type": "boolean"
                                 },
                                 "previous_message": {
-                                    "additionalProperties": true,
                                     "properties": {
                                         "comment": {},
                                         "file": {
-                                            "additionalProperties": true,
                                             "properties": {
                                                 "channels": {
                                                     "items": {
