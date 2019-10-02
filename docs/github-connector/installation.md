@@ -39,7 +39,7 @@ The GitHub Connector is a component which allows interaction with the GitHub API
       - addons.kyma-project.io
     spec:
       repositories:
-        - url: github.com/kyma-incubator/hack-showcase//addons/index.yaml
+        - url: github.com/kyma-incubator/github-slack-connectors//addons/index.yaml
     EOF
     ```
 
