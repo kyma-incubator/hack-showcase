@@ -1,7 +1,7 @@
 package events
 
 import (
-	"github.com/kyma-incubator/hack-showcase/github-connector/internal/apperrors"
+	"github.com/kyma-incubator/github-slack-connectors/github-connector/internal/apperrors"
 )
 
 // validator is a struct used to allow mocking the validatePayload function

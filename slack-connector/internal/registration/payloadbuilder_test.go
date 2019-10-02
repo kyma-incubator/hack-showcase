@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/kyma-incubator/hack-showcase/slack-connector/internal/apperrors"
-	"github.com/kyma-incubator/hack-showcase/slack-connector/internal/registration"
-	"github.com/kyma-incubator/hack-showcase/slack-connector/internal/registration/mocks"
+	"github.com/kyma-incubator/github-slack-connectors/slack-connector/internal/apperrors"
+	"github.com/kyma-incubator/github-slack-connectors/slack-connector/internal/registration"
+	"github.com/kyma-incubator/github-slack-connectors/slack-connector/internal/registration/mocks"
 	"github.com/stretchr/testify/assert"
 )
 

@@ -10,10 +10,10 @@ import (
 
 	"github.com/nlopes/slack/slackevents"
 
-	"github.com/kyma-incubator/hack-showcase/slack-connector/internal/handlers/mocks"
-	slack "github.com/kyma-incubator/hack-showcase/slack-connector/internal/slack/mocks"
+	"github.com/kyma-incubator/github-slack-connectors/slack-connector/internal/handlers/mocks"
+	slack "github.com/kyma-incubator/github-slack-connectors/slack-connector/internal/slack/mocks"
 
-	"github.com/kyma-incubator/hack-showcase/slack-connector/internal/apperrors"
+	"github.com/kyma-incubator/github-slack-connectors/slack-connector/internal/apperrors"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

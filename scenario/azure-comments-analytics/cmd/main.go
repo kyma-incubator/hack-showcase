@@ -9,8 +9,8 @@ import (
 	svcBind "github.com/kyma-project/kyma/components/service-binding-usage-controller/pkg/client/clientset/versioned/typed/servicecatalog/v1alpha1"
 
 	svcCatalog "github.com/google/kf/pkg/client/servicecatalog/clientset/versioned/typed/servicecatalog/v1beta1"
-	wrappers "github.com/kyma-incubator/hack-showcase/scenario/azure-comments-analytics/internal/clientwrappers"
-	mgr "github.com/kyma-incubator/hack-showcase/scenario/azure-comments-analytics/internal/manager"
+	wrappers "github.com/kyma-incubator/github-slack-connectors/scenario/azure-comments-analytics/internal/clientwrappers"
+	mgr "github.com/kyma-incubator/github-slack-connectors/scenario/azure-comments-analytics/internal/manager"
 	"github.com/vrischmann/envconfig"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"

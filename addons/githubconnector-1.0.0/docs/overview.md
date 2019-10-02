@@ -26,6 +26,6 @@ This plan allows to both handle Events incoming from connected GitHub repositori
 | PARAMETER NAME | DISPLAY NAME | TYPE | DESCRIPTION | REQUIRED |
 | -------------- | ------------ | ---- | ----------- | :------: |
 | `githubToken` | Token | `string` | {GITHUB_TOKEN} | yes |
-| `githubEndpoint` | GitHub Endpoint (organization or repository) | `string` | Link to a GitHub repository in the proper format: repos/{OWNER}/{REPOSITORY} or orgs/{ORGANIZATION}. For example, "repos/kyma-incubator/hack-showcase". | yes |
+| `githubEndpoint` | GitHub Endpoint (organization or repository) | `string` | Link to a GitHub repository in the proper format: repos/{OWNER}/{REPOSITORY} or orgs/{ORGANIZATION}. For example, "repos/kyma-incubator/github-slack-connectors". | yes |
 | `kymaAddress` | Kyma Domain name | `string` | Kyma domain address in the proper format. For example, "domain.sap.com". | yes |
 | `image` | Docker image | `string` | The GitHub Connector image on DockerHub. | no |

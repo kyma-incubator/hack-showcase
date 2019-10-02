@@ -5,8 +5,8 @@ import (
 	"testing"
 
 	v1beta1kubeless "github.com/kubeless/kubeless/pkg/apis/kubeless/v1beta1"
-	"github.com/kyma-incubator/hack-showcase/scenario/azure-comments-analytics/internal/k8scomponents"
-	"github.com/kyma-incubator/hack-showcase/scenario/azure-comments-analytics/internal/k8scomponents/mocks"
+	"github.com/kyma-incubator/github-slack-connectors/scenario/azure-comments-analytics/internal/k8scomponents"
+	"github.com/kyma-incubator/github-slack-connectors/scenario/azure-comments-analytics/internal/k8scomponents/mocks"
 	"github.com/stretchr/testify/assert"
 	autoscaling "k8s.io/api/autoscaling/v2beta1"
 	core "k8s.io/api/core/v1"

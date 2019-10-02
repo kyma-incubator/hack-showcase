@@ -8,8 +8,8 @@ This add-on allows you to install the scenario provided by Team Flying Seals. Az
 
 ## Installation
 
-1. Provision [Github Connector](https://github.com/kyma-incubator/hack-showcase/blob/master/docs/github-connector/README.md).
-2. Provision [Slack Connector](https://github.com/kyma-incubator/hack-showcase/blob/master/docs/slack-connector/README.md).
+1. Provision [Github Connector](https://github.com/kyma-incubator/github-slack-connectors/blob/master/docs/github-connector/README.md).
+2. Provision [Slack Connector](https://github.com/kyma-incubator/github-slack-connectors/blob/master/docs/slack-connector/README.md).
 3. Provision [Azure Broker](https://github.com/kyma-project/addons/tree/master/addons/azure-service-broker-0.0.1).
 4. [Provision](#provisioning) this addon.
 

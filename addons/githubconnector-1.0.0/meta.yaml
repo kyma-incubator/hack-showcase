@@ -8,4 +8,4 @@ tags: github
 providerDisplayName: Kyma
 longDescription: "The GitHub Connector allows to utilize GitHub events and to communicate with GitHub through its API. It registers a fully functional service with API and events definitions. Then, user can use them in lambdas."
 imageURL: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
-documentationURL: https://github.com/kyma-incubator/hack-showcase/tree/master/docs/github-connector
+documentationURL: https://github.com/kyma-incubator/github-slack-connectors/tree/master/docs/github-connector

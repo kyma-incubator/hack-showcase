@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"io/ioutil"
 
-	"github.com/kyma-incubator/hack-showcase/github-connector/internal/apperrors"
+	"github.com/kyma-incubator/github-slack-connectors/github-connector/internal/apperrors"
 )
 
 const (
-	specificationURL          = "https://raw.githubusercontent.com/kyma-incubator/hack-showcase/master/github-connector/internal/registration/configs/githubopenAPI.json"
+	specificationURL          = "https://raw.githubusercontent.com/kyma-incubator/github-slack-connectors/master/github-connector/internal/registration/configs/githubopenAPI.json"
 	applicationRegistryPrefix = "http://application-registry-external-api.kyma-integration.svc.cluster.local:8081/"
 	applicationRegistrySuffix = "-app/v1/metadata/services"
 	applicationRegistryFormat = "%s%s%s"

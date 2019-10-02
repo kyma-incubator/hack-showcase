@@ -9,9 +9,9 @@ import (
 	"testing"
 
 	"github.com/google/go-github/github"
-	"github.com/kyma-incubator/hack-showcase/github-connector/internal/apperrors"
-	gitmocks "github.com/kyma-incubator/hack-showcase/github-connector/internal/github/mocks"
-	"github.com/kyma-incubator/hack-showcase/github-connector/internal/handlers/mocks"
+	"github.com/kyma-incubator/github-slack-connectors/github-connector/internal/apperrors"
+	gitmocks "github.com/kyma-incubator/github-slack-connectors/github-connector/internal/github/mocks"
+	"github.com/kyma-incubator/github-slack-connectors/github-connector/internal/handlers/mocks"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

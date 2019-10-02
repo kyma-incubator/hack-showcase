@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/kyma-incubator/hack-showcase/github-connector/internal/apperrors"
-	"github.com/kyma-incubator/hack-showcase/github-connector/internal/registration"
-	"github.com/kyma-incubator/hack-showcase/github-connector/internal/registration/mocks"
+	"github.com/kyma-incubator/github-slack-connectors/github-connector/internal/apperrors"
+	"github.com/kyma-incubator/github-slack-connectors/github-connector/internal/registration"
+	"github.com/kyma-incubator/github-slack-connectors/github-connector/internal/registration/mocks"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -18,7 +18,7 @@ func TestBuild(t *testing.T) {
 		jsonBody := json.RawMessage(`{"json":"value"}`)
 		mockFileReader.On("Read", "githubasyncapi.json").Return(fileBody, nil)
 		builder := registration.NewPayloadBuilder(mockFileReader, "github-connector", "token")
-		url := "https://raw.githubusercontent.com/kyma-incubator/hack-showcase/master/github-connector/internal/registration/configs/githubopenAPI.json"
+		url := "https://raw.githubusercontent.com/kyma-incubator/github-slack-connectors/master/github-connector/internal/registration/configs/githubopenAPI.json"
 
 		//when
 		details, err := builder.Build()

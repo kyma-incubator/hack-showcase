@@ -6,8 +6,8 @@ This addon allows you to install an example scenario. Azure Comments Analytic re
 
 ## Installation
 
-1. Provision [the Github Connector](https://github.com/kyma-incubator/hack-showcase/blob/master/docs/github-connector/README.md).
-2. Provision [the Slack Connector](https://github.com/kyma-incubator/hack-showcase/blob/master/docs/slack-connector/README.md).
+1. Provision [the Github Connector](https://github.com/kyma-incubator/github-slack-connectors/blob/master/docs/github-connector/README.md).
+2. Provision [the Slack Connector](https://github.com/kyma-incubator/github-slack-connectors/blob/master/docs/slack-connector/README.md).
 3. Provision [the Azure Broker](https://github.com/kyma-project/addons/tree/master/addons/azure-service-broker-0.0.1).
 4. [Provision](#provisioning) this addon.
 

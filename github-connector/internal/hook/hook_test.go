@@ -5,7 +5,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/kyma-incubator/hack-showcase/github-connector/internal/hook"
+	"github.com/kyma-incubator/github-slack-connectors/github-connector/internal/hook"
 	"github.com/stretchr/testify/assert"
 )
 

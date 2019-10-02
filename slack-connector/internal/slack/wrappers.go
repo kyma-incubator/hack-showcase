@@ -8,7 +8,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/kyma-incubator/hack-showcase/slack-connector/internal/apperrors"
+	"github.com/kyma-incubator/github-slack-connectors/slack-connector/internal/apperrors"
 	"github.com/nlopes/slack/slackevents"
 )
 
