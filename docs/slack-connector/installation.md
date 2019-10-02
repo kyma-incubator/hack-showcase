@@ -26,7 +26,7 @@ The Slack Connector is a component which allows interaction with the Slack API f
 - Access to Kyma Console
 
 ### Steps
-1. Add addons configuration to Kyma. Run:
+1. Add Add-Ons configuration to Kyma. Run:
 
     ``` shell
     cat <<EOF | kubectl apply -f -
@@ -43,7 +43,7 @@ The Slack Connector is a component which allows interaction with the Slack API f
     ```
     
 2. Go to the Namespace in which to install the Connector.
-3. Find the addon in the Service Catalog and click it.
+3. Find the Add-On in the Service Catalog and click it.
 4. Click **Add** and select the installation plan. Fill in all required fields and click **Create Instance**.
 5. Go to the **Services** tab in the Service Catalog. After provisioning and automatic registration of Application's resources, the Service Class of the Slack Connector appears here.
 6. Click the Service Class to enter its specification screen, click **Add once**, and then **Create Instance**.

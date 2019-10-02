@@ -27,7 +27,6 @@ This plan allows to handle Events incoming from connected Slack workspaces to an
 
 | PARAMETER NAME | DISPLAY NAME | TYPE | DESCRIPTION | REQUIRED |
 |----------------|--------------|------|-------------|:--------:|
-| `image` | Docker Image | `string` | The Slack Connector image to use. | no |
 | `slackBotToken` | Bot Token | `string` | {SLACK_TOKEN} | yes |
 | `workspaceName` | Workspace Name | `string` | The name of the workspace to which to connect the Application. | yes |
 | `slackSecret` | Slack Signing Secret | `string` | {SIGNING_SECRET} | yes |
