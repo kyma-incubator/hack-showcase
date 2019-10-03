@@ -6,7 +6,7 @@ container:
     memory: "128Mi"
     cpu: "500m"
 
-image: kymaflyingseals/github-connector:0.3.6
+image: kymaflyingseals/github-connector:0.4.0
 
 service:
   port: 80
