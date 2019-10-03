@@ -1,6 +1,6 @@
 replicaCount: 1
 
-image: kymaflyingseals/slack-connector:0.2.0
+image: kymaflyingseals/slack-connector:0.3.0
 container:
   containerPort: 8080
   limits:
