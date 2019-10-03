@@ -67,7 +67,7 @@ func TestGetEventBodyServiceInstance(t *testing.T) {
 		serviceClassExternalName := "serviceClassExternalName"
 		plan := "plan"
 		raw := runtime.RawExtension{}
-		_ = raw.UnmarshalJSON([]byte(`{"location": "westeurope","resourceGroup": "flying-seals-tmp"}`))
+		_ = raw.UnmarshalJSON([]byte(`{"location": "westeurope","resourceGroup": "github-slack-scenario"}`))
 		namespace := "namespace"
 		body := &v1beta1svc.ServiceInstance{
 			ObjectMeta: v1.ObjectMeta{

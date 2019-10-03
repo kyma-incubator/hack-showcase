@@ -3,7 +3,7 @@
   "info": {
     "title": "github-events",
     "version": "v1",
-    "description": "Github Events v1"
+    "description": "GitHub Events v1"
   },
   "topics": {
     "CheckRunEvent.v1": {
@@ -2899,11 +2899,11 @@
                     },
                     "body": {
                       "type": "string",
-                      "example": "# hello-world-npm\n\nThis is a simple npm package that demonstrates the [Github Package Registry](https://github.com/features/package-registry).\n\n## Installation \n\n`$ npm install`\n\n## Usage\n\n```\nconst myPackage = require('hello-world-node-package');\nmyPackage.helloWorld();\n```\n\n"
+                      "example": "# hello-world-npm\n\nThis is a simple npm package that demonstrates the [GitHub Package Registry](https://github.com/features/package-registry).\n\n## Installation \n\n`$ npm install`\n\n## Usage\n\n```\nconst myPackage = require('hello-world-node-package');\nmyPackage.helloWorld();\n```\n\n"
                     },
                     "body_html": {
                       "type": "string",
-                      "example": "<h1>hello-world-npm</h1>\n<p>This is a simple npm package that demonstrates the <a href=\"https://github.com/features/package-registry\">Github Package Registry</a>.</p>\n<h2>Installation</h2>\n<p><code>$ npm install</code></p>\n<h2>Usage</h2>\n<pre><code>const myPackage = require('hello-world-node-package');\nmyPackage.helloWorld();\n</code></pre>"
+                      "example": "<h1>hello-world-npm</h1>\n<p>This is a simple npm package that demonstrates the <a href=\"https://github.com/features/package-registry\">GitHub Package Registry</a>.</p>\n<h2>Installation</h2>\n<p><code>$ npm install</code></p>\n<h2>Usage</h2>\n<pre><code>const myPackage = require('hello-world-node-package');\nmyPackage.helloWorld();\n</code></pre>"
                     },
                     "release": {
                       "type": "object",

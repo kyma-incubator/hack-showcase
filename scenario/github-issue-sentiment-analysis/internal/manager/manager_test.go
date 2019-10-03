@@ -169,7 +169,7 @@ func TestCreateServiceInstances(t *testing.T) {
 		component := &componentsMocks.ServiceInstance{}
 		serviceInstanceBody := &serviceInstance.ServiceInstance{}
 		raw := runtime.RawExtension{}
-		unmarshalerr := raw.UnmarshalJSON([]byte(`{"location": "westeurope","resourceGroup": "flying-seals-tmp"}`))
+		unmarshalerr := raw.UnmarshalJSON([]byte(`{"location": "westeurope","resourceGroup": "github-slack-scenario"}`))
 		component.On("Create", serviceInstanceBody).Return(serviceInstanceBody, nil)
 		component.On("Prepare", "azureServiceName", "azureServiceName", "standard-s0", &raw).Return(serviceInstanceBody)
 		component.On("Prepare", "githubRepo", "githubRepo-12345", "default", (*runtime.RawExtension)(nil)).Return(serviceInstanceBody)
@@ -214,7 +214,7 @@ func TestCreateServiceInstances(t *testing.T) {
 		component := &componentsMocks.ServiceInstance{}
 		serviceInstanceBody := &serviceInstance.ServiceInstance{}
 		raw := runtime.RawExtension{}
-		unmarshalerr := raw.UnmarshalJSON([]byte(`{"location": "westeurope","resourceGroup": "flying-seals-tmp"}`))
+		unmarshalerr := raw.UnmarshalJSON([]byte(`{"location": "westeurope","resourceGroup": "github-slack-scenario"}`))
 		component.On("Create", serviceInstanceBody).Return(serviceInstanceBody, apperrors.Internal("error"))
 		component.On("Prepare", "azureServiceName", "azureServiceName", "standard-s0", &raw).Return(serviceInstanceBody)
 		component.On("Prepare", "githubRepo", "githubRepo-12345", "default", (*runtime.RawExtension)(nil)).Return(serviceInstanceBody)

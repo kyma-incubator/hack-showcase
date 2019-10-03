@@ -18,7 +18,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 )
 
-const azureConfiguration = `{"location": "westeurope","resourceGroup": "flying-seals-tmp"}`
+const azureConfiguration = `{"location": "westeurope","resourceGroup": "github-slack-scenario"}`
 
 //Manager include important methods to deploy all k8s and kymas components to realize github-slack-connectors scenario
 type Manager interface {

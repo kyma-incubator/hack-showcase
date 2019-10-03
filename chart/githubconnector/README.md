@@ -1,4 +1,4 @@
-# Github Connector Chart<!-- omit in toc -->
+# GitHub Connector Chart<!-- omit in toc -->
 
 ## Overview
 The chart creates the GitHub Connector Deployment and a Namespace in Kyma.

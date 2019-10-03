@@ -3,7 +3,7 @@
     "info": {
       "title": "github-events",
       "version": "v1",
-      "description": "Github Events v1"
+      "description": "GitHub Events v1"
     },
     "topics": {
       "issuesevent.opened.v1": {

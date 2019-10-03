@@ -23,7 +23,7 @@ const azureClassName = "azure-text-analytics"
 // Config holds application configuration
 type Config struct {
 	Kubeconfig     string `envconfig:"APP,optional"`
-	GithubURL      string `envconfig:"GITHUB_REPO"`
+	GitHubURL      string `envconfig:"GITHUB_REPO"`
 	SlackWorkspace string `envconfig:"SLACK_WORKSPACE"`
 	Namespace      string `envconfig:"NAMESPACE"`
 	ChannelName    string `envconfig:"CHANNEL_NAME"`
@@ -40,7 +40,7 @@ func main() {
 	fatalOnError(err)
 
 	log.Printf("Kubeconfig: %s", cfg.Kubeconfig)
-	log.Printf("Github url: %s\n", cfg.GithubURL)
+	log.Printf("GitHub url: %s\n", cfg.GitHubURL)
 	log.Printf("Slack workspace: %s\n", cfg.SlackWorkspace)
 	log.Printf("Workspace: %s", cfg.Namespace)
 	log.Printf("Azure: %s", azureClassName)
@@ -57,7 +57,7 @@ func main() {
 	fatalOnError(err)
 
 	//Create scenario Manager
-	manager = mgr.NewManager(cfg.Namespace, cfg.GithubURL, cfg.SlackWorkspace, azureClassName, cfg.ChannelName)
+	manager = mgr.NewManager(cfg.Namespace, cfg.GitHubURL, cfg.SlackWorkspace, azureClassName, cfg.ChannelName)
 	//ServiceInstance
 	serviceCatalogWrapper := wrappers.NewServiceCatalogClient(svcClient)
 	clientWrappers.ServiceInstance = serviceCatalogWrapper.Instance(cfg.Namespace)

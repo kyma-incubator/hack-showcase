@@ -38,7 +38,7 @@ type EventRequestPayload struct {
 	Data             json.RawMessage `json:"data,omitempty"` //github webhook json payload
 }
 
-//SendToKyma is a function that sends the event given by the Github API to kyma's event bus
+//SendToKyma is a function that sends the event given by the GitHub API to kyma's event bus
 func (k Sender) SendToKyma(eventType, eventTypeVersion, eventID, sourceID string, data json.RawMessage) apperrors.AppError {
 
 	payload := EventRequestPayload{

@@ -8,7 +8,7 @@
 
 ## Overview
 
-This document describes the Connectors for Github and Slack to use in the [Kyma](https://github.com/kyma-project/kyma) environment. They allow utilizing applications' functions inside the Kyma ecosystem by communicating with the corresponding APIs. Use them to trigger lambda functions on Events incoming from third-party applications and react to them.
+This document describes the Connectors for GitHub and Slack to use in the [Kyma](https://github.com/kyma-project/kyma) environment. They allow utilizing applications' functions inside the Kyma ecosystem by communicating with the corresponding APIs. Use them to trigger lambda functions on Events incoming from third-party applications and react to them.
 
 ## Prerequisites
 
@@ -27,7 +27,7 @@ This diagram shows the interaction of the components in the described scenario:
 
 You can install the Connectors and start using them in just a few steps. Follow the instructions to install the Connectors and run the described scenario.
 
-1. Add addons configuration to Kyma. Run:
+1. Add Add-Ons configuration to Kyma. Run:
 
     ``` shell
     cat <<EOF | kubectl apply -f -
@@ -44,7 +44,7 @@ You can install the Connectors and start using them in just a few steps. Follow 
     EOF
     ```
 
-2. Connect to the Kyma Console (UI). Go to a Namespace of your choice, then to **Catalog** in the **Service Management** section. Add the Slack Connector, the GitHub Connector, and the Azure Service Broker. Follow the instructions available in these addons.
+2. Connect to the Kyma Console (UI). Go to a Namespace of your choice, then to **Catalog** in the **Service Management** section. Add the Slack Connector, the GitHub Connector, and the Azure Service Broker. Follow the instructions available in these Add-Ons.
 3. After provisioning, add the GitHub Issue Sentiment Analysis Scenario.
 
     >**NOTE:** Keep in mind that all resources created in the previous step must be ready before you proceed. Check their status in **Instances** in the **Service Management** section.
@@ -55,12 +55,12 @@ You can install the Connectors and start using them in just a few steps. Follow 
 
 Install the Connectors locally or on a cluster. For installation details, see the corresponding guides:
 
-* [The Github Connector installation](/docs/github-connector/installation.md)
+* [The GitHub Connector installation](/docs/github-connector/installation.md)
 * [The Slack Connector installation](/docs/slack-connector/installation.md)
 
 ## Development
 
-1. Fork the repository in Github.
+1. Fork the repository in GitHub.
 2. Clone the fork to your `$GOPATH` workspace. Use this command to create the folder structure and clone the repository under the correct location:
 
     ``` shell
