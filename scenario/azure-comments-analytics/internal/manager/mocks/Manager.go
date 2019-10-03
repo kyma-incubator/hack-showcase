@@ -3,8 +3,8 @@
 package mocks
 
 import eventing_kyma_project_iov1alpha1 "github.com/kyma-project/kyma/components/event-bus/api/push/eventing.kyma-project.io/v1alpha1"
-import k8scomponents "github.com/kyma-incubator/github-slack-connectors/scenario/azure-comments-analytics/internal/k8scomponents"
-import manager "github.com/kyma-incubator/github-slack-connectors/scenario/azure-comments-analytics/internal/manager"
+import k8scomponents "github.com/kyma-incubator/github-slack-connectors/scenario/github-issue-sentiment-analysis/internal/k8scomponents"
+import manager "github.com/kyma-incubator/github-slack-connectors/scenario/github-issue-sentiment-analysis/internal/manager"
 import mock "github.com/stretchr/testify/mock"
 import servicecatalogv1beta1 "github.com/poy/service-catalog/pkg/apis/servicecatalog/v1beta1"
 import v1alpha1 "github.com/kyma-project/kyma/components/service-binding-usage-controller/pkg/apis/servicecatalog/v1alpha1"

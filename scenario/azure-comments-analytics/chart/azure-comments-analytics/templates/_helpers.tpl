@@ -1,15 +1,15 @@
-{{- define "azure-comments-analytics.name" -}}
+{{- define "github-issue-sentiment-analysis.name" -}}
 {{- .Chart.Name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
-{{- define "azure-comments-analytics.chart" -}}
+{{- define "github-issue-sentiment-analysis.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
-{{- define "azure-comments-analytics.repository" -}}
+{{- define "github-issue-sentiment-analysis.repository" -}}
 {{- .Values.githubURL -}}
 {{- end -}}
 
-{{- define "azure-comments-analytics.workspace" -}}
+{{- define "github-issue-sentiment-analysis.workspace" -}}
 {{- .Values.workspaceName -}}
 {{- end -}}

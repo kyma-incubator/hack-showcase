@@ -4,12 +4,12 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/kyma-incubator/github-slack-connectors/scenario/azure-comments-analytics/internal/k8scomponents"
+	"github.com/kyma-incubator/github-slack-connectors/scenario/github-issue-sentiment-analysis/internal/k8scomponents"
 	"github.com/stretchr/testify/assert"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 
-	"github.com/kyma-incubator/github-slack-connectors/scenario/azure-comments-analytics/internal/k8scomponents/mocks"
+	"github.com/kyma-incubator/github-slack-connectors/scenario/github-issue-sentiment-analysis/internal/k8scomponents/mocks"
 	v1beta1svc "github.com/poy/service-catalog/pkg/apis/servicecatalog/v1beta1"
 )
 

@@ -2,7 +2,7 @@ package wrappers
 
 import (
 	"github.com/kubeless/kubeless/pkg/client/clientset/versioned/typed/kubeless/v1beta1"
-	"github.com/kyma-incubator/github-slack-connectors/scenario/azure-comments-analytics/internal/k8scomponents"
+	"github.com/kyma-incubator/github-slack-connectors/scenario/github-issue-sentiment-analysis/internal/k8scomponents"
 )
 
 //KubelessWrapper is a wrapper dedicated for kubeless ClientSet

@@ -1,6 +1,6 @@
 FROM golang:1.11.4-alpine3.8 as builder
 
-WORKDIR /go/src/github.com/kyma-incubator/github-slack-connectors/scenario/azure-comments-analytics
+WORKDIR /go/src/github.com/kyma-incubator/github-slack-connectors/scenario/github-issue-sentiment-analysis
 
 COPY . .
 

@@ -4,8 +4,8 @@ import (
 	"testing"
 
 	function "github.com/kubeless/kubeless/pkg/apis/kubeless/v1beta1"
-	componentsMocks "github.com/kyma-incubator/github-slack-connectors/scenario/azure-comments-analytics/internal/k8scomponents/mocks"
-	"github.com/kyma-incubator/github-slack-connectors/scenario/azure-comments-analytics/internal/manager"
+	componentsMocks "github.com/kyma-incubator/github-slack-connectors/scenario/github-issue-sentiment-analysis/internal/k8scomponents/mocks"
+	"github.com/kyma-incubator/github-slack-connectors/scenario/github-issue-sentiment-analysis/internal/manager"
 	"github.com/kyma-project/kyma/components/application-gateway/pkg/apperrors"
 	subscriptions "github.com/kyma-project/kyma/components/event-bus/api/push/eventing.kyma-project.io/v1alpha1"
 	serviceBindingUsages "github.com/kyma-project/kyma/components/service-binding-usage-controller/pkg/apis/servicecatalog/v1alpha1"

@@ -10,7 +10,7 @@ import (
 	servicecatalogbeta1 "github.com/poy/service-catalog/pkg/apis/servicecatalog/v1beta1"
 
 	kubeless "github.com/kubeless/kubeless/pkg/apis/kubeless/v1beta1"
-	"github.com/kyma-incubator/github-slack-connectors/scenario/azure-comments-analytics/internal/k8scomponents"
+	"github.com/kyma-incubator/github-slack-connectors/scenario/github-issue-sentiment-analysis/internal/k8scomponents"
 	eventing "github.com/kyma-project/kyma/components/event-bus/api/push/eventing.kyma-project.io/v1alpha1"
 	kymaservicecatalog "github.com/kyma-project/kyma/components/service-binding-usage-controller/pkg/apis/servicecatalog/v1alpha1"
 	servicecatalog "github.com/poy/service-catalog/pkg/apis/servicecatalog/v1beta1"

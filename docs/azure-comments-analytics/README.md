@@ -1,8 +1,8 @@
-# Azure Comments Analytics Scenario
+# Github Issue Sentiment Analysis
 
 ## Overview
 
-This addon allows you to install an example scenario. Azure Comments Analytic receives information about Github's Issue from the Github Connector. Next, the lambda function analyses it using the Azure Broker and then, if the Issue's sentiment is negative, the lambda sends it to Slack and labels the Issue on Github.
+This addon allows you to install an example scenario. Azure Text Analytic receives information about Github's Issue from the Github Connector. Next, the lambda function analyses it using the Azure Broker and then, if the Issue's sentiment is negative, the lambda sends it to Slack and labels the Issue on Github.
 
 ## Installation
 
@@ -11,7 +11,7 @@ This addon allows you to install an example scenario. Azure Comments Analytic re
 3. Provision [the Azure Broker](https://github.com/kyma-project/addons/tree/master/addons/azure-service-broker-0.0.1).
 4. [Provision](#provisioning) this addon.
 
-The Azure Comments Analytics Scenario is now ready to use. Add a new issue or edit one in a given repository or organization.
+The Github Issue Sentiment Analysis Scenario is now ready to use. Add a new issue or edit one in a given repository or organization.
 
 ## Provisioning
 

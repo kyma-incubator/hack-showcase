@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: github-slack-connectors-{{ include "azure-comments-analytics.repository" . }}
+  name: github-slack-connectors-{{ include "github-issue-sentiment-analysis.repository" . }}
 spec:
   template:
     metadata:
@@ -9,15 +9,15 @@ spec:
         sidecar.istio.io/inject: "false"
     spec:
       containers:
-      - name: github-slack-connectors-{{ include "azure-comments-analytics.repository" . }}
+      - name: github-slack-connectors-{{ include "github-issue-sentiment-analysis.repository" . }}
         image: {{ .Values.image }}
         env: 
         - name: GITHUB_REPO
-          value: {{ include "azure-comments-analytics.repository" . }}
+          value: {{ include "github-issue-sentiment-analysis.repository" . }}
         - name: SLACK_WORKSPACE
-          value: {{ include "azure-comments-analytics.workspace" . }}
+          value: {{ include "github-issue-sentiment-analysis.workspace" . }}
         - name: NAMESPACE
           value: {{ .Release.Namespace }}
-      serviceAccountName: {{ include "azure-comments-analytics.repository" . }}
+      serviceAccountName: {{ include "github-issue-sentiment-analysis.repository" . }}
       restartPolicy: Never
   backoffLimit: 0
