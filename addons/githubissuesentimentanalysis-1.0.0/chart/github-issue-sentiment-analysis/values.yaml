@@ -1,4 +1,4 @@
 githubURL: repos/owner/repo
 workspaceName: slack-repo
-image: kymaflyingseals/github-issue-sentiment-analysis:0.2.1
+image: kymaflyingseals/github-issue-sentiment-analysis:0.1.0
 channelName: sample-channel
