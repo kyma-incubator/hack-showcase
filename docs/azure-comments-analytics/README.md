@@ -2,7 +2,7 @@
 
 ## Overview
 
-This Add-On allows you to install an example scenario. Azure Text Analytic receives information about GitHub's Issue from the GitHub Connector. Next, the lambda function analyses it using the Azure Broker and then, if the Issue's sentiment is negative, the lambda sends it to Slack and labels the Issue on GitHub.
+This Add-On allows you to install an example scenario. Azure Text Analytic receives information about GitHub's Issue from the GitHub Connector. Next, the lambda function analyses it using the Azure Text Analytics provided by Azure Broker. If the Issue's sentiment is negative, the lambda will send it to Slack and will label the Issue on GitHub.
 
 ## Installation
 

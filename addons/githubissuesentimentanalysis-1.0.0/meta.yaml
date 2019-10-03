@@ -2,7 +2,7 @@ name: github-issue-sentiment-analysis
 version: 1.0.0
 id: f906c336-ed1f-45cc-8676-ef710e3cef89
 displayName: "GitHub Issue Sentiment Analysis"
-description: "Allows you to install Team Hack showcase scenario"
+description: "Allows you to install example scenario."
 
 tags: github, slack, azure, example
 providerDisplayName: Kyma

@@ -1,6 +1,6 @@
 # Overview
 
-With the use of the token provided during the provisioning of the Add-On, the Slack Connector allows for sending requests to the Slack Web API. The requests are specified during the installation of the Slack Application to the workspace. The example requests are: posting a message to a specified channel, getting the list of the current users, etc.
+With the use of the token provided during the provisioning of the Add-On, the Slack Connector allows sending requests to the Slack Web API. The requests are specified during the installation of the Slack Application to the workspace. The example requests are: posting a message to a specified channel, getting the list of the current users, etc.
 
 #### Prerequisites
 
