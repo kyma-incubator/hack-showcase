@@ -82,9 +82,7 @@ To correctly remove all Slack Connector resources, you must delete them in order
 4. Go to the `chart/slackconnector` directory. Run this command to install the Slack Connector:
 
     ``` shell
-    helm install --set container.image={DOCKER_IMAGE} --set kymaAddress={KYMA_ADDRESS} --set slackBotToken={SLACK_TOKEN} -n {RELEASE_NAME} . --tls
+    helm install --set container.image={DOCKER_IMAGE} --set slackBotToken={SLACK_TOKEN} -n {RELEASE_NAME} . --tls
     ```
-
-    >**CAUTION:** Make sure that the Kyma address is in the correct format. It consists of the domain name and omits the dot at the beginning. For example, `35.187.32.214.xip.io`.
 
     >**NOTE:** To define Namespace in which to install chart, add the `--namespace` flag. To provide security token, add the `--set slackBotToken` flag.

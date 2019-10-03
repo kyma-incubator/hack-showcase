@@ -17,7 +17,7 @@ The Connectors are configured to work inside the Kyma ecosystem, so you must ins
 
 ## Usage
 
-This showcase covers the user story described in the project [concept](https://github.com/kyma-incubator/github-slack-connectors/blob/master/docs/concept.md#reacting-to-prissue-comments). It labels issues on GitHub that may be offensive and sends notifications to Slack about it. However, considering the fact that the Connectors provide a way to communicate with external applications, there are many possible use cases. Using the Connectors is as simple as deploying a new lambda function in Kyma. Check the corresponding [serverless documentation](https://kyma-project.io/docs/components/serverless) to find out more.
+You can [install](#quick-start) an example scenario, which labels issues on GitHub that may be offensive and sends notifications to Slack about it. However, considering the fact that the Connectors provide a way to communicate with external applications, there are many possible use cases. Using the Connectors is as simple as deploying a new lambda function in Kyma. Check the corresponding [serverless documentation](https://kyma-project.io/docs/components/serverless) to find out more.
 
 This diagram shows the interaction of the components in the described scenario:
 
