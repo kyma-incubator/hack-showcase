@@ -1,5 +1,0 @@
----
-Thanks for installing {{ .Chart.Description }}.
-
-For further steps, please use provided README.md file.
----
